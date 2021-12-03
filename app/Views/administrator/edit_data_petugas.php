@@ -11,7 +11,7 @@
           <h4 class="page-title">Edit Data petugas</h4> </div>
       <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
           <ol class="breadcrumb">
-              <li><a href="/">Puskesmas</a></li>
+              <li><a href="<?php base_url();?>/">Puskesmas</a></li>
               <li class="active">Edit Data petugas</li>
           </ol>
       </div>
@@ -23,7 +23,7 @@
     <div class="col-sm-12">
         <div class="white-box">
             <!-- <h3 class="box-title">Basic Information</h3> -->
-            <form class="form-material form-horizontal" action="/admin/data_petugas/update_data/<?= $data_petugas['id_satgas'];?>" method="post" enctype="multipart/form-data">
+            <form class="form-material form-horizontal" action="<?php base_url();?>/admin/data_petugas/update_data/<?= $data_petugas['id_satgas'];?>" method="post" enctype="multipart/form-data">
               <?= csrf_field();?>
               <input type="hidden" id="slug" name="slug" value="<?= $data_petugas['slug'];?>">
               <input type="hidden" name="file_profil_lama" value="<?= $data_petugas['foto_profil'];?>">
@@ -96,7 +96,7 @@
                   </div>
                 </div>
                 <button type="submit" class="btn btn-info waves-effect waves-light m-r-10">Edit</button>
-                <a href="/admin/data_petugas/detail_petugas/<?= $data_petugas['slug'];?>" class="btn btn-inverse waves-effect waves-light">Batal</a>
+                <a href="<?php base_url();?>/admin/data_petugas/detail_petugas/<?= $data_petugas['slug'];?>" class="btn btn-inverse waves-effect waves-light">Batal</a>
               </form>
           </div>
       </div>

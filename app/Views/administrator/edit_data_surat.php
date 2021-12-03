@@ -18,72 +18,19 @@
       <!-- /.col-lg-12 -->
   </div>
 
-  <!-- row -->
-  <div class="row">
-    <div class="col-lg">
-      <div class="white-box">
-        <label class="col-md-12" for="input_search">Cek Apakah Data Sudah Pernah di Tambahkan ?</span>
-        </label>
-        <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="Masukkan Nik atau Nama Pasien">
-          <div class="input-group-prepend">
-            <button class="btn btn-outline-secondary" type="button">Cari</button>
-          </div>
-        </div>
-          <div class="table-responsive table-bordered kol-fix">
-            <table class="table-striped table-hover table-bordered table" >
-              <thead>
-                <tr>
-                  <th scope="col" >No</th>
-                  <th scope="col" >Nama Pasien</th>
-                  <th scope="col" >Umur</th>
-                  <th scope="col" >Kepentingan</th>
-                  <th scope="col" >Hasil Pemeriksaan</th>
-                  <th scope="col" colspan="2">Aksi</th>
-                </tr>
-              </thead>
-              <tbody>
-
-                <?php if (empty($data_surat)) : ?>
-                  <td colspan="13">
-                    <h5 class="text-grey-500 text-center">Data Surat Sehat Belum Ada</h5>
-                  </td>
-                <?php else :
-                   $n = 1;
-                   foreach ($data_surat as $ds): ?>
-                <tr>
-                  <td><?= $n++;?></td>
-                  <td><?= $ds->nama_pasien;?></td>
-                  <td><?= floor($ds->umur/12);?> <span> Tahun</span> </td>
-                  <td><?= $ds->kepentingan;?></td>
-                  <td><?= $ds->hasil_periksa;?></td>
-                  <td><a href="<?php base_url();?>/admin/data_petugas/edit_data_surat/<?= $ds->id_sks;?>" class="btn btn-primary btn-rounded">Tambahkan Data</a></td>
-                </tr>
-                <?php
-                  endforeach;
-                  endif;
-                  ?>
-              </tbody>
-            </table>
-          </div>
-
-      </div>
-    </div>
-  </div>
-
-
   <div class="row">
     <div class="col-lg">
         <div class="white-box">
             <!-- <h3 class="box-title">Basic Information</h3> -->
             <form class="form-material form-horizontal" action="<?php base_url();?>/Admin/surat_sehat/simpan" method="post" enctype="">
               <?= csrf_field();?>
+              <?php foreach ($data_surat as $ds): ?>
                 <div class="form-group">
                     <label class="col-md-12" for="nomor_surat"><span>No. Suat</span>
                     </label>
                     <div class="col-md-12">
-                        <input type="text" name="nomor_surat" class="form-control" placeholder="Masukkan Nomor SUrat" value="<?= old('nomor_surat');?>">
-                    </div>
+                        <input type="text" name="nomor_surat" class="form-control" placeholder="Masukkan Nomor Surat" value="<?= (old('nomor_surat')) ? old('nomor_surat') : $ds->nomor_surat ;?>"> </div>
+                        <input type="hidden" name="nip_kapus" value="<?= $ds->nip_kp;?>">
                 </div>
 
                 <div class="form-group">
@@ -97,34 +44,26 @@
                   <div class="row">
                     <div class="col-md">
                       <div class="col-md-7">
-                          <input type="text" name="nama_pasien" class="form-control" placeholder="Masukkan Nama Pasien" value="<?= old('nama_pasien');?>">
+                          <input type="text" name="nama_pasien" class="form-control" placeholder="Masukkan Nama Pasien" value="<?= (old('nama_pasien')) ? old('nama_pasien') : $ds->nama_pasien ;?>">
                       </div>
                       <div class="col-md-5">
-                          <input type="text" name="nik_pasien" class="form-control" placeholder="Masukkan Nik Pasien" value="<?= old('nik_pasien');?>">
+                          <input type="text" name="nik_pasien" class="form-control" placeholder="Masukkan Nik Pasien" value="<?= (old('nik_pasien')) ? old('nik_pasien') : $ds->nik_p ;?>">
                       </div>
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-md">
-                      <label class="col-md-4" for="jenis_kelamin"><span>Jenis Kelamin</span></label>
-                      <label class="col-md-4" for="pekerjaan"><span>Pekerjaan</span></label>
-                      <label class="col-md-4" for="tgl_lahir"><span>Tanggal Lahir</span></label>
+                      <label class="col-md-7" for="pekerjaan"><span>Pekerjaan</span></label>
+                      <label class="col-md-5" for="tgl_lahir"><span>Tanggal Lahir</span></label>
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-md">
-                      <div class="col-md-4">
-                          <select class="form-control" name="jenis_kelamin">
-                            <option value="null" class="dropdown-item" selected>-- Pilih salah satu --</option>
-                            <option class="dropdown-item">Laki-laki</option>
-                            <option class="dropdown-item">Perempuan</option>
-                          </select>
+                      <div class="col-md-7">
+                        <input type="text" name="pekerjaan" class="form-control" placeholder="Masukkan Pekerjaan" value="<?= (old('pekerjaan')) ? old('pekerjaan') : $ds->pekerjaan ;?>">
                       </div>
-                      <div class="col-md-4">
-                        <input type="text" name="pekerjaan" class="form-control" placeholder="Masukkan Pekerjaan" value="<?= old('pekerjaan');?>">
-                      </div>
-                      <div class="col-md-4">
-                          <input type="date" name="tgl_lahir" class="form-control" placeholder="Masukkan Suhu Tubuh" value="<?= old('suhu_tubuh');?>">
+                      <div class="col-md-5">
+                          <input type="date" name="tgl_lahir" class="form-control" placeholder="Masukkan Suhu Tubuh" value="<?= (old('suhu_tubuh')) ? old('suhu_tubuh') : $ds->suhu_tubuh ;?>">
                       </div>
                     </div>
                   </div>
@@ -134,14 +73,14 @@
                     <label class="col-md-12" for="alamat"><span>ALamat</span>
                     </label>
                     <div class="col-md-12">
-                        <input type="text" name="alamat" class="form-control" placeholder="Masukkan Alamat" value="<?= old('alamat');?>"> </div>
+                        <input type="text" name="alamat" class="form-control" placeholder="Masukkan Alamat" value="<?= (old('alamat')) ? old('alamat') : $ds->alamat ;?>"> </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-md-12" for="kepentingan"><span>Kepentingan</span>
                     </label>
                     <div class="col-md-12">
-                        <input type="text" id="kepentingan" name="kepentingan" class="form-control mydatepicker" placeholder="Masukkan Kepentingan" value="<?= old('kepentingan');?>"> </div>
+                        <input type="text" id="kepentingan" name="kepentingan" class="form-control mydatepicker" placeholder="Masukkan Kepentingan" value="<?= (old('kepentingan')) ? old('kepentingan') : $ds->kepentingan ;?>"> </div>
                 </div>
 
                 <div class="form-group">
@@ -156,13 +95,13 @@
                   <div class="row">
                     <div class="col-md">
                       <div class="col-md-4">
-                          <input type="text" name="tinggi_badan" class="form-control" placeholder="Masukkan Tinggi Badan" value="<?= old('tinggi_badan');?>">
+                          <input type="text" name="tinggi_badan" class="form-control" placeholder="Masukkan Tinggi Badan" value="<?= (old('tinggi_badan')) ? old('tinggi_badan') : $ds->tinggi_badan ;?>">
                       </div>
                       <div class="col-md-4">
-                          <input type="text" name="berat_badan" class="form-control" placeholder="Masukkan Berat Badan" value="<?= old('berat_badan');?>">
+                          <input type="text" name="berat_badan" class="form-control" placeholder="Masukkan Berat Badan" value="<?= (old('berat_badan')) ? old('berat_badan') : $ds->berat_badan ;?>">
                       </div>
                       <div class="col-md-4">
-                          <input type="text" name="tensi_darah" class="form-control" placeholder="Masukkan Tekanan Darah" value="<?= old('tensi_darah');?>">
+                          <input type="text" name="tensi_darah" class="form-control" placeholder="Masukkan Tekanan Darah" value="<?= (old('tensi_darah')) ? old('tensi_darah') : $ds->tensi_darah ;?>">
                       </div>
                     </div>
                   </div>
@@ -176,13 +115,13 @@
                   <div class="row">
                     <div class="col-md">
                       <div class="col-md-4">
-                          <input type="text" name="suhu_tubuh" class="form-control" placeholder="Masukkan Suhu Tubuh" value="<?= old('suhu_tubuh');?>">
+                          <input type="text" name="suhu_tubuh" class="form-control" placeholder="Masukkan Suhu Tubuh" value="<?= (old('suhu_tubuh')) ? old('suhu_tubuh') : $ds->suhu_tubuh ;?>">
                       </div>
                       <div class="col-md-4">
-                          <input type="text" name="nadi" class="form-control" placeholder="Masukkan Nadi" value="<?= old('nadi');?>">
+                          <input type="text" name="nadi" class="form-control" placeholder="Masukkan Nadi" value="<?= (old('nadi')) ? old('nadi') : $ds->nadi ;?>">
                       </div>
                       <div class="col-md-4">
-                          <input type="text" name="respirasi" class="form-control" placeholder="Masukkan Respirasi" value="<?= old('respirasi');?>">
+                          <input type="text" name="respirasi" class="form-control" placeholder="Masukkan Respirasi" value="<?= (old('respirasi')) ? old('respirasi') : $ds->respirasi ;?>">
                       </div>
                     </div>
                   </div>
@@ -198,7 +137,7 @@
                   </div>
                   <div class="row">
                     <div class="col-md">
-                      <label class="col-md-4" for="mata_buta"><span>Buta Warna</span></label>
+                      <label class="col-md-4" for="buta_mata"><span>Buta Warna</span></label>
                       <label class="col-md-4" for="tato"><span>Tato</span></label>
                       <label class="col-md-4" for="tindik"><span>Tindik</span></label>
                     </div>
@@ -206,17 +145,17 @@
                   <div class="row">
                     <div class="col-md">
                       <div class="col-md-4">
-                        <select class="custom-select custom-select-sm col-sm" name="mata_buta">
+                        <select class="custom-select custom-select-sm col-sm" name="buta_mata">
                           <option value="null" class="dropdown-item" selected>-- Pilih salah satu --</option>
                           <option value="YA" class="dropdown-item">YA</option>
                           <option value="TIDAK" class="dropdown-item">TIDAK</option>
                         </select>
                       </div>
                       <div class="col-md-4">
-                          <input type="text" name="tubuh_tato" class="form-control" placeholder="Masukkan Tato" value="<?= old('tubuh_tato');?>">
+                          <input type="text" name="tubuh_tato" class="form-control" placeholder="Masukkan Berat Badan" value="<?= (old('tubuh_tato')) ? old('tubuh_tato') : $ds->tubuh_tato ;?>">
                       </div>
                       <div class="col-md-4">
-                          <input type="text" name="tubuh_tindik" class="form-control" placeholder="Masukkan Tindik" value="<?= old('tubuh_tindik');?>">
+                          <input type="text" name="tubuh_tindik" class="form-control" placeholder="Masukkan Tindik" value="<?= (old('tubuh_tindik')) ? old('tubuh_tindik') : $ds->tubuh_tindik ;?>">
                       </div>
                     </div>
                   </div>
@@ -244,22 +183,10 @@
                       </select>
                     </div>
                 </div>
-                <?php foreach ($data_surat as $ds): ?>
-                  <input type="hidden" name="nip_kapus" value="<?= $ds->nip_kp;?>">
-                <?php endforeach; ?>
-                <!-- <div class="form-group">
-                    <label class="col-md-12" for="hasil_periksa"><span>Nama Kapus</span>
-                    </label>
-                    <div class="col-md-12">
-                      <select class="custom-select custom-select-sm col-sm" name="nip_kapus" >
-                        <?php foreach ($data_surat as $ds): ?>
-                          <option value="<?= $ds->nip_kp;?>" class="dropdown-item" selected><?= $ds->nama_kapus;?></option>
-                        <?php endforeach; ?>
-                      </select>
-                    </div>
-                </div> -->
                 <button type="submit" class="btn btn-info waves-effect waves-light m-r-10">Submit</button>
                 <a href="<?php base_url();?>/admin/surat_sehat/" class="btn btn-inverse waves-effect waves-light">Cancel</a>
+
+                <?php endforeach; ?>
               </form>
         </div>
     </div>

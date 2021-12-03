@@ -9,7 +9,7 @@
             <h4 class="page-title">Data Surat Sehat</h4> </div>
         <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
             <ol class="breadcrumb">
-                <li><a href="/">Puskesmas</a></li>
+                <li><a href="<?php base_url();?>/">Puskesmas</a></li>
                 <li class="active">Data Surat Sehat</li>
             </ol>
         </div>
@@ -30,8 +30,9 @@
               <?php endif; ?> -->
               <ul class="nav navbar-right hidden-xs mr-1 mb-2">
                   <li>
-                      <form role="search" class="app-search hidden-xs" action="/Admin/surat_sehat/" method="post">
-                          <input type="text" name="keyword" placeholder="Search..." class="form-control"><button class="btn btn-rounded " type="submit" name="submit"><span class="fa fa-search"></span></button>
+                      <form role="search" class="app-search hidden-xs" action="<?php base_url();?>/Admin/surat_sehat/" method="post">
+                          <input type="text" name="keyword" placeholder="Search..." class="form-control">
+                          <button class="btn btn-rounded " type="submit" name="submit"><span class="fa fa-search"></span></button>
                       </form>
                   </li>
               </ul>
@@ -40,13 +41,10 @@
                   <thead>
                     <tr>
                       <th scope="col" >No</th>
-                      <th scope="col" >No. Surat</th>
-                      <th scope="col" >Tinggi Badan</th>
-                      <th scope="col" >Berat Badan</th>
-                      <th scope="col" >Suhu Tubuh</th>
-                      <th scope="col" >Tensi Darah</th>
-                      <th scope="col" >Riwayat Penyakit</th>
+                      <th scope="col" >Nama Pasien</th>
+                      <th scope="col" >Umur</th>
                       <th scope="col" >Kepentingan</th>
+                      <th scope="col" >Hasil Pemeriksaan</th>
                       <th scope="col" colspan="2">Aksi</th>
                     </tr>
                   </thead>
@@ -61,18 +59,15 @@
                     <?php foreach ($data_surat as $ds): ?>
                     <tr>
                       <td><?= $n++;?></td>
-                      <td><?= $ds['nomor_surat'];?></td>
-                      <td><?= $ds['tinggi_badan'];?></td>
-                      <td><?= $ds['berat_badan'];?></td>
-                      <td><?= $ds['suhu_tubuh'];?></td>
-                      <td><?= $ds['tensi_darah'];?></td>
-                      <td><?= $ds['riwayat_penyakit'];?></td>
+                      <td><?= $ds['nama_pasien'];?></td>
+                      <td><?= floor($ds['umur']/12);?> <span>tahun</span> </td>
                       <td><?= $ds['kepentingan'];?></td>
-                      <td><a href="/admin/data_petugas/detail_petugas/<?= $ds['id_sks'];?>" class="btn btn-warning btn-rounded">Detail</a></td>
+                      <td><?= $ds['hasil_periksa'];?></td>
+                      <td><a href="<?php base_url();?>/admin/surat_sehat/detail_surat/<?= $ds['id_sks'];?>" class="btn btn-warning btn-rounded">Detail</a></td>
                       <td>
-                        <!-- <a href="" class="btn btn-danger btn-rounded swal_delete" data-hapusId="/admin/data_pasien/<?= $ds['id_sks'];?>">Hapus</a> -->
+                        <!-- <a href="" class="btn btn-danger btn-rounded swal_delete" data-hapusId="<?php base_url();?>/admin/data_pasien/<?= $ds['id_sks'];?>">Hapus</a> -->
                         <!-- <span class="delete_url" ></span> -->
-                        <form action="/Admin/surat_sehat/<?= $ds['id_sks'];?>" method="post">
+                        <form action="<?php base_url();?>/Admin/surat_sehat/<?= $ds['id_sks'];?>" method="post">
                           <?php csrf_field();?>
                           <input type="hidden" name="_method" value="DELETE">
                           <button type="submit" class="btn btn-danger btn-rounded" onclick="return confirm('Apakah Anda Yakin ?')">Hapus</button>
@@ -83,7 +78,6 @@
                     <?php endif; ?>
                   </tbody>
                 </table>
-                <?= $pager->Links();?>
               </div>
             </div>
           </div>

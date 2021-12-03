@@ -11,8 +11,8 @@
           <h4 class="page-title">Edit Data Pasien</h4> </div>
       <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
           <ol class="breadcrumb">
-              <li><a href="/">Puskesmas</a></li>
-              <li><a href="/">Puskesmas</a></li>
+              <li><a href="<?php base_url();?>/">Puskesmas</a></li>
+              <li><a href="<?php base_url();?>/">Puskesmas</a></li>
               <li class="active">Edit Data Pasien</li>
           </ol>
       </div>
@@ -24,7 +24,7 @@
     <div class="col-sm-12">
         <div class="white-box">
             <!-- <h3 class="box-title">Basic Information</h3> -->
-            <form class="form-material form-horizontal" action="/admin/data_pasien/update_data/<?= $data_pasien['id_pasien'];?>" method="post" enctype="multipart/form-data">
+            <form class="form-material form-horizontal" action="<?php base_url();?>/admin/data_pasien/update_data/<?= $data_pasien['id_pasien'];?>" method="post" enctype="multipart/form-data">
               <?= csrf_field();?>
               <input type="hidden" id="slug" name="slug" value="<?= $data_pasien['slug'];?>">
               <input type="hidden" name="file_ktp_lama" value="<?= $data_pasien['foto_ktp'];?>">
@@ -97,7 +97,7 @@
                     </div>
                 </div>
                 <button type="submit" class="btn btn-info waves-effect waves-light m-r-10">Edit</button>
-                <a href="/admin/data_pasien/detail_pasien/<?= $data_pasien['slug'];?>" class="btn btn-inverse waves-effect waves-light">Batal</a>
+                <a href="<?php base_url();?>/admin/data_pasien/detail_pasien/<?= $data_pasien['slug'];?>" class="btn btn-inverse waves-effect waves-light">Batal</a>
               </form>
           </div>
       </div>

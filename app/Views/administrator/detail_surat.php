@@ -5,147 +5,184 @@
 <div id="page-wrapper">
   <div class="container-fluid">
     <div class="row bg-title">
-        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-            <h4 class="page-title">Detail petugas</h4> </div>
-        <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12"> <a href="" target="_blank" class="btn btn-danger pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light">Buy Now</a>
-            <ol class="breadcrumb">
-                <li><a href="/">Puskesmas</a></li>
-                <li><a href="/data_petugas">Data petugas</a></li>
-                <li class="active">Detail petugas</li>
+        <div class="col-lg-5 col-md-4 col-sm-4 col-xs-12">
+            <h4 class="page-title">Detail Surat Keterangan Sehat</h4> </div>
+        <div class="col-lg-7 col-sm-8 col-md-8 col-xs-12">
+          <ol class="breadcrumb">
+                <li><a href="<?php base_url();?>/">Puskesmas</a></li>
+                <li><a href="<?php base_url();?>/data_petugas">Data Surat</a></li>
+                <li class="active">Detail Surat</li>
             </ol>
         </div>
     </div>
     <div class="pesan_flash" data-flashdata="<?= session()->getFlashdata('pesan');?>"></div>
     <!-- /.row -->
     <!-- .row -->
-      <div class="row">
-        <div class="col-md-12 col-xs-12">
-            <div class="white-box">
+    <div class="white-box">
+      <?php foreach ($data_surat as $ds): ?>
+        <div class="row">
+          <div class="col-lg-12 col-md-12">
               <div class="row">
-                <div class="col-lg-12 col-md-12" >
-                  <img width="80px" src="/gambar/Logo-Mojokerto.png" class="mt-3">
-                  <div class="pull-right text-center">
-                    <!-- <p style="text-align: center; font-size:18px; font-family: arial;">
-                      <b>PEMERINTAH KABUPATEN MOJOKERTO</b><br>
-                      <b>DINAS KESEHATAN</b><br>
-                      <b>PUSKESMAS DAWARBLANDONG</b>
-                    </p> -->
-                    <h4 style="text-align:center;"> <strong>PEMERINTAH KABUPATEN MOJOKERTO</strong></h4>
-                    <h4 class="m-t-0" style="text-align:center;"> <strong>DINAS KESEHATAN</strong></h4>
-                    <h4 class="m-t-0" style="text-align:center;"> <strong>PUSKESMAS DAWARBLANDONG</strong></h4>
-                    <address style="text-align:center;">
-                      <h6>Jl. Mayjen Sungkono No.17, Sidokerto, Dawarblandong, Dawar Blandong, Mojokerto, Jawa Timur 61354</h6>
-                      <h6>Email : pkmdawar@gmaillp : 082332680507</h6>
-                    </address>
-                  </div>
+                <div class="col-md-12">
+                  <strong>Data Diri Pasien</strong>
+                </div>
+                <hr>
+                <!-- <div class="col-md-3 b-r">
+                  <strong>Nomor Surat</strong>
+                </div>
+                <div class="col-md-9">
+                    <p class="text-muted"><?= $ds['nomor_surat'];?></p>
+                </div> -->
+
+                <div class="col-md-3 b-r">
+                  <strong>Nama Pasien</strong>
+                </div>
+                <div class="col-md-9">
+                    <p class="text-muted"><?= $ds['nama_pasien'];?></p>
+                </div>
+
+                <div class="col-md-3 b-r">
+                  <strong>Umur</strong>
+                </div>
+                <div class="col-md-9">
+                    <p class="text-muted"><?= $ds['umur'];?></p>
+                </div>
+
+                <div class="col-md-3 b-r">
+                  <strong>Jenis Kelamin</strong>
+                </div>
+                <div class="col-md-9">
+                    <p class="text-muted"><?= $ds['jenis_kelamin'];?></p>
+                </div>
+
+                <div class="col-md-3 b-r">
+                  <strong>Pekerjaan</strong>
+                </div>
+                <div class="col-md-9">
+                    <p class="text-muted"><?= $ds['pekerjaan'];?></p>
+                </div>
+
+                <div class="col-md-3 b-r">
+                  <strong>Alamat</strong>
+                </div>
+                <div class="col-md-9">
+                    <p class="text-muted"><?= $ds['alamat'];?></p>
+                </div>
+
+                <div class="col-md-3 b-r">
+                  <strong>Kepentingan</strong>
+                </div>
+                <div class="col-md-9">
+                    <p class="text-muted"><?= $ds['kepentingan'];?></p>
                 </div>
               </div>
               <hr>
               <div class="row">
-                <div class="col-md-12 col-xs-12">
-                  <h5 class="mt-5" style="text-align: center;"> <strong> <u>SURAT KETERANGAN SEHAT</u> </strong> </h5>
-                  <p style="text-align: center; font-size:12px; font-family: arial;">Nomor : </p>
-                </div>
-              </div>
-
-              <div class="row m-t-40">
                 <div class="col-md-12">
-                  <p class="">Yang bertanda tangan di bawah ini Dokter PEMERINTAHKABUPATEN MOJOKERTO dengan ini menerangkan bahwa:</p>
+                  <strong>Keterangan Fisik</strong>
+                </div>
+                <hr>
+
+                <div class="col-md-4">
+                  <strong>Tinggi Badan</strong>
+                </div>
+
+                <div class="col-md-4">
+                  <strong>Berat Badan</strong>
+                </div>
+
+                <div class="col-md-4">
+                  <strong>Tekanan Darah</strong>
+                </div>
+
+                <div class="col-md-4">
+                  <p class="text-muted"><?= $ds['tinggi_badan'];?></p>
+                </div>
+
+                <div class="col-md-4">
+                  <p class="text-muted"><?= $ds['berat_badan'];?></p>
+                </div>
+
+                <div class="col-md-4">
+                  <p class="text-muted"><?= $ds['tensi_darah'];?></p>
+                </div>
+
+                <div class="col-md-4">
+                  <strong>Suhu Tubuh</strong>
+                </div>
+
+                <div class="col-md-4">
+                  <strong>Nadi</strong>
+                </div>
+
+                <div class="col-md-4">
+                  <strong>Respirasi</strong>
+                </div>
+
+                <div class="col-md-4">
+                  <p class="text-muted"><?= $ds['suhu_tubuh'];?></p>
+                </div>
+
+                <div class="col-md-4">
+                  <p class="text-muted"><?= $ds['nadi'];?></p>
+                </div>
+
+                <div class="col-md-4">
+                  <p class="text-muted"><?= $ds['respirasi'];?></p>
                 </div>
               </div>
+
 
               <div class="row">
                 <div class="col-md-12">
-                  <div class="col-md-1">
-                  </div>
-                  <div class="col-md-2">
-                    <p>Nama</p>
-                  </div>
-                  <div class="col-md-9">
-                    <p>: Muhamad Zainul Mustofa</p>
-                  </div>
+                  <strong>Keterangan Mata</strong>
                 </div>
-              </div>
-              <div class="row">
-                <div class="col-md-1">
-                </div>
-                <div class="col-md-2">
-                  <p>Jenis Kelamin</p>
-                </div>
-                <div class="col-md-8">
-                  <p>: Laki-laki</p>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-1">
-                </div>
-                <div class="col-md-2">
-                  <p>Umur</p>
-                </div>
-                <div class="col-md-8">
-                  <p>: 22 Tahun</p>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-1">
-                </div>
-                <div class="col-md-2">
-                  <p>Alamat</p>
-                </div>
-                <div class="col-md-8">
-                  <p>: Brayu Wetan RT 003 RW 005</p>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-1">
-                </div>
-                <div class="col-md-2">
-                  <p>Pekerjaan</p>
-                </div>
-                <div class="col-md-8">
-                  <p>: Pelajar</p>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-1">
-                </div>
-                <div class="col-md-2">
-                  <p>Suhu</p>
-                </div>
-                <div class="col-md-8">
-                  <p>: 36 C</p>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-1">
-                </div>
-                <div class="col-md-2">
-                  <p>Catatan</p>
-                </div>
-                <div class="col-md-8">
-                  <p>: Sakit</p>
-                </div>
-              </div>
+                <hr>
 
-              <div class="row m-t-20">
+                <div class="col-md-3 b-r">
+                  <strong>Buta Warna</strong>
+                </div>
+
+                <div class="col-md-9">
+                  <p class="text-muted"><?= $ds['mata_buta'];?></p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
                 <div class="col-md-12">
-                  <p>Bahwa pada pemeriksakaan kesehatan pada saat ini ternyata dalam kondisi <b>Sakit</b>. Sehingga perlu isturahat selama <b>1 hari</b>, mulai
-                  tanggal <b>16-11-2021</b> s/d <b>17-11-2021</b></p>
+                  <strong>Keterangan Kulit</strong>
                 </div>
-              </div>
-              <div class="row">
-                <div class="col-md-1">
+                <hr>
+                <div class="col-md-6">
+                  <strong>Tatto</strong>
                 </div>
-                <div class="col-md-11">
-                  <p>Demikian surat keterangan ini di buat agar digunakan sebagaimana mestinya.</p>
-                </div>
-              </div>
 
+                <div class="col-md-6">
+                  <strong>Tindik</strong>
+                </div>
+
+                <div class="col-md-6">
+                  <p class="text-muted"><?= $ds['tubuh_tato'];?></p>
+                </div>
+
+                <div class="col-md-6">
+                  <p class="text-muted"><?= $ds['tubuh_tindik'];?></p>
+                </div>
               </div>
-            </div>
           </div>
-    </div>
+
+        </div>
+        <div class="row m-t-30">
+            <div class="col-md-4">
+              <a href="<?php base_url();?>/admin/surat_sehat/edit_data/<?= $ds['id_sks'];?>" class="btn btn-success btn-rounded">Edit</a>
+              <a href="<?php base_url();?>/admin/surat_sehat" class="btn btn-inverse btn-rounded">Kembali</a>
+            </div>
+        </div>
+
+        <?php endforeach; ?>
+  </div>
     <!-- row -->
+  </div>
 </div>
 
 <?= $this->endSection(); ?>

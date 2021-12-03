@@ -67,8 +67,8 @@ class Data_petugas extends BaseController
           ]
         ])) {
             // $valid = \Config\Services::validation();
-            // return redirect()->to('/data_petugas/tambah_data_petugas')->withInput()->with('Validation', $valid);
-            return redirect()->to('/data_petugas/tambah_data_petugas')->withInput();
+            // return redirect()->to('/admin/data_petugas/tambah_data_petugas')->withInput()->with('Validation', $valid);
+            return redirect()->to('/admin/data_petugas/tambah_data_petugas')->withInput();
         }
 
         // Ambil File
@@ -98,7 +98,7 @@ class Data_petugas extends BaseController
 
         session()->setFLashdata('pesan', 'Tambahkan');
 
-        return redirect()->to('/data_petugas');
+        return redirect()->to('/admin/data_petugas');
     }
 
     public function hapus_data($id)
@@ -112,7 +112,7 @@ class Data_petugas extends BaseController
         $this->petugasModel->delete($id);
 
         session()->setFLashdata('pesan', 'Hapus');
-        return redirect()->to('/data_petugas');
+        return redirect()->to('/admin/data_petugas');
     }
 
     public function edit_data($slug)
@@ -152,8 +152,8 @@ class Data_petugas extends BaseController
           ]
         ])) {
             // $valid = \Config\Services::validation();
-            // return redirect()->to('/data_petugas/edit_data/'.$slug)->withInput()->with('Validation', $valid);
-            return redirect()->to('/data_petugas/edit_data/'.$this->request->getVar('slug'))->withInput();
+            // return redirect()->to('/admin/data_petugas/edit_data/'.$slug)->withInput()->with('Validation', $valid);
+            return redirect()->to('/admin/data_petugas/edit_data/'.$this->request->getVar('slug'))->withInput();
         }
 
         // Ambil File
@@ -196,7 +196,7 @@ class Data_petugas extends BaseController
 
         session()->setFLashdata('pesan', 'Ubah');
 
-        return redirect()->to('/data_petugas/detail_petugas/'.$slug);
+        return redirect()->to('/admin/data_petugas/detail_petugas/'.$slug);
     }
     public function detail_petugas($slug)
     {

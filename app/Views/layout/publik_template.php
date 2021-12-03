@@ -7,29 +7,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" type="image/png" sizes="16x16" href="/plugins/images/favicon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url();?>/plugins/images/favicon.png">
     <title>SKS Puskesmas</title>
     <!-- Bootstrap Core CSS -->
-    <link href="/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-    <link href="/plugins/bower_components/bootstrap-extension/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
-    <link href="/plugins/bower_components/footable/css/footable.core.css" rel="stylesheet">
-    <link href="/plugins/bower_components/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
-    <link href="/plugins/bower_components/bootstrap-table/dist/bootstrap-table.min.css" rel="stylesheet" type="text/css" />
+    <link href="<?= base_url();?>/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="<?= base_url();?>/plugins/bower_components/bootstrap-extension/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
+    <link href="<?= base_url();?>/plugins/bower_components/footable/css/footable.core.css" rel="stylesheet">
+    <link href="<?= base_url();?>/plugins/bower_components/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
+    <link href="<?= base_url();?>/plugins/bower_components/bootstrap-table/dist/bootstrap-table.min.css" rel="stylesheet" type="text/css" />
     <!-- Menu CSS -->
-    <link href="/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css" rel="stylesheet" type="text/css">
-    <link href="/plugins/bower_components/tablesaw-master/dist/tablesaw.css" rel="stylesheet">
-    <link rel="stylesheet" href="/plugins/bower_components/dropify/dist/css/dropify.min.css">
+    <link href="<?= base_url();?>/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css" rel="stylesheet" type="text/css">
+    <link href="<?= base_url();?>/plugins/bower_components/tablesaw-master/dist/tablesaw.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?= base_url();?>/plugins/bower_components/dropify/dist/css/dropify.min.css">
     <!-- morris CSS -->
-    <link href="/plugins/bower_components/morrisjs/morris.css" rel="stylesheet" type="text/css">
+    <link href="<?= base_url();?>/plugins/bower_components/morrisjs/morris.css" rel="stylesheet" type="text/css">
     <!-- animation CSS -->
-    <link href="/css/animate.css" rel="stylesheet" type="text/css">
+    <link href="<?= base_url();?>/css/animate.css" rel="stylesheet" type="text/css">
     <!--alerts CSS -->
-    <link href="/plugins/bower_components/sweetalert/sweetalert.css" rel="stylesheet" type="text/css">
+    <link href="<?= base_url();?>/plugins/bower_components/sweetalert/sweetalert.css" rel="stylesheet" type="text/css">
     <!-- Custom CSS -->
-    <link href="/css/style.min.css" rel="stylesheet" type="text/css">
+    <link href="<?= base_url();?>/css/style.min.css" rel="stylesheet" type="text/css">
 
     <!-- color CSS -->
-    <link href="/css/colors/megna.css" id="theme" rel="stylesheet" type="text/css">
+    <link href="<?= base_url();?>/css/colors/megna.css" id="theme" rel="stylesheet" type="text/css">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -50,47 +50,47 @@
       </div>
       <!-- /#wrapper -->
       <!-- jQuery -->
-      <script src="/plugins/bower_components/jquery/dist/jquery.min.js"></script>
+      <script src="<?= base_url();?>/plugins/bower_components/jquery/dist/jquery.min.js"></script>
       <!-- Bootstrap Core JavaScript -->
-      <script src="/bootstrap/dist/js/tether.min.js"></script>
-      <script src="/bootstrap/dist/js/bootstrap.min.js"></script>
-      <script src="/plugins/bower_components/bootstrap-extension/js/bootstrap-extension.min.js"></script>
+      <script src="<?= base_url();?>/bootstrap/dist/js/tether.min.js"></script>
+      <script src="<?= base_url();?>/bootstrap/dist/js/bootstrap.min.js"></script>
+      <script src="<?= base_url();?>/plugins/bower_components/bootstrap-extension/js/bootstrap-extension.min.js"></script>
       <!-- Menu Plugin JavaScript -->
-      <script src="/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.js"></script>
+      <script src="<?= base_url();?>/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.js"></script>
       <!--slimscroll JavaScript -->
-      <script src="/js/jquery.slimscroll.js"></script>
+      <script src="<?= base_url();?>/js/jquery.slimscroll.js"></script>
       <!--Wave Effects -->
-      <script src="/js/waves.js"></script>
+      <script src="<?= base_url();?>/js/waves.js"></script>
       <!--Morris JavaScript -->
-      <script src="/plugins/bower_components/raphael/raphael-min.js"></script>
-      <script src="/plugins/bower_components/morrisjs/morris.js"></script>
+      <script src="<?= base_url();?>/plugins/bower_components/raphael/raphael-min.js"></script>
+      <script src="<?= base_url();?>/plugins/bower_components/morrisjs/morris.js"></script>
       <!-- Sparkline chart JavaScript -->
-      <script src="/plugins/bower_components/jquery-sparkline/jquery.sparkline.min.js"></script>
+      <script src="<?= base_url();?>/plugins/bower_components/jquery-sparkline/jquery.sparkline.min.js"></script>
       <!-- jQuery peity -->
-      <script src="/plugins/bower_components/peity/jquery.peity.min.js"></script>
-      <script src="/plugins/bower_components/peity/jquery.peity.init.js"></script>
-      <script src="/plugins/bower_components/tablesaw-master/dist/tablesaw.js"></script>
-      <script src="/plugins/bower_components/tablesaw-master/dist/tablesaw-init.js"></script>
+      <script src="<?= base_url();?>/plugins/bower_components/peity/jquery.peity.min.js"></script>
+      <script src="<?= base_url();?>/plugins/bower_components/peity/jquery.peity.init.js"></script>
+      <script src="<?= base_url();?>/plugins/bower_components/tablesaw-master/dist/tablesaw.js"></script>
+      <script src="<?= base_url();?>/plugins/bower_components/tablesaw-master/dist/tablesaw-init.js"></script>
       <!-- Sweet-Alert  -->
-      <script src="/plugins/bower_components/sweetalert/sweetalert.min.js"></script>
-      <script src="/plugins/bower_components/sweetalert/jquery.sweet-alert.custom.js"></script>
-      <!-- <script src="/js/sweetalert/sweetalert2.all.min.js"></script> -->
-      <!-- <script src="/js/sweetalert/jquery.slim.min.js"> -->
+      <script src="<?= base_url();?>/plugins/bower_components/sweetalert/sweetalert.min.js"></script>
+      <script src="<?= base_url();?>/plugins/bower_components/sweetalert/jquery.sweet-alert.custom.js"></script>
+      <!-- <script src="<?= base_url();?>/js/sweetalert/sweetalert2.all.min.js"></script> -->
+      <!-- <script src="<?= base_url();?>/js/sweetalert/jquery.slim.min.js"> -->
 
       </script>
-      <script src="/js/myscript.js"></script>
+      <script src="<?= base_url();?>/js/myscript.js"></script>
       <!-- Custom Theme JavaScript -->
-      <script src="/js/custom.min.js"></script>
-      <script src="/js/dashboard1.js"></script>
-      <script src="/plugins/bower_components/bootstrap-table/dist/bootstrap-table.min.js"></script>
-      <script src="/plugins/bower_components/bootstrap-table/dist/bootstrap-table.ints.js"></script>
+      <script src="<?= base_url();?>/js/custom.min.js"></script>
+      <script src="<?= base_url();?>/js/dashboard1.js"></script>
+      <script src="<?= base_url();?>/plugins/bower_components/bootstrap-table/dist/bootstrap-table.min.js"></script>
+      <script src="<?= base_url();?>/plugins/bower_components/bootstrap-table/dist/bootstrap-table.ints.js"></script>
       <!-- Footable -->
-      <script src="/plugins/bower_components/footable/js/footable.all.min.js"></script>
-      <script src="/plugins/bower_components/bootstrap-select/bootstrap-select.min.js" type="text/javascript"></script>
+      <script src="<?= base_url();?>/plugins/bower_components/footable/js/footable.all.min.js"></script>
+      <script src="<?= base_url();?>/plugins/bower_components/bootstrap-select/bootstrap-select.min.js" type="text/javascript"></script>
       <!--FooTable init-->
-      <script src="/js/footable-init.js"></script>
+      <script src="<?= base_url();?>/js/footable-init.js"></script>
       <!-- jQuery file upload -->
-      <script src="/plugins/bower_components/dropify/dist/js/dropify.min.js"></script>
+      <script src="<?= base_url();?>/plugins/bower_components/dropify/dist/js/dropify.min.js"></script>
       <script>
           $(document).ready(function () {
               // Basic
@@ -129,7 +129,7 @@
           });
       </script>
       <!--Style Switcher -->
-      <script src="/plugins/bower_components/styleswitcher/jQuery.style.switcher.js"></script>
+      <script src="<?= base_url();?>/plugins/bower_components/styleswitcher/jQuery.style.switcher.js"></script>
   </body>
 
   </html>

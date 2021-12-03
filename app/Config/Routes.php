@@ -37,6 +37,7 @@ $routes->get('/', 'Admin\Administrator::index');
 $routes->get('/administrator/(:any)', 'Admin\Administrator::$1');
 // auth
 $routes->get('/auth', 'Auth::index');
+$routes->get('/auth/register2', 'Auth::register2');
 // data pasien
 // admin
 $routes->get('/admin/data_pasien', 'Admin\Data_pasien::index');

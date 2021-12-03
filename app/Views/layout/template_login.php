@@ -39,13 +39,9 @@
 </head>
 <body>
 
-  <?= $this->include('/layout/topbar');?>
-  <?= $this->include('/layout/sidebar');?>
-
   <?= $this->renderSection('content');?>
 
 
-  <footer class="footer text-center"> Surat Keterangan Sehat Online</footer>
           </div>
           <!-- /#page-wrapper -->
       </div>

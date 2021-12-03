@@ -11,7 +11,7 @@
           <h4 class="page-title">Tambah Data Pasien</h4> </div>
       <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
           <ol class="breadcrumb">
-              <li><a href="/">Puskesmas</a></li>
+              <li><a href="<?php base_url();?>/">Puskesmas</a></li>
               <li class="active">Tambah Data Pasien</li>
           </ol>
       </div>
@@ -23,7 +23,7 @@
     <div class="col-sm-12">
         <div class="white-box">
             <!-- <h3 class="box-title">Basic Information</h3> -->
-            <form class="form-material form-horizontal" action="/Admin/data_pasien/simpan" method="post" enctype="multipart/form-data">
+            <form class="form-material form-horizontal" action="<?php base_url();?>/Admin/data_pasien/simpan" method="post" enctype="multipart/form-data">
               <?= csrf_field();?>
                 <div class="form-group">
                     <label class="col-md-12" for="nama_pasien">Nama</span>
@@ -93,7 +93,7 @@
                     </div>
                 </div>
                 <button type="submit" class="btn btn-info waves-effect waves-light m-r-10">Submit</button>
-                <a href="/admin/data_pasien/" class="btn btn-inverse waves-effect waves-light">Cancel</a>
+                <a href="<?php base_url();?>/admin/data_pasien/" class="btn btn-inverse waves-effect waves-light">Cancel</a>
               </form>
           </div>
       </div>

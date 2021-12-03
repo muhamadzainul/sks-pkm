@@ -7,10 +7,10 @@
     <div class="row bg-title">
         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
             <h4 class="page-title">Detail Pasien</h4> </div>
-        <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12"> <a href="" target="_blank" class="btn btn-danger pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light">Buy Now</a>
-            <ol class="breadcrumb">
-                <li><a href="/">Puskesmas</a></li>
-                <li><a href="/data_pasien">Data Pasien</a></li>
+        <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+          <ol class="breadcrumb">
+                <li><a href="<?php base_url();?>/">Puskesmas</a></li>
+                <li><a href="<?php base_url();?>/data_pasien">Data Pasien</a></li>
                 <li class="active">Detail Pasien</li>
             </ol>
         </div>
@@ -18,73 +18,71 @@
     <div class="pesan_flash" data-flashdata="<?= session()->getFlashdata('pesan');?>"></div>
     <!-- /.row -->
     <!-- .row -->
-    <div class="row">
-      </div>
       <div class="row">
         <div class="col-md-12 col-xs-12">
             <div class="white-box">
                 <div class="row">
-                    <div class="col-md-3 col-xs-6 b-r">
+                    <div class="col-md-3 b-r">
                       <strong>Nama Pasien</strong>
                     </div>
-                        <div class="col-md-9 col-xs-6">
+                        <div class="col-md-9">
                             <p class="text-muted"><?= $data_pasien['nama_pasien'];?></p>
                         </div>
                 </div>
                 <hr>
                 <div class="row">
-                    <div class="col-md-3 col-xs-6 b-r">
+                    <div class="col-md-3 b-r">
                       <strong>Nik Pasien</strong>
                     </div>
-                        <div class="col-md-9 col-xs-6">
+                        <div class="col-md-9">
                             <p class="text-muted"><?= $data_pasien['nik_pasien'];?></p>
                         </div>
                 </div>
                 <hr>
                 <div class="row">
-                    <div class="col-md-3 col-xs-6 b-r">
+                    <div class="col-md-3 b-r">
                       <strong>Jenis Kelamin</strong>
                     </div>
-                        <div class="col-md-9 col-xs-6">
+                        <div class="col-md-9">
                             <p class="text-muted"><?= $data_pasien['jenis_kelamin'];?></p>
                         </div>
                 </div>
                 <hr>
                 <div class="row">
-                    <div class="col-md-3 col-xs-6 b-r">
+                    <div class="col-md-3 b-r">
                       <strong>Alamat</strong>
                     </div>
-                        <div class="col-md-9 col-xs-6">
+                        <div class="col-md-9">
                             <p class="text-muted"><?= $data_pasien['alamat'];?></p>
                         </div>
                 </div>
                 <hr>
                 <div class="row">
-                    <div class="col-md-6 col-xs-6 b-r"><strong>No Handphone</strong>
+                    <div class="col-md-6 b-r"><strong>No Handphone</strong>
                       <p><?= $data_pasien['no_hp'];?></p>
                     </div>
-                    <div class="col-md-6 col-xs-6"><strong>Email</strong>
+                    <div class="col-md-6"><strong>Email</strong>
                         <p class="text-muted"><?= $data_pasien['email'];?></p>
                     </div>
                 </div>
                 <hr>
                 <div class="row">
-                      <div class="col-md-6 col-xs-6 b-r">
+                      <div class="col-md-6 b-r">
                         <strong>Foto KTP</strong>
                         <br>
-                        <img width="100%" alt="foto_ktp" src="/gambar/foto_ktp/<?=$data_pasien['foto_ktp'];?>">
+                        <img width="85%" alt="foto_ktp" src="<?php base_url();?>/gambar/foto_ktp/<?=$data_pasien['foto_ktp'];?>" class="m-t-10">
                       </div>
-                        <div class="col-md-6 col-xs-6">
+                        <div class="col-md-6">
                         <strong>Foto Kartu Keluarga</strong>
                         <br>
-                        <img width="100%" alt="foto_kk" src="/gambar/foto_kk/<?=$data_pasien['foto_kk'];?>">
+                        <img width="85%" alt="foto_kk" src="<?php base_url();?>/gambar/foto_kk/<?=$data_pasien['foto_kk'];?>" class="m-t-10">
                         </div>
                 </div>
                 <hr>
                 <div class="row">
-                    <div class="col-md-2 col-xs-6 b-r">
-                      <a href="/admin/data_pasien/edit_data/<?= $data_pasien['slug'];?>" class="btn btn-success btn-rounded">Edit</a>
-                      <a href="/admin/data_pasien" class="btn btn-inverse btn-rounded">Kembali</a>
+                    <div class="col-md-2 b-r">
+                      <a href="<?php base_url();?>/admin/data_pasien/edit_data/<?= $data_pasien['slug'];?>" class="btn btn-success btn-rounded">Edit</a>
+                      <a href="<?php base_url();?>/admin/data_pasien" class="btn btn-inverse btn-rounded">Kembali</a>
                     </div>
                 </div>
                 <div style="height: 28px;">

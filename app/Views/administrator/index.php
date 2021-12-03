@@ -6,10 +6,9 @@
 <div class="container-fluid">
     <div class="row bg-title">
         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-            <h4 class="page-title">Hospital Dashboard</h4> </div>
-        <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12"> <a href="" target="_blank" class="btn btn-danger pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light">Buy Now</a>
+            <h4 class="page-title">SKS Puskesmas Dashboard</h4> </div>
+        <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
             <ol class="breadcrumb">
-                <li><a href="index.html">Hospital</a></li>
                 <li class="active">Dashboard</li>
             </ol>
         </div>
@@ -21,7 +20,7 @@
             <div class="white-box">
                 <div class="r-icon-stats"> <i class="ti-user bg-megna"></i>
                     <div class="bodystate">
-                        <h4>370</h4> <span class="text-muted">Data Petugas</span> </div>
+                        <h4><?= $total_user;?></h4> <span class="text-muted">Data Petugas</span> </div>
                 </div>
             </div>
         </div>
@@ -29,7 +28,7 @@
             <div class="white-box">
                 <div class="r-icon-stats"> <i class="ti-user bg-info"></i>
                     <div class="bodystate">
-                        <h4>342</h4> <span class="text-muted">Data Pasien</span> </div>
+                        <h4><?= $total_pasien;?></h4> <span class="text-muted">Data Pasien</span> </div>
                 </div>
             </div>
         </div>
@@ -37,7 +36,7 @@
             <div class="white-box">
                 <div class="r-icon-stats"> <i class="ti-files bg-success"></i>
                     <div class="bodystate">
-                        <h4>13</h4> <span class="text-muted">Data Surat Sehat</span> </div>
+                        <h4><?= $total_surat;?></h4> <span class="text-muted">Data Surat Sehat</span> </div>
                 </div>
             </div>
         </div>
@@ -90,8 +89,8 @@
                             <tr>
                                 <th>#</th>
                                 <th>Nomor surat</th>
-                                <th>Tinggi badan</th>
-                                <th>Berat badan</th>
+                                <th>Nama Pasien</th>
+                                <th>Umur</th>
                             </tr>
                         </thead>
                         <tbody>

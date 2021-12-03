@@ -8,22 +8,37 @@ use App\Controllers\BaseController;
 
 class Administrator extends BaseController
 {
-    protected $pasienModel;
-    protected $suratModel;
+    protected $db;
+    protected $PasienBuilder;
+    protected $SuratBuilder;
+    protected $UserBuilder;
     public function __construct()
     {
-        $this->pasienModel = new Model_pasien();
-        $this->suratModel = new Model_surat();
+        $this->db      = \Config\Database::connect();
+        $this->PasienBuilder = $this->db->table('pasien');
+        $this->SuratBuilder = $this->db->table('surat_kesehatan');
+        $this->UserBuilder = $this->db->table('users');
     }
 
     public function index()
     {
+        $suratQuery       = $this->SuratBuilder->get(10, 0);
+        $pasienQuery      = $this->PasienBuilder->get(10, 0);
+        $pasienCount      = $this->PasienBuilder->countAllResults();
+        $suratCount       = $this->SuratBuilder->countAllResults();
+        $userCount        = $this->UserBuilder->countAllResults();
         $data = [
-        'data_pasien' => $this->pasienModel->paginate(10),
-        'pager' => $this->pasienModel->pager,
-        'data_surat' => $this->suratModel->paginate(10),
-        'pager' => $this->suratModel->pager
+        'data_pasien' => $pasienQuery->getResultArray(),
+        'data_surat' => $suratQuery->getResultArray(),
+        'total_pasien' => $pasienCount,
+        'total_surat' => $suratCount,
+        'total_user' => $userCount
       ];
         return view('/administrator/index', $data);
+    }
+
+    public function profile()
+    {
+        return view('/administrator/my_profile');
     }
 }

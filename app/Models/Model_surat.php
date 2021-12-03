@@ -11,7 +11,9 @@ class Model_surat extends Model
     protected $useTimestamps = true;
     protected $createdField = 'tanggal_dibuat';
     protected $updatedField = 'tanggal_diubah';
-    protected $allowedFields = ['nomor_surat','slug','tinggi_badan','berat_badan','riwayat_penyakit','suhu_tubuh','tensi_darah','kepentingan','tanggal_exp'];
+    protected $allowedFields = ['nomor_surat', 'nik_pasien', 'nama_pasien', 'jenis_kelamin', 'tgl_lahir', 'alamat',
+    'pekerjaan', 'kepentingan', 'tinggi_badan', 'berat_badan', 'tensi_darah', 'suhu_tubuh', 'nadi', 'respirasi', 'mata_buta', 'tubuh_tato', 'tubuh_tindik',
+    'hasil_periksa', 'nama_kapus', 'nip_kapus', 'tanggal_exp'];
 
     public function getPetugas($slug=false)
     {
@@ -24,6 +26,17 @@ class Model_surat extends Model
 
     public function search($keyword)
     {
-        return $this->table('surat_kesehatan')->like('nomor_surat', $keyword);
+        // return $this->table('surat_kesehatan')->like('nomor_surat', $keyword)->orlike('');
+
+        $suratBuilder   = $this->table('surat_kesehatan');
+        $suratBuilder->select('id_sks, nomor_surat, surat_kesehatan.nik_pasien as nik_p, nama_pasien, jenis_kelamin, tgl_lahir, alamat,
+        pekerjaan, kepentingan, tinggi_badan, berat_badan, tensi_darah, suhu_tubuh, nadi, respirasi, mata_buta, tubuh_tato, tubuh_tindik,
+        hasil_periksa, nama_kapus, kapus.nip_kapus as nip_kp');
+        $suratBuilder->join('pasien', 'pasien.nik_pasien = surat_kesehatan.nik_pasien');
+        $suratBuilder->join('kapus', 'kapus.nip_kapus = surat_kesehatan.nip_kapus');
+        $suratBuilder->like('nomor_surat', $keyword);
+        $suratBuilder->like('nik_pasien', $keyword);
+        //
+        return $suratBuilder;
     }
 }
