@@ -26,19 +26,21 @@ class Surat_sehat extends BaseController
         $currentPage = $this->request->getVar('page') ? $this->request->getVar('page') : 1;
         // $data_pasien = $this->pasienModel->findAll();
 
-        $keyword = $this->request->getVar('keyword');
-
-        if ($keyword) {
-            $sks = $this->suratModel->search($keyword);
-        } else {
-            $sks = $this->suratModel;
-        }
 
         $this->suratBuilder->select('id_sks, nomor_surat, surat_kesehatan.nik_pasien as nik_p, pasien.tgl_lahir, nama_pasien, kepentingan, hasil_periksa, TIMESTAMPDIFF(
 MONTH , pasien.tgl_lahir, NOW() ) AS umur');
         $this->suratBuilder->join('pasien', 'pasien.nik_pasien = surat_kesehatan.nik_pasien');
-        $query = $this->suratBuilder->get();
 
+        $keyword = $this->request->getVar('keyword');
+
+        if ($keyword) {
+            // $sks = $this->suratModel->search($keyword);
+            $this->suratBuilder->like('nama_pasien', $keyword);
+            $this->suratBuilder->orLike('surat_kesehatan.nik_pasien', $keyword);
+            $query = $this->suratBuilder->get();
+        } else {
+            $query = $this->suratBuilder->get();
+        }
 
         // $data_surat = $this->suratModel->findAll();
         $data = [
@@ -47,6 +49,7 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
         // 'data_surat' => $sks->paginate(4),
         // 'pager' => $this->suratModel->pager,
         // 'currentPage' => $currentPage
+          'title'    => 'Data Surat',
         'data_surat' => $query->getResultArray()
     ];
         return view('/administrator/data_surat_sehat', $data);
@@ -54,30 +57,49 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
 
     public function tambah_data_surat()
     {
-        $keyword = $this->request->getVar('keyword');
-
-        if ($keyword) {
-            $sks = $this->suratModel->search($keyword);
-        } else {
-            $sks = $this->suratModel;
-        }
-
         $this->suratBuilder->select('id_sks, nomor_surat, surat_kesehatan.nik_pasien as nik_p, nama_pasien, jenis_kelamin, tgl_lahir, alamat,
         pekerjaan, kepentingan, tinggi_badan, berat_badan, tensi_darah, suhu_tubuh, nadi, respirasi, mata_buta, tubuh_tato, tubuh_tindik,
         hasil_periksa, nama_kapus, kapus.nip_kapus as nip_kp, nama_kapus,, TIMESTAMPDIFF(
 MONTH , pasien.tgl_lahir, NOW() ) AS umur');
         $this->suratBuilder->join('pasien', 'pasien.nik_pasien = surat_kesehatan.nik_pasien');
         $this->suratBuilder->join('kapus', 'kapus.nip_kapus = surat_kesehatan.nip_kapus');
-        $query = $this->suratBuilder->get();
 
+
+        $keyword = $this->request->getVar('keyword');
+        // dd($keyword);
+
+        if ($keyword) {
+            // $sks = $this->suratModel->search($keyword);
+            $this->suratBuilder->like('nama_pasien', $keyword);
+            $this->suratBuilder->orLike('surat_kesehatan.nik_pasien', $keyword);
+            $query = $this->suratBuilder->get();
+            $kosong = $keyword;
+        }
+        if ($keyword == null) {
+            $query = $this->suratBuilder->get();
+            $kosong = null;
+        }
+
+        //   if ($keyword) {
+        //       // $sks = $this->suratModel->search($keyword);
+        //       $this->suratBuilder->like('nama_pasien', $keyword);
+        //       $this->suratBuilder->orLike('surat_kesehatan.nik_pasien', $keyword);
+        //       $query = $this->suratBuilder->get();
+        //   } else {
+        //       $query = $this->suratBuilder->get();
+        //   }
+        //
         $data = [
-        'validation' => \Config\Services::validation(),
-        'data_surat' => $query->getResult()
-      ];
+          'title'      => 'Tambah Daa Surat',
+          'validation' => \Config\Services::validation(),
+          'data_surat' => $query->getResultArray(),
+          'kosong'     => $keyword
+        ];
+
         return view('/administrator/tambah_data_surat', $data);
     }
 
-    public function simpan()
+    public function simpan($id = null)
     {
 
       // Form Validasi
@@ -110,14 +132,16 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
         //   'alamat'        => $this->request->getVar('alamat')
         //
         // ];
-        $this->pasienModel->insert([
-          'nik_pasien'    => $this->request->getVar('nik_pasien'),
-          'slug'          => $slugPasien,
-          'nama_pasien'   => $this->request->getVar('nama_pasien'),
-          'tgl_lahir'     => $this->request->getVar('tgl_lahir'),
-          'jenis_kelamin' => $this->request->getVar('jenis_kelamin'),
-          'alamat'        => $this->request->getVar('alamat')
+        if ($id == null) {
+            $this->pasienModel->insert([
+              'nik_pasien'    => $this->request->getVar('nik_pasien'),
+              'slug'          => $slugPasien,
+              'nama_pasien'   => $this->request->getVar('nama_pasien'),
+              'tgl_lahir'     => $this->request->getVar('tgl_lahir'),
+              'jenis_kelamin' => $this->request->getVar('jenis_kelamin'),
+              'alamat'        => $this->request->getVar('alamat')
         ]);
+        }
         // $pasienBuilder->insert($data);
 
         // $this->suratBuilder->select('pasien.nik_pasien');
@@ -184,7 +208,7 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
 
     public function edit_data($id)
     {
-        $this->suratBuilder->select('nomor_surat, surat_kesehatan.nik_pasien as nik_p, nama_pasien, jenis_kelamin, tgl_lahir, alamat,
+        $this->suratBuilder->select('id_sks, nomor_surat, surat_kesehatan.nik_pasien as nik_p, nama_pasien, jenis_kelamin, tgl_lahir, alamat,
           pekerjaan, kepentingan, tinggi_badan, berat_badan, tensi_darah, suhu_tubuh, nadi, respirasi, mata_buta, tubuh_tato, tubuh_tindik,
           hasil_periksa, nama_kapus, kapus.nip_kapus as nip_kp, nama_kapus, TIMESTAMPDIFF(MONTH , pasien.tgl_lahir, NOW() ) AS umur');
         $this->suratBuilder->join('pasien', 'pasien.nik_pasien = surat_kesehatan.nik_pasien');
@@ -195,86 +219,13 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
         // dd($query->getResult());
 
         $data = [
+          'title'    => 'Edit data surat',
           'validation' => \Config\Services::validation(),
           'data_surat' => $query->getResult()
         ];
         return view('/administrator/edit_data_surat', $data);
     }
 
-    public function update_data($id)
-    {
-        // data Alama
-        $data_lama = $this->petugasModel->getPetugas($this->request->getVar('slug'));
-        if ($data_lama['nik_petugas'] == $this->request->getVar('nik_petugas')) {
-            $rule_nik = 'required';
-        } else {
-            $rule_nik = 'required|is_unique[satgas.nik_petugas]';
-        }
-        // Form Validasi
-        if (!$this->validate([
-          'nik_petugas' => [
-            'rules' => $rule_nik,
-            'errors' => [
-              'required' => 'NIK petugas harus di isi',
-              'is_unique' => 'NIK petugas sudah terdaftar'
-            ]
-          ],
-          'foto_profil' => [
-            'rules' => 'max_size[foto_profil, 2028]|is_image[foto_profil]|mime_in[foto_profil,image/jpg,image/jpeg,image/png]',
-            'errors' =>[
-              'max_size' => 'Ukuran Gambar Terlalu Besar',
-              'is_image' => 'Yang Anda Masukkan Bukan File Gambar',
-              'mime_in' => 'Yang Anda Masukkan Bukan File Gambar'
-            ]
-          ]
-        ])) {
-            // $valid = \Config\Services::validation();
-            // return redirect()->to('/data_petugas/edit_data/'.$slug)->withInput()->with('Validation', $valid);
-            return redirect()->to('/data_petugas/edit_data/'.$this->request->getVar('slug'))->withInput();
-        }
-
-        // Ambil File
-        $file_FotoProfil = $this->request->getFile('foto_profil');
-        // cek gambar
-        // KTP
-        if ($file_FotoProfil->getError() == 4) {
-            if (empty($data_lama['foto_profil'])) {
-                $nama_file = null;
-            } else {
-                $nama_file = $this->request->getVar('file_profil_lama');
-            }
-        } else {
-            // pindah file ke directori kita
-            unlink('gambar/profil_petugas/'.$this->request->getVar('file_profil_lama'));
-            // nama File
-            $nama_file = $file_FotoProfil->getRandomName();
-            $file_FotoProfil->move('gambar/profil_petugas', $nama_file);
-        }
-
-        // cek slug
-        if ($data_lama['nik_petugas'] == $this->request->getVar('nik_petugas') || $data_lama['nama_petugas'] == $this->request->getVar('nama_petugas')) {
-            $slug = url_title($this->request->getVar('nik_petugas').'-'.$this->request->getVar('nama_petugas'), '-', true);
-        } else {
-            $slug = $this->request->getVar('slug');
-        }
-
-        $this->petugasModel->save([
-        'id_satgas' => $id,
-        'nama_petugas' => $this->request->getVar('nama_petugas'),
-        'slug' => $slug,
-        'nip_petugas' => $this->request->getVar('nip_petugas'),
-        'nik_petugas' => $this->request->getVar('nik_petugas'),
-        'jenis_kelamin' => $this->request->getVar('jenis_kelamin'),
-        'alamat' => $this->request->getVar('alamat'),
-        'no_hp' => $this->request->getVar('no_hp'),
-        'email' => $this->request->getVar('email'),
-        'foto_profil' => $nama_file
-      ]);
-
-        session()->setFLashdata('pesan', 'Ubah');
-
-        return redirect()->to('/data_petugas');
-    }
 
     public function detail_surat($id)
     {
@@ -289,9 +240,84 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
         // dd($query->getResult());
 
         $data = [
+          'title'    => 'Detail data surat',
       'validation' => \Config\Services::validation(),
       'data_surat' => $query->getResultArray()
     ];
         return view('/administrator/detail_surat', $data);
     }
+    // public function update_data($id)
+    // {
+    //     // data Alama
+    //     $data_lama = $this->petugasModel->getPetugas($this->request->getVar('slug'));
+    //     if ($data_lama['nik_petugas'] == $this->request->getVar('nik_petugas')) {
+    //         $rule_nik = 'required';
+    //     } else {
+    //         $rule_nik = 'required|is_unique[satgas.nik_petugas]';
+    //     }
+    //     // Form Validasi
+    //     if (!$this->validate([
+    //       'nik_petugas' => [
+    //         'rules' => $rule_nik,
+    //         'errors' => [
+    //           'required' => 'NIK petugas harus di isi',
+    //           'is_unique' => 'NIK petugas sudah terdaftar'
+    //         ]
+    //       ],
+    //       'foto_profil' => [
+    //         'rules' => 'max_size[foto_profil, 2028]|is_image[foto_profil]|mime_in[foto_profil,image/jpg,image/jpeg,image/png]',
+    //         'errors' =>[
+    //           'max_size' => 'Ukuran Gambar Terlalu Besar',
+    //           'is_image' => 'Yang Anda Masukkan Bukan File Gambar',
+    //           'mime_in' => 'Yang Anda Masukkan Bukan File Gambar'
+    //         ]
+    //       ]
+    //     ])) {
+    //         // $valid = \Config\Services::validation();
+    //         // return redirect()->to('/data_petugas/edit_data/'.$slug)->withInput()->with('Validation', $valid);
+    //         return redirect()->to('/data_petugas/edit_data/'.$this->request->getVar('slug'))->withInput();
+    //     }
+    //
+    //     // Ambil File
+    //     $file_FotoProfil = $this->request->getFile('foto_profil');
+    //     // cek gambar
+    //     // KTP
+    //     if ($file_FotoProfil->getError() == 4) {
+    //         if (empty($data_lama['foto_profil'])) {
+    //             $nama_file = null;
+    //         } else {
+    //             $nama_file = $this->request->getVar('file_profil_lama');
+    //         }
+    //     } else {
+    //         // pindah file ke directori kita
+    //         unlink('gambar/profil_petugas/'.$this->request->getVar('file_profil_lama'));
+    //         // nama File
+    //         $nama_file = $file_FotoProfil->getRandomName();
+    //         $file_FotoProfil->move('gambar/profil_petugas', $nama_file);
+    //     }
+    //
+    //     // cek slug
+    //     if ($data_lama['nik_petugas'] == $this->request->getVar('nik_petugas') || $data_lama['nama_petugas'] == $this->request->getVar('nama_petugas')) {
+    //         $slug = url_title($this->request->getVar('nik_petugas').'-'.$this->request->getVar('nama_petugas'), '-', true);
+    //     } else {
+    //         $slug = $this->request->getVar('slug');
+    //     }
+    //
+    //     $this->petugasModel->save([
+    //     'id_satgas' => $id,
+    //     'nama_petugas' => $this->request->getVar('nama_petugas'),
+    //     'slug' => $slug,
+    //     'nip_petugas' => $this->request->getVar('nip_petugas'),
+    //     'nik_petugas' => $this->request->getVar('nik_petugas'),
+    //     'jenis_kelamin' => $this->request->getVar('jenis_kelamin'),
+    //     'alamat' => $this->request->getVar('alamat'),
+    //     'no_hp' => $this->request->getVar('no_hp'),
+    //     'email' => $this->request->getVar('email'),
+    //     'foto_profil' => $nama_file
+    //   ]);
+    //
+    //     session()->setFLashdata('pesan', 'Ubah');
+    //
+    //     return redirect()->to('/data_petugas');
+    // }
 }

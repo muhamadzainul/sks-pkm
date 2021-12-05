@@ -21,10 +21,10 @@
   <div class="row">
     <div class="col-lg">
         <div class="white-box">
+          <?php foreach ($data_surat as $ds): ?>
             <!-- <h3 class="box-title">Basic Information</h3> -->
-            <form class="form-material form-horizontal" action="<?php base_url();?>/Admin/surat_sehat/simpan" method="post" enctype="">
+            <form class="form-material form-horizontal" action="<?php base_url();?>/Admin/surat_sehat/simpan/<?= $ds->id_sks;?>" method="post" enctype="">
               <?= csrf_field();?>
-              <?php foreach ($data_surat as $ds): ?>
                 <div class="form-group">
                     <label class="col-md-12" for="nomor_surat"><span>No. Suat</span>
                     </label>
@@ -137,7 +137,7 @@
                   </div>
                   <div class="row">
                     <div class="col-md">
-                      <label class="col-md-4" for="buta_mata"><span>Buta Warna</span></label>
+                      <label class="col-md-4" for="mata_buta"><span>Buta Warna</span></label>
                       <label class="col-md-4" for="tato"><span>Tato</span></label>
                       <label class="col-md-4" for="tindik"><span>Tindik</span></label>
                     </div>
@@ -145,7 +145,7 @@
                   <div class="row">
                     <div class="col-md">
                       <div class="col-md-4">
-                        <select class="custom-select custom-select-sm col-sm" name="buta_mata">
+                        <select class="custom-select custom-select-sm col-sm" name="mata_buta">
                           <option value="null" class="dropdown-item" selected>-- Pilih salah satu --</option>
                           <option value="YA" class="dropdown-item">YA</option>
                           <option value="TIDAK" class="dropdown-item">TIDAK</option>
@@ -186,8 +186,8 @@
                 <button type="submit" class="btn btn-info waves-effect waves-light m-r-10">Submit</button>
                 <a href="<?php base_url();?>/admin/surat_sehat/" class="btn btn-inverse waves-effect waves-light">Cancel</a>
 
-                <?php endforeach; ?>
               </form>
+            <?php endforeach; ?>
         </div>
     </div>
 

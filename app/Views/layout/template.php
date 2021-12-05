@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url();?>/plugins/images/favicon.png">
-    <title>SKS Puskesmas</title>
+    <title><?= $title;?></title>
     <!-- Bootstrap Core CSS -->
     <link href="<?= base_url();?>/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="<?= base_url();?>/plugins/bower_components/bootstrap-extension/css/bootstrap-extension.css" rel="stylesheet" type="text/css">

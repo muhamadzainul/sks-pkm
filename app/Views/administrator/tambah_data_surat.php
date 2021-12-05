@@ -24,12 +24,17 @@
       <div class="white-box">
         <label class="col-md-12" for="input_search">Cek Apakah Data Sudah Pernah di Tambahkan ?</span>
         </label>
-        <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="Masukkan Nik atau Nama Pasien">
-          <div class="input-group-prepend">
-            <button class="btn btn-outline-secondary" type="button">Cari</button>
+        <form role="search" class="app-search hidden-xs" action="<?php base_url();?>/Admin/surat_sehat/tambah_data_surat/" method="post">
+          <div class="input-group mb-3">
+                <input type="text" name="keyword" class="form-control" placeholder="Masukkan Nik atau Nama Pasien">
+                <div class="input-group-prepend">
+                  <button class="btn btn-outline-secondary" type="submit">Cari</button>
+                </div>
           </div>
-        </div>
+        </form>
+        <?php if ($kosong == null) : ?>
+          &nbsp;
+        <?php else: ?>
           <div class="table-responsive table-bordered kol-fix">
             <table class="table-striped table-hover table-bordered table" >
               <thead>
@@ -43,29 +48,29 @@
                 </tr>
               </thead>
               <tbody>
-
-                <?php if (empty($data_surat)) : ?>
-                  <td colspan="13">
-                    <h5 class="text-grey-500 text-center">Data Surat Sehat Belum Ada</h5>
-                  </td>
-                <?php else :
-                   $n = 1;
-                   foreach ($data_surat as $ds): ?>
-                <tr>
-                  <td><?= $n++;?></td>
-                  <td><?= $ds->nama_pasien;?></td>
-                  <td><?= floor($ds->umur/12);?> <span> Tahun</span> </td>
-                  <td><?= $ds->kepentingan;?></td>
-                  <td><?= $ds->hasil_periksa;?></td>
-                  <td><a href="<?php base_url();?>/admin/data_petugas/edit_data_surat/<?= $ds->id_sks;?>" class="btn btn-primary btn-rounded">Tambahkan Data</a></td>
-                </tr>
-                <?php
-                  endforeach;
-                  endif;
-                  ?>
+                    <?php if (empty($data_surat)) : ?>
+                      <td colspan="13">
+                        <h5 class="text-grey-500 text-center">Data Surat Sehat Belum Ada</h5>
+                      </td>
+                    <?php else :
+                       $n = 1;
+                       foreach ($data_surat as $ds): ?>
+                    <tr>
+                      <td><?= $n++;?></td>
+                      <td><?= $ds['nama_pasien'];?></td>
+                      <td><?= floor($ds['umur']/12);?> <span> Tahun</span> </td>
+                      <td><?= $ds['kepentingan'];?></td>
+                      <td><?= $ds['hasil_periksa'];?></td>
+                      <td><a href="<?php base_url();?>/admin/surat_sehat/edit_data/<?= $ds['id_sks'];?>" class="btn btn-primary btn-rounded">Tambahkan Data</a></td>
+                    </tr>
+                    <?php
+                      endforeach;
+                      endif;
+                      ?>
               </tbody>
             </table>
           </div>
+        <?php endif; ?>
 
       </div>
     </div>
@@ -245,7 +250,7 @@
                     </div>
                 </div>
                 <?php foreach ($data_surat as $ds): ?>
-                  <input type="hidden" name="nip_kapus" value="<?= $ds->nip_kp;?>">
+                  <input type="hidden" name="nip_kapus" value="<?= $ds['nip_kp'];?>">
                 <?php endforeach; ?>
                 <!-- <div class="form-group">
                     <label class="col-md-12" for="hasil_periksa"><span>Nama Kapus</span>
@@ -253,7 +258,7 @@
                     <div class="col-md-12">
                       <select class="custom-select custom-select-sm col-sm" name="nip_kapus" >
                         <?php foreach ($data_surat as $ds): ?>
-                          <option value="<?= $ds->nip_kp;?>" class="dropdown-item" selected><?= $ds->nama_kapus;?></option>
+                          <option value="<?= $ds['nip_kp'];?>" class="dropdown-item" selected><?= $ds['nama_kapus'];?></option>
                         <?php endforeach; ?>
                       </select>
                     </div>

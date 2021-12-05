@@ -131,7 +131,7 @@
                   <p class="text-muted"><?= $ds['respirasi'];?></p>
                 </div>
               </div>
-
+              <hr>
 
               <div class="row">
                 <div class="col-md-12">
@@ -167,6 +167,22 @@
 
                 <div class="col-md-6">
                   <p class="text-muted"><?= $ds['tubuh_tindik'];?></p>
+                </div>
+              </div>
+              <hr>
+
+              <div class="row">
+                <div class="col-md-12">
+                  <strong>Hasil Pemeriksaan</strong>
+                </div>
+                <hr>
+
+                <div class="col-md-3 b-r">
+                  <strong>Hasil Periksa</strong>
+                </div>
+
+                <div class="col-md-9">
+                  <p class="text-muted"><?= $ds['hasil_periksa'];?></p>
                 </div>
               </div>
           </div>

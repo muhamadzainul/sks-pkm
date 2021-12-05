@@ -20,6 +20,7 @@
                       </ul>
                   </li>
                   <li><a href="#" class="waves-effect"><i class="fa fa-code-fork p-r-10"></i>  Hak Akses Peetugas</a></li>
+                  <li><a href="<?= base_url();?>/admin/kapus" class="waves-effect"><i class="fa fa-user p-r-10"></i>  Kepala Puskesmas</a></li>
                   <?php endif; ?>
 
                   <li class="nav-small-cap m-t-10">--- Kelola Data Surat</li>

@@ -22,12 +22,19 @@ class Administrator extends BaseController
 
     public function index()
     {
-        $suratQuery       = $this->SuratBuilder->get(10, 0);
+        $this->SuratBuilder->select('id_sks, nomor_surat, surat_kesehatan.nik_pasien as nik_p, pasien.tgl_lahir, nama_pasien, kepentingan, hasil_periksa, TIMESTAMPDIFF(
+            MONTH , pasien.tgl_lahir, NOW() ) AS umur');
+        $this->SuratBuilder->join('pasien', 'pasien.nik_pasien = surat_kesehatan.nik_pasien');
+        $suratQuery = $this->SuratBuilder->get(10, 0);
+        // $suratQuery       = $this->SuratBuilder->get(10, 0);
         $pasienQuery      = $this->PasienBuilder->get(10, 0);
         $pasienCount      = $this->PasienBuilder->countAllResults();
         $suratCount       = $this->SuratBuilder->countAllResults();
         $userCount        = $this->UserBuilder->countAllResults();
+
+
         $data = [
+          'title'    => 'Dashboard',
         'data_pasien' => $pasienQuery->getResultArray(),
         'data_surat' => $suratQuery->getResultArray(),
         'total_pasien' => $pasienCount,

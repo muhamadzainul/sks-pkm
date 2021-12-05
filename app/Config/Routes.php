@@ -48,16 +48,6 @@ $routes->get('/admin/data_pasien/detail_pasien/(:segment)', 'Admin\Data_pasien::
 $routes->get('/admin/data_pasien/update_data/(:segment)', 'Admin\Data_pasien::update_data/$1');
 $routes->get('/admin/data_pasien/(:any)', 'Admin\Data_pasien::$1');
 $routes->get('/admin/data_pasien/simpan', 'Admin\Data_pasien::simpan');
-//petugas
-$routes->get('/petugas/data_pasien', 'Petugas\Data_pasien::index');
-$routes->delete('/Admin/data_pasien/(:num)', 'Petugas\data_pasien::hapus_data/$1');
-$routes->get('/petugas/data_pasien/(:num)', 'Petugas\data_pasien::hapus_data/$1');
-$routes->get('/petugas/data_pasien/edit_data/(:segment)', 'Petugas\Data_pasien::edit_data/$1');
-$routes->get('/petugas/data_pasien/detail_pasien/(:segment)', 'Petugas\Data_pasien::detail_pasien/$1');
-$routes->get('/petugas/data_pasien/update_data/(:segment)', 'Petugas\Data_pasien::update_data/$1');
-$routes->get('/petugas/data_pasien/(:any)', 'Petugas\Data_pasien::$1');
-$routes->get('/petugas/data_pasien/simpan', 'Petugas\Data_pasien::simpan');
-
 // data petugas
 $routes->get('/admin/data_petugas', 'Admin\Data_petugas::index');
 $routes->delete('/Admin/data_petugas/(:num)', 'Admin\data_petugas::hapus_data/$1');
@@ -68,7 +58,6 @@ $routes->get('/admin/data_petugas/update_data/(:segment)', 'Admin\Data_petugas::
 $routes->get('/admin/data_petugas/(:any)', 'Admin\Data_petugas::$1');
 $routes->get('/admin/data_petugas/simpan', 'Admin\Data_petugas::simpan');
 // data surat
-//admin
 $routes->get('/admin/surat_sehat', 'Admin\Surat_sehat::index');
 $routes->delete('/Admin/surat_sehat/(:num)', 'Admin\surat_sehat::hapus_data/$1');
 $routes->get('/admin/surat_sehat/(:num)', 'Admin\surat_sehat::hapus_data/$1');
@@ -76,7 +65,25 @@ $routes->get('/admin/surat_sehat/edit_data/(:segment)', 'Admin\Surat_sehat::edit
 $routes->get('/admin/surat_sehat/detail_surat/(:segment)', 'Admin\Surat_sehat::detail_surat/$1');
 $routes->get('/admin/surat_sehat/update_data/(:segment)', 'Admin\Surat_sehat::update_data/$1');
 $routes->get('/admin/surat_sehat/(:any)', 'Admin\Surat_sehat::$1');
-$routes->get('/admin/surat_sehat/simpan', 'Admin\Surat_sehat::simpan');
+$routes->get('/admin/surat_sehat/simpan/(:segment)', 'Admin\Surat_sehat::simpan/$1');
+// data kapus
+$routes->get('/admin/kapus', 'Admin\Kapus::index');
+$routes->delete('/Admin/kapus/(:num)', 'Admin\Kapus::hapus_data/$1');
+$routes->get('/admin/kapus/hapus_data/(:segment)', 'Admin\Kapus::hapus_data/$1');
+$routes->get('/admin/kapus/update_data/(:segment)', 'Admin\Kapus::update_data/$1');
+$routes->get('/admin/kapus/(:any)', 'Admin\Kapus::$1');
+$routes->get('/admin/kapus/simpan', 'Admin\Kapus::simpan');
+
+//petugas
+$routes->get('/petugas/data_pasien', 'Petugas\Data_pasien::index');
+$routes->delete('/Admin/data_pasien/(:num)', 'Petugas\data_pasien::hapus_data/$1');
+$routes->get('/petugas/data_pasien/(:num)', 'Petugas\data_pasien::hapus_data/$1');
+$routes->get('/petugas/data_pasien/edit_data/(:segment)', 'Petugas\Data_pasien::edit_data/$1');
+$routes->get('/petugas/data_pasien/detail_pasien/(:segment)', 'Petugas\Data_pasien::detail_pasien/$1');
+$routes->get('/petugas/data_pasien/update_data/(:segment)', 'Petugas\Data_pasien::update_data/$1');
+$routes->get('/petugas/data_pasien/(:any)', 'Petugas\Data_pasien::$1');
+$routes->get('/petugas/data_pasien/simpan', 'Petugas\Data_pasien::simpan');
+
 //petugas
 $routes->get('/petugas/surat_sehat', 'Petugas\Surat_sehat::index');
 $routes->delete('/Petugas/surat_sehat/(:num)', 'Petugas\surat_sehat::hapus_data/$1');

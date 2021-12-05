@@ -30,6 +30,7 @@ class Data_petugas extends BaseController
         // $data_petugas = $this->petugasModel->findAll();
         $data = [
       // 'data_petugas' => $data_petugas
+        'title'    => 'Data Petugas',
         'data_petugas' => $petugas->paginate(4),
         'pager' => $this->petugasModel->pager,
         'currentPage' => $currentPage
@@ -40,6 +41,7 @@ class Data_petugas extends BaseController
     public function tambah_data_petugas()
     {
         $data = [
+          'title'    => 'Tambah Data Petugas',
         'validation' => \Config\Services::validation()
       ];
         return view('/administrator/tambah_data_petugas', $data);
@@ -118,6 +120,7 @@ class Data_petugas extends BaseController
     public function edit_data($slug)
     {
         $data = [
+          'title'    => 'Edit Data Petugas',
       'validation' => \Config\Services::validation(),
       'data_petugas' => $this->petugasModel->getPetugas($slug)
     ];
@@ -201,6 +204,7 @@ class Data_petugas extends BaseController
     public function detail_petugas($slug)
     {
         $data = [
+          'title'    => 'Detail Data Petugas',
       'validation' => \Config\Services::validation(),
       'data_petugas' => $this->petugasModel->getPetugas($slug)
     ];

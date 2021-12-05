@@ -100,8 +100,8 @@
                             <tr>
                               <td><?= $n++;?></td>
                               <td><?= $ds['nomor_surat'];?></td>
-                              <td><?= $ds['tinggi_badan'];?></td>
-                              <td><?= $ds['berat_badan'];?></td>
+                              <td><?= $ds['nama_pasien'];?></td>
+                              <td><?= floor($ds['umur']/12);?></td>
                             </tr>
                           <?php endforeach;?>
                         </tbody>

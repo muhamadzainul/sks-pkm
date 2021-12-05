@@ -29,6 +29,7 @@ class Data_pasien extends BaseController
 
         $data = [
       // 'data_pasien' => $data_pasien
+        'title'    => 'Data Pasien',
         'data_pasien' => $pasien->paginate(4),
         'pager' => $this->pasienModel->pager,
         'currentPage' => $currentPage
@@ -39,6 +40,7 @@ class Data_pasien extends BaseController
     public function tambah_data_pasien()
     {
         $data = [
+          'title'    => 'Tambah Data Pasien',
         'validation' => \Config\Services::validation()
       ];
         return view('/administrator/tambah_data_pasien', $data);
@@ -136,6 +138,7 @@ class Data_pasien extends BaseController
     public function edit_data($slug)
     {
         $data = [
+          'title'    => 'Edit Data Pasien',
       'validation' => \Config\Services::validation(),
       'data_pasien' => $this->pasienModel->getPasien($slug)
     ];
@@ -237,6 +240,7 @@ class Data_pasien extends BaseController
     public function detail_pasien($slug)
     {
         $data = [
+          'title'    => 'Detail Data Pasien',
       'validation' => \Config\Services::validation(),
       'data_pasien' => $this->pasienModel->getPasien($slug)
     ];
