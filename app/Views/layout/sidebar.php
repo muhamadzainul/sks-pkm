@@ -19,7 +19,7 @@
                           <li> <a href="<?= base_url();?>/admin/data_petugas/tambah_data_petugas">Tambah Data Petugas</a> </li>
                       </ul>
                   </li>
-                  <li><a href="#" class="waves-effect"><i class="fa fa-code-fork p-r-10"></i>  Hak Akses Peetugas</a></li>
+                  <!-- <li><a href="#" class="waves-effect"><i class="fa fa-code-fork p-r-10"></i>  Hak Akses Peetugas</a></li> -->
                   <li><a href="<?= base_url();?>/admin/kapus" class="waves-effect"><i class="fa fa-user p-r-10"></i>  Kepala Puskesmas</a></li>
                   <?php endif; ?>
 
@@ -30,7 +30,7 @@
                           <li> <a href="<?= base_url();?>/admin/data_pasien/tambah_data_pasien">Tambah Data Patient</a> </li>
                       </ul>
                   </li>
-                  <li> <a href="javascript:void(0);" class="waves-effect"><i class="icon-docs p-r-10"></i> <span class="hide-menu"> Surat Sehat <span class="fa arrow"></span></span></a>
+                  <li> <a href="javascript:void(0);" class="waves-effect"><i class="icon-docs p-r-10"></i> <span class="hide-menu"> Surat Kesehatan <span class="fa arrow"></span></span></a>
                       <ul class="nav nav-second-level">
                           <li> <a href="<?= base_url();?>/admin/surat_sehat/">Data Surat</a> </li>
                           <li> <a href="<?= base_url();?>/admin/surat_sehat/tambah_data_surat">Tambah Data Surat</a> </li>

@@ -30,10 +30,15 @@ class Kapus extends BaseController
             $kapus = $this->kapusModel;
         }
 
+        // $hasil = gmp_mod(gmp_pow(4851, 283), 50657);
+        // helper(['rsa']);
+        // dd(coba_hel());
+
         $data = [
       // 'data_kapus' => $data_kapus
         'title'       => 'Data Kapus',
-        'data_kapus'  => $kapus->paginate(4),
+        'data_kapus'  => $kapus->paginate(10),
+        // 'data_kapus'  => $kapus,
         'pager'       => $this->kapusModel->pager,
         'currentPage' => $currentPage
      ];
@@ -66,7 +71,10 @@ class Kapus extends BaseController
         $this->kapusBuilder->where('nip_kapus', $this->request->getVar('nip_kapus'));
         $query = $this->kapusBuilder->get();
         $nip_kp = $query->getResultArray();
-        if ($nip_kp[0] == 0) {
+
+        // dd($nip_kp);
+
+        if ($nip_kp == 0) {
             // dd('yes');
             $data=[
             'nama_kapus'  => $this->request->getVar('nama_kapus'),
@@ -81,12 +89,13 @@ class Kapus extends BaseController
             //   'active' => 1
             // ]);
             $this->kapusBuilder->insert($data);
+            session()->setFLashdata('pesan', ' Tambahkan');
         } else {
             // dd('no');
             $nip_kapus = $nip_kp[0]['nip_kapus'];
-            $active = $nip_kp[0]['active'];
 
             if ($nip_kapus == $this->request->getVar('nip_kapus')) {
+                $active = $nip_kp[0]['active'];
                 // dd('yes');
                 if ($active == 0) {
                     // dd('yes');
@@ -94,7 +103,7 @@ class Kapus extends BaseController
 
                     if ($nama_kapus == $this->request->getVar('nama_kapus')) {
                         // dd('yes');
-                        $id = $nip_kp['0']['id_kapus'];
+                        $id = $nip_kp[0]['id_kapus'];
 
                         $data = [
                             'active' => 1
@@ -111,6 +120,7 @@ class Kapus extends BaseController
                         ];
                         $this->kapusBuilder->where('id_kapus', $id);
                         $this->kapusBuilder->update($data);
+                        session()->setFLashdata('pesan', ' Edit');
                     }
                 } else {
                     // dd('no');
@@ -127,6 +137,7 @@ class Kapus extends BaseController
                     //   'active' => 1
                     // ]);
                     $this->kapusBuilder->replace($data);
+                    session()->setFLashdata('pesan', ' Edit');
                 }
             } else {
                 // dd('no');
@@ -137,6 +148,7 @@ class Kapus extends BaseController
                       ];
                     $this->kapusBuilder->where('id_kapus', $id);
                     $this->kapusBuilder->update($data);
+                    session()->setFLashdata('pesan', ' Edit');
                 }
                 $data=[
                 'nama_kapus'  => $this->request->getVar('nama_kapus'),
@@ -151,13 +163,14 @@ class Kapus extends BaseController
                 //   'active' => 1
                 // ]);
                 $this->kapusBuilder->insert($data);
+                session()->setFLashdata('pesan', ' Edit');
             }
             // code...
         }
 
 
 
-        session()->setFLashdata('pesan', 'Tambahkan');
+        // session()->setFLashdata('pesan', 'Tambahkan');
 
         return redirect()->to('/admin/kapus');
     }

@@ -56,7 +56,7 @@
                         <h5 class="text-grey-500 text-center">Data kapus Belum Ada</h5>
                       </td>
                     <?php else : ?>
-                    <?php $n = 1 + (4 * ($currentPage - 1)); ?>
+                    <?php $n = 1 + (10 * ($currentPage - 1)); ?>
                     <?php foreach ($data_kapus as $dk): ?>
                     <tr>
                       <?php if ($dk['active'] == 1): ?>
@@ -101,6 +101,7 @@
   						<div class="form-group">
   							<label for="nama_kapus">Nama Kapus</label>
                 <input type="hidden" name="slug" value="<?= $dk['slug']?>">
+                <input type="hidden" name="pesan" value="Edit">
   							<input type="text" class="form-control" id="nama_kapus" name="nama_kapus" value="<?= $dk['nama_kapus']; ?>" placeholder="Nama Kapus">
   						</div>
     					<div class="form-group">
@@ -134,6 +135,7 @@
 					<div class="form-group">
             <label for="nama_kapus">Nama Kapus</label>
 						<input type="text" class="form-control" name="nama_kapus" id="nama_kapus" placeholder="Nama Kapus" required>
+            <input type="hidden" name="pesan" value="Tambahkan">
 					</div>
 					<!-- <div class="form-group">
 						<input type="text" class="form-control" name="email" id="email" placeholder="Email Kapus">
