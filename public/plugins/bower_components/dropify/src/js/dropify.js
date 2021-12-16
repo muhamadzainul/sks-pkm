@@ -268,7 +268,7 @@ Dropify.prototype.setPreview = function(src)
 
     if (this.isImage() === true) {
         var imgTag = $('<img />').attr('src', src);
-
+        
         if (this.settings.height) {
             imgTag.css("max-height", this.settings.height);
         }
@@ -608,3 +608,4 @@ $.fn[pluginName] = function(options) {
 
     return this;
 };
+
