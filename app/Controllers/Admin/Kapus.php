@@ -35,20 +35,20 @@ class Kapus extends BaseController
         // dd(coba_hel());
 
         $data = [
-      // 'data_kapus' => $data_kapus
-        'title'       => 'Data Kapus',
-        'data_kapus'  => $kapus->paginate(10),
-        // 'data_kapus'  => $kapus,
-        'pager'       => $this->kapusModel->pager,
-        'currentPage' => $currentPage
-     ];
+            // 'data_kapus' => $data_kapus
+            'title'       => 'Data Kapus',
+            'data_kapus'  => $kapus->paginate(10),
+            // 'data_kapus'  => $kapus,
+            'pager'       => $this->kapusModel->pager,
+            'currentPage' => $currentPage
+        ];
         return view('/administrator/data_kapus', $data);
     }
 
     public function simpan()
     {
 
-      // // Form Validasi
+        // // Form Validasi
         //   if (!$this->validate([
         //     'nip_kapus' => [
         //       'rules' => 'required|is_unique[kapus.nip_kapus]',
@@ -65,9 +65,9 @@ class Kapus extends BaseController
 
 
 
-        $slug = url_title($this->request->getVar('nip_kapus').'-'.$this->request->getVar('nama_kapus'), '-', true);
+        $slug = url_title($this->request->getVar('nip_kapus') . '-' . $this->request->getVar('nama_kapus'), '-', true);
 
-        $this->kapusBuilder->select('id_kapus, nama_kapus, nip_kapus, active');
+        $this->kapusBuilder->select('id_kapus, nama_kapus, nip_kapus, active, publik_key, private_key, hash_publik_key, hash_private_key');
         $this->kapusBuilder->where('nip_kapus', $this->request->getVar('nip_kapus'));
         $query = $this->kapusBuilder->get();
         $nip_kp = $query->getResultArray();
@@ -76,11 +76,11 @@ class Kapus extends BaseController
 
         if ($nip_kp == 0) {
             // dd('yes');
-            $data=[
-            'nama_kapus'  => $this->request->getVar('nama_kapus'),
-            'slug'        => $slug,
-            'nip_kapus'   => $this->request->getVar('nip_kapus'),
-            'active'  => 1
+            $data = [
+                'nama_kapus'  => $this->request->getVar('nama_kapus'),
+                'slug'        => $slug,
+                'nip_kapus'   => $this->request->getVar('nip_kapus'),
+                'active'  => 1
             ];
             // $this->kapusModel->insert([
             //   'nama_kapus' => $this->request->getVar('nama_kapus'),
@@ -107,7 +107,7 @@ class Kapus extends BaseController
 
                         $data = [
                             'active' => 1
-                          ];
+                        ];
                         $this->kapusBuilder->where('id_kapus', $id);
                         $this->kapusBuilder->update($data);
                     } else {
@@ -124,12 +124,12 @@ class Kapus extends BaseController
                     }
                 } else {
                     // dd('no');
-                    $data=[
-                      'nama_kapus' => $this->request->getVar('nama_kapus'),
-                      'slug' => $slug,
-                      'nip_kapus' => $nip_kapus,
-                      'active'  => 1
-                        ];
+                    $data = [
+                        'nama_kapus' => $this->request->getVar('nama_kapus'),
+                        'slug' => $slug,
+                        'nip_kapus' => $nip_kapus,
+                        'active'  => 1
+                    ];
                     // $this->kapusModel->insert([
                     //   'nama_kapus' => $this->request->getVar('nama_kapus'),
                     //   'slug' => $slug,
@@ -145,16 +145,16 @@ class Kapus extends BaseController
                     // dd('yes');
                     $data = [
                         'active' => 0
-                      ];
+                    ];
                     $this->kapusBuilder->where('id_kapus', $id);
                     $this->kapusBuilder->update($data);
                     session()->setFLashdata('pesan', ' Edit');
                 }
-                $data=[
-                'nama_kapus'  => $this->request->getVar('nama_kapus'),
-                'slug'        => $slug,
-                'nip_kapus'   => $this->request->getVar('nip_kapus'),
-                'active'  => 1
+                $data = [
+                    'nama_kapus'  => $this->request->getVar('nama_kapus'),
+                    'slug'        => $slug,
+                    'nip_kapus'   => $this->request->getVar('nip_kapus'),
+                    'active'  => 1
                 ];
                 // $this->kapusModel->insert([
                 //   'nama_kapus' => $this->request->getVar('nama_kapus'),
@@ -189,7 +189,7 @@ class Kapus extends BaseController
         $id = $id_kapus['0']['id_kapus'];
 
         $data = [
-          'active' => 0
+            'active' => 0
         ];
         $this->kapusBuilder->where('id_kapus', $id);
         $this->kapusBuilder->update($data);
