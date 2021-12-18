@@ -93,17 +93,17 @@ class Kapus extends BaseController
         } else {
             // dd('no');
             $nip_kapus = $nip_kp[0]['nip_kapus'];
+            $active = $nip_kp[0]['active'];
+            $id = $nip_kp[0]['id_kapus'];
+            $nama_kapus = $nip_kp[0]['nama_kapus'];
 
             if ($nip_kapus == $this->request->getVar('nip_kapus')) {
-                $active = $nip_kp[0]['active'];
                 // dd('yes');
                 if ($active == 0) {
                     // dd('yes');
-                    $nama_kapus = $nip_kp[0]['nama_kapus'];
 
                     if ($nama_kapus == $this->request->getVar('nama_kapus')) {
                         // dd('yes');
-                        $id = $nip_kp[0]['id_kapus'];
 
                         $data = [
                             'active' => 1
@@ -112,7 +112,6 @@ class Kapus extends BaseController
                         $this->kapusBuilder->update($data);
                     } else {
                         // dd('no');
-                        $id = $nip_kp['0']['id_kapus'];
 
                         $data = [
                             'nama_kapus' => $this->request->getVar('nama_kapus'),

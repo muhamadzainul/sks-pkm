@@ -34,13 +34,13 @@ class Administrator extends BaseController
 
 
         $data = [
-          'title'    => 'Dashboard',
-        'data_pasien' => $pasienQuery->getResultArray(),
-        'data_surat' => $suratQuery->getResultArray(),
-        'total_pasien' => $pasienCount,
-        'total_surat' => $suratCount,
-        'total_user' => $userCount
-      ];
+            'title'    => 'Dashboard',
+            'data_pasien' => $pasienQuery->getResultArray(),
+            'data_surat' => $suratQuery->getResultArray(),
+            'total_pasien' => $pasienCount,
+            'total_surat' => $suratCount,
+            'total_user' => $userCount
+        ];
         return view('/administrator/index', $data);
     }
 
