@@ -45,7 +45,7 @@
                   <th scope="col">No.</th>
                   <th scope="col">Nama Pasien</th>
                   <th scope="col">Jenis Kelamin</th>
-                  <th scope="col">Email</th>
+                  <th scope="col">Tanggal Lahir</th>
                   <th scope="col">Foto KTP</th>
                   <th scope="col">Foto KK</th>
                   <th scope="col" colspan="2">Aksi</th>
@@ -63,7 +63,15 @@
                       <td><?= $n++; ?></td>
                       <td><?= $dp['nama_pasien']; ?></td>
                       <td><?= $dp['jenis_kelamin']; ?></td>
-                      <td><?= $dp['email']; ?></td>
+                      <td>
+                        <?php
+                        $date1 = date_create($dp['tgl_lahir']);
+                        $date2 = date_create(date("Y-m-d", time()));
+                        $diff = date_diff($date1, $date2);
+
+                        echo intval($diff->format("%Y")) . " Tahun";
+                        ?>
+                      </td>
                       <?php if ($dp['foto_ktp'] == 'default-ktp.png' or empty($dp['foto_ktp'])) : ?>
                         <td><span class="label label-danger">Belum</span></td>
                       <?php else : ?>

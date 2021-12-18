@@ -61,9 +61,20 @@
               <label class="col-sm-12">Jenis Kelamin</label>
               <div class="col-sm-12">
                 <select class="form-control" name="jenis_kelamin" id="jenis_kelamin">
-                  <option>-- Pilih Jenis Kelamin --</option>
-                  <option>Laki-laki</option>
-                  <option>Perempuan</option>
+                  <?php if (($data_pasien['jenis_kelamin']) == "Perempuan") : ?>
+                    <option value="null" class="dropdown-item">-- Pilih salah satu --</option>
+                    <option class="dropdown-item">Laki-laki</option>
+                    <option class="dropdown-item" selected>Perempuan</option>
+                  <?php elseif (($data_pasien['jenis_kelamin']) == "Laki-laki") : ?>
+                    <option value="null" class="dropdown-item">-- Pilih salah satu --</option>
+                    <option class="dropdown-item" selected>Laki-laki</option>
+                    <option class="dropdown-item">Perempuan</option>
+                  <?php else : ?>
+                    <option value="null" class="dropdown-item" selected>-- Pilih salah satu --</option>
+                    <option class="dropdown-item">Laki-laki</option>
+                    <option class="dropdown-item">Perempuan</option>
+                  <?php endif; ?>
+
                 </select>
               </div>
             </div>
