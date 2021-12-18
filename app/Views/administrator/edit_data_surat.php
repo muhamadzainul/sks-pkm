@@ -155,7 +155,7 @@
                           <option value="YA" class="dropdown-item" selected>YA</option>
                           <option value="TIDAK" class="dropdown-item">TIDAK</option>
 
-                        <?php elseif (($ds->mata_buta) == "Tidak") : ?>
+                        <?php elseif (($ds->mata_buta) == "TIDAK") : ?>
                           <option value="null" class="dropdown-item">-- Pilih salah satu --</option>
                           <option value="YA" class="dropdown-item">YA</option>
                           <option value="TIDAK" class="dropdown-item" selected>TIDAK</option>

@@ -65,7 +65,7 @@
                       <td><?= floor($ds['umur'] / 12); ?> <span>tahun</span> </td>
                       <td><?= $ds['kepentingan']; ?></td>
                       <td><?= $ds['hasil_periksa']; ?></td>
-                      <td><?= $ds['tanggal_diubah']; ?></td>
+                      <td><?= $ds['tgl_dibuat']; ?></td>
                       <td><a href="<?php base_url(); ?>/admin/surat_sehat/detail_surat/<?= $ds['id_sks']; ?>" class="btn btn-warning btn-rounded">Detail</a></td>
                       <td>
                         <!-- <a href="" class="btn btn-danger btn-rounded swal_delete" data-hapusId="<?php base_url(); ?>/admin/data_pasien/<?= $ds['id_sks']; ?>">Hapus</a> -->

@@ -11,17 +11,19 @@ class Model_surat extends Model
     protected $useTimestamps = true;
     protected $createdField = 'tanggal_dibuat';
     protected $updatedField = 'tanggal_diubah';
-    protected $allowedFields = ['nomor_surat', 'nik_pasien', 'nama_pasien', 'jenis_kelamin', 'tgl_lahir', 'alamat',
-    'pekerjaan', 'kepentingan', 'tinggi_badan', 'berat_badan', 'tensi_darah', 'suhu_tubuh', 'nadi', 'respirasi', 'mata_buta', 'tubuh_tato', 'tubuh_tindik',
-    'hasil_periksa', 'nama_kapus', 'nip_kapus', 'tanggal_exp'];
+    protected $allowedFields = [
+        'nomor_surat', 'nik_pasien', 'nama_pasien', 'jenis_kelamin', 'tgl_lahir', 'alamat',
+        'pekerjaan', 'kepentingan', 'tinggi_badan', 'berat_badan', 'tensi_darah', 'suhu_tubuh', 'nadi', 'respirasi', 'mata_buta', 'tubuh_tato', 'tubuh_tindik',
+        'hasil_periksa', 'nama_kapus', 'nip_kapus', 'tanggal_dibuat', 'tanggal_dibuat', 'tanggal_exp'
+    ];
 
-    public function getPetugas($slug=false)
+    public function getPetugas($slug = false)
     {
         if ($slug == false) {
             return $this->findAll();
         }
 
-        return $this->where(['slug'=>$slug])->first();
+        return $this->where(['slug' => $slug])->first();
     }
 
     public function search($keyword)

@@ -13,12 +13,16 @@ class Surat_sehat extends BaseController
   protected $pasienModel;
   protected $db;
   protected $suratBuilder;
+  protected $pasienBuilder;
+  protected $kapusBuilder;
   public function __construct()
   {
     $this->suratModel     = new Model_surat();
     $this->pasienModel    = new Model_pasien();
     $this->db             = \Config\Database::connect();
     $this->suratBuilder   = $this->db->table('surat_kesehatan');
+    $this->pasienBuilder   = $this->db->table('pasien');
+    $this->kapusBuilder   = $this->db->table('kapus');
   }
 
   public function index()
@@ -27,7 +31,7 @@ class Surat_sehat extends BaseController
     // $data_pasien = $this->pasienModel->findAll();
 
 
-    $this->suratBuilder->select('id_sks, nomor_surat, surat_kesehatan.nik_pasien as nik_p, pasien.tgl_lahir, nama_pasien, kepentingan, hasil_periksa, pasien.tanggal_diubah, TIMESTAMPDIFF(
+    $this->suratBuilder->select('id_sks, nomor_surat, surat_kesehatan.nik_pasien as nik_p, pasien.tgl_lahir, nama_pasien, kepentingan, hasil_periksa, surat_kesehatan.tanggal_dibuat as tgl_dibuat, TIMESTAMPDIFF(
 MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     $this->suratBuilder->join('pasien', 'pasien.nik_pasien = surat_kesehatan.nik_pasien');
 
@@ -59,7 +63,7 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
   {
     $this->suratBuilder->select('id_sks, nomor_surat, surat_kesehatan.nik_pasien as nik_p, nama_pasien, jenis_kelamin, tgl_lahir, alamat,
         pekerjaan, kepentingan, tinggi_badan, berat_badan, tensi_darah, suhu_tubuh, nadi, respirasi, mata_buta, tubuh_tato, tubuh_tindik,
-        hasil_periksa, nama_kapus, kapus.nip_kapus as nip_kp, nama_kapus,, TIMESTAMPDIFF(
+        hasil_periksa, nama_kapus, kapus.nip_kapus as nip_kp, nama_kapus, TIMESTAMPDIFF(
 MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     $this->suratBuilder->join('pasien', 'pasien.nik_pasien = surat_kesehatan.nik_pasien');
     $this->suratBuilder->join('kapus', 'kapus.nip_kapus = surat_kesehatan.nip_kapus');
@@ -69,15 +73,20 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     // dd($keyword);
 
     if ($keyword) {
+      $this->pasienBuilder->select('id_pasien, nik_pasien, nama_pasien, jenis_kelamin, tgl_lahir, alamat, TIMESTAMPDIFF(
+      MONTH , pasien.tgl_lahir, NOW() ) AS umur');
       // $sks = $this->suratModel->search($keyword);
-      $this->suratBuilder->like('nama_pasien', $keyword);
-      $this->suratBuilder->orLike('surat_kesehatan.nik_pasien', $keyword);
-      $query = $this->suratBuilder->get();
-      $kosong = $keyword;
+      $this->pasienBuilder->like('nama_pasien', $keyword);
+      $this->pasienBuilder->orLike('nik_pasien', $keyword);
+      $querySurat = $this->suratBuilder->get();
+      $queryPasien = $this->pasienBuilder->get();
+      $data_pasien = $queryPasien->getResultArray();
+      // $kosong = $keyword;
     }
     if ($keyword == null) {
-      $query = $this->suratBuilder->get();
-      $kosong = null;
+      $querySurat = $this->suratBuilder->get();
+      $data_pasien = null;
+      // $kosong = null;
     }
 
     //   if ($keyword) {
@@ -90,10 +99,11 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     //   }
     //
     $data = [
-      'title'      => 'Tambah Daa Surat',
-      'validation' => \Config\Services::validation(),
-      'data_surat' => $query->getResultArray(),
-      'kosong'     => $keyword
+      'title'       => 'Tambah Daa Surat',
+      'validation'  => \Config\Services::validation(),
+      'data_surat'  => $querySurat->getResultArray(),
+      'data_pasien' => $data_pasien,
+      'kosong'      => $keyword
     ];
 
     return view('/administrator/tambah_data_surat', $data);
@@ -133,6 +143,12 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     //   'alamat'        => $this->request->getVar('alamat')
     //
     // ];
+
+    $cek_date = date("Y-m-d", time());
+    $te = explode("-", $cek_date);
+    $tm = (intval($te[2]) + 2);
+    $tgl_exp = ($te[0] . "-" . $te[1] . "-" . $tm) . "<br>";
+
     if ($id == null) {
       $this->pasienModel->insert([
         'nik_pasien'    => $this->request->getVar('nik_pasien'),
@@ -170,7 +186,10 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
       'tubuh_tato' => $this->request->getVar('tubuh_tato'),
       'tubuh_tindik' => $this->request->getVar('tubuh_tindik'),
       'kepentingan' => $this->request->getVar('kepentingan'),
-      'hasil_periksa' => $this->request->getVar('hasil_periksa')
+      'hasil_periksa' => $this->request->getVar('hasil_periksa'),
+      'tanggal_dibuat' => date("Y-m-d", time()),
+      'tanggal_diubah' => date("Y-m-d", time()),
+      'tanggal_exp' => $tgl_exp
     ]);
 
 
@@ -225,6 +244,26 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
       'data_surat' => $query->getResult()
     ];
     return view('/administrator/edit_data_surat', $data);
+  }
+
+  public function tambah_data_surat_ada($id)
+  {
+    $this->pasienBuilder->select('nik_pasien, nama_pasien, jenis_kelamin, tgl_lahir, alamat, TIMESTAMPDIFF(MONTH , pasien.tgl_lahir, NOW() ) AS umur');
+    $this->pasienBuilder->where('id_pasien', $id);
+    $queryPasien = $this->pasienBuilder->get();
+    $this->kapusBuilder->select('id_kapus, nama_kapus, nip_kapus, active');
+    $queryKapus = $this->kapusBuilder->get();
+    // dd($queryKapus->getResult());
+
+    // dd($query->getResult());
+
+    $data = [
+      'title'    => 'Tambah data surat',
+      'validation' => \Config\Services::validation(),
+      'data_surat' => $queryPasien->getResult(),
+      'data_kapus' => $queryKapus->getResult()
+    ];
+    return view('/administrator/tambah_data_surat_ada', $data);
   }
 
 

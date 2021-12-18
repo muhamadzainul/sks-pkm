@@ -43,26 +43,26 @@
                     <th scope="col">No</th>
                     <th scope="col">Nama Pasien</th>
                     <th scope="col">Umur</th>
-                    <th scope="col">Kepentingan</th>
-                    <th scope="col">Hasil Pemeriksaan</th>
+                    <th scope="col">Jenis Kelamin</th>
+                    <th scope="col">Alamat</th>
                     <th scope="col" colspan="2">Aksi</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <?php if (empty($data_surat)) : ?>
+                  <?php if (empty($data_pasien)) : ?>
                     <td colspan="13">
                       <h5 class="text-grey-500 text-center">Data Surat Sehat Belum Ada</h5>
                     </td>
                     <?php else :
                     $n = 1;
-                    foreach ($data_surat as $ds) : ?>
+                    foreach ($data_pasien as $dp) : ?>
                       <tr>
                         <td><?= $n++; ?></td>
-                        <td><?= $ds['nama_pasien']; ?></td>
-                        <td><?= floor($ds['umur'] / 12); ?> <span> Tahun</span> </td>
-                        <td><?= $ds['kepentingan']; ?></td>
-                        <td><?= $ds['hasil_periksa']; ?></td>
-                        <td><a href="<?php base_url(); ?>/admin/surat_sehat/edit_data/<?= $ds['id_sks']; ?>" class="btn btn-primary btn-rounded">Tambahkan Data</a></td>
+                        <td><?= $dp['nama_pasien']; ?></td>
+                        <td><?= floor($dp['umur'] / 12); ?> <span> Tahun</span> </td>
+                        <td><?= $dp['jenis_kelamin']; ?></td>
+                        <td><?= $dp['alamat']; ?></td>
+                        <td><a href="<?php base_url(); ?>/admin/surat_sehat/tambah_data_surat_ada/<?= $dp['id_pasien']; ?>" class="btn btn-primary btn-rounded">Tambahkan Data</a></td>
                       </tr>
                   <?php
                     endforeach;
@@ -130,7 +130,7 @@
                     <input type="text" name="pekerjaan" class="form-control" placeholder="Masukkan Pekerjaan" value="<?= old('pekerjaan'); ?>">
                   </div>
                   <div class="col-md-4">
-                    <input type="date" name="tgl_lahir" class="form-control" placeholder="Masukkan Suhu Tubuh" value="<?= old('suhu_tubuh'); ?>">
+                    <input type="date" name="tgl_lahir" class="form-control" placeholder="Masukkan Suhu Tubuh" value="<?= old('tgl_lahir'); ?>">
                   </div>
                 </div>
               </div>
