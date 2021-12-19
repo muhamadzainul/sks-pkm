@@ -151,21 +151,28 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     $tgl_exp = ($te[0] . "-" . $te[1] . "-" . $tm) . "<br>";
 
     if ($id == null) {
+      $gen_key = get_key();
+
       $this->pasienBuilder->select('nik_pasien');
       $this->pasienBuilder->where('nik_pasien', $this->request->getVar('nik_pasien'));
       $query = $this->pasienBuilder->get();
       $queryp = $query->getResult();
       // dd(empty($queryp));
+
       if (empty($queryp)) {
         $this->pasienModel->insert([
-          'nik_pasien'      => $this->request->getVar('nik_pasien'),
-          'slug'            => $slugPasien,
-          'nama_pasien'     => $this->request->getVar('nama_pasien'),
-          'tgl_lahir'       => $this->request->getVar('tgl_lahir'),
-          'jenis_kelamin'   => $this->request->getVar('jenis_kelamin'),
-          'alamat'          => $this->request->getVar('alamat'),
-          'tanggal_dibuat'  => date("Y-m-d", time()),
-          'tanggal_diubah'  => date("Y-m-d", time()),
+          'nik_pasien'          => $this->request->getVar('nik_pasien'),
+          'slug'                => $slugPasien,
+          'nama_pasien'         => $this->request->getVar('nama_pasien'),
+          'tgl_lahir'           => $this->request->getVar('tgl_lahir'),
+          'jenis_kelamin'       => $this->request->getVar('jenis_kelamin'),
+          'alamat'              => $this->request->getVar('alamat'),
+          'publik_key'          => $gen_key[0],
+          'private_key'         => $gen_key[1],
+          'hash_publik_key'     => md5($gen_key[0]),
+          'hash_private_key'    => md5($gen_key[1]),
+          'tanggal_dibuat'      => date("Y-m-d", time()),
+          'tanggal_diubah'      => date("Y-m-d", time()),
         ]);
       }
     }

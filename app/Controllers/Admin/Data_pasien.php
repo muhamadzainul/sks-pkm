@@ -29,10 +29,10 @@ class Data_pasien extends BaseController
 
     $data = [
       // 'data_pasien' => $data_pasien
-      'title'    => 'Data Pasien',
-      'data_pasien' => $pasien->paginate(4),
-      'pager' => $this->pasienModel->pager,
-      'currentPage' => $currentPage
+      'title'         => 'Data Pasien',
+      'data_pasien'   => $pasien->paginate(10),
+      'pager'         => $this->pasienModel->pager,
+      'currentPage'   => $currentPage
     ];
     return view('/administrator/data_pasien', $data);
   }
@@ -40,8 +40,8 @@ class Data_pasien extends BaseController
   public function tambah_data_pasien()
   {
     $data = [
-      'title'    => 'Tambah Data Pasien',
-      'validation' => \Config\Services::validation()
+      'title'       => 'Tambah Data Pasien',
+      'validation'  => \Config\Services::validation()
     ];
     return view('/administrator/tambah_data_pasien', $data);
   }
@@ -51,27 +51,27 @@ class Data_pasien extends BaseController
 
     // Form Validasi
     if (!$this->validate([
-      'nik_pasien' => [
-        'rules' => 'required|is_unique[pasien.nik_pasien]',
-        'errors' => [
-          'required' => 'NIK pasien harus di isi',
+      'nik_pasien'    => [
+        'rules'       => 'required|is_unique[pasien.nik_pasien]',
+        'errors'      => [
+          'required'  => 'NIK pasien harus di isi',
           'is_unique' => 'NIK pasien sudah terdaftar'
         ]
       ],
-      'foto_ktp' => [
-        'rules' => 'max_size[foto_ktp, 2028]|is_image[foto_ktp]|mime_in[foto_ktp,image/jpg,image/jpeg,image/png]',
-        'errors' => [
-          'max_size' => 'Ukuran Gambar Terlalu Besar',
-          'is_image' => 'Yang Anda Masukkan Bukan File Gambar',
-          'mime_in' => 'Yang Anda Masukkan Bukan File Gambar'
+      'foto_ktp'    => [
+        'rules'     => 'max_size[foto_ktp, 2028]|is_image[foto_ktp]|mime_in[foto_ktp,image/jpg,image/jpeg,image/png]',
+        'errors'    => [
+          'max_size'  => 'Ukuran Gambar Terlalu Besar',
+          'is_image'  => 'Yang Anda Masukkan Bukan File Gambar',
+          'mime_in'   => 'Yang Anda Masukkan Bukan File Gambar'
         ]
       ],
-      'foto_kk' => [
-        'rules' => 'max_size[foto_kk, 2028]|is_image[foto_kk]|mime_in[foto_kk,image/jpg,image/jpeg,image/png]',
-        'errors' => [
-          'max_size' => 'Ukuran Gambar Terlalu Besar',
-          'is_image' => 'Yang Anda Masukkan Bukan File Gambar',
-          'mime_in' => 'Yang Anda Masukkan Bukan File Gambar'
+      'foto_kk'   => [
+        'rules'   => 'max_size[foto_kk, 2028]|is_image[foto_kk]|mime_in[foto_kk,image/jpg,image/jpeg,image/png]',
+        'errors'  => [
+          'max_size'  => 'Ukuran Gambar Terlalu Besar',
+          'is_image'  => 'Yang Anda Masukkan Bukan File Gambar',
+          'mime_in'   => 'Yang Anda Masukkan Bukan File Gambar'
         ]
       ]
     ])) {
@@ -81,10 +81,12 @@ class Data_pasien extends BaseController
     }
 
     // Ambil File
-    $file_Fotoktp = $this->request->getFile('foto_ktp');
-    $file_Fotokk = $this->request->getFile('foto_kk');
+    $file_Fotoktp   = $this->request->getFile('foto_ktp');
+    $file_Fotokk    = $this->request->getFile('foto_kk');
+
     // nama File
-    $nama_file = $file_Fotoktp->getRandomName();
+    $nama_file      = $file_Fotoktp->getRandomName();
+
     // pindah file ke directori kita
     if ($file_Fotoktp->getError() == 4) {
       $nama_file_ktp = 'default-ktp.png';
@@ -101,17 +103,23 @@ class Data_pasien extends BaseController
 
     $slug = url_title($this->request->getVar('nik_pasien') . '-' . $this->request->getVar('nama_pasien'), '-', true);
 
+    $gen_key = get_key();
+
     $this->pasienModel->save([
-      'nama_pasien' => $this->request->getVar('nama_pasien'),
-      'slug' => $slug,
-      'nik_pasien' => $this->request->getVar('nik_pasien'),
-      'tgl_lahir' => $this->request->getVar('tgl_lahir'),
-      'jenis_kelamin' => $this->request->getVar('jenis_kelamin'),
-      'alamat' => $this->request->getVar('alamat'),
-      'no_hp' => $this->request->getVar('no_hp'),
-      'email' => $this->request->getVar('email'),
-      'foto_ktp' => $nama_file_ktp,
-      'foto_kk' => $nama_file_kk
+      'nama_pasien'       => $this->request->getVar('nama_pasien'),
+      'slug'              => $slug,
+      'nik_pasien'        => $this->request->getVar('nik_pasien'),
+      'tgl_lahir'         => $this->request->getVar('tgl_lahir'),
+      'jenis_kelamin'     => $this->request->getVar('jenis_kelamin'),
+      'alamat'            => $this->request->getVar('alamat'),
+      'no_hp'             => $this->request->getVar('no_hp'),
+      'email'             => $this->request->getVar('email'),
+      'publik_key'        => $gen_key[0],
+      'private_key'       => $gen_key[1],
+      'hash_publik_key'   => md5($gen_key[0]),
+      'hash_private_key'  => md5($gen_key[1]),
+      'foto_ktp'          => $nama_file_ktp,
+      'foto_kk'           => $nama_file_kk
     ]);
 
     session()->setFLashdata('pesan', 'Tambahkan');
@@ -123,6 +131,7 @@ class Data_pasien extends BaseController
   {
     // cari nama gambar berdasarkan id
     $pasien_data = $this->pasienModel->find($id);
+
     // hapus Gambar
     if ($pasien_data['foto_kk'] != 'default-kk.png') {
       unlink('gambar/foto_kk/' . $pasien_data['foto_kk']);
@@ -139,8 +148,8 @@ class Data_pasien extends BaseController
   public function edit_data($slug)
   {
     $data = [
-      'title'    => 'Edit Data Pasien',
-      'validation' => \Config\Services::validation(),
+      'title'       => 'Edit Data Pasien',
+      'validation'  => \Config\Services::validation(),
       'data_pasien' => $this->pasienModel->getPasien($slug)
     ];
     return view('/administrator/edit_data_pasien', $data);
@@ -155,29 +164,30 @@ class Data_pasien extends BaseController
     } else {
       $rule_nik = 'required|is_unique[pasien.nik_pasien]';
     }
+
     // Form Validasi
     if (!$this->validate([
       'nik_pasien' => [
-        'rules' => $rule_nik,
-        'errors' => [
-          'required' => 'NIK pasien harus di isi',
+        'rules'   => $rule_nik,
+        'errors'  => [
+          'required'  => 'NIK pasien harus di isi',
           'is_unique' => 'NIK pasien sudah terdaftar'
         ]
       ],
       'foto_ktp' => [
-        'rules' => 'max_size[foto_ktp, 2028]|is_image[foto_ktp]|mime_in[foto_ktp,image/jpg,image/jpeg,image/png]',
-        'errors' => [
-          'max_size' => 'Ukuran Gambar Terlalu Besar',
-          'is_image' => 'Yang Anda Masukkan Bukan File Gambar',
-          'mime_in' => 'Yang Anda Masukkan Bukan File Gambar'
+        'rules'   => 'max_size[foto_ktp, 2028]|is_image[foto_ktp]|mime_in[foto_ktp,image/jpg,image/jpeg,image/png]',
+        'errors'  => [
+          'max_size'  => 'Ukuran Gambar Terlalu Besar',
+          'is_image'  => 'Yang Anda Masukkan Bukan File Gambar',
+          'mime_in'   => 'Yang Anda Masukkan Bukan File Gambar'
         ]
       ],
       'foto_kk' => [
-        'rules' => 'max_size[foto_kk, 2028]|is_image[foto_kk]|mime_in[foto_kk,image/jpg,image/jpeg,image/png]',
-        'errors' => [
-          'max_size' => 'Ukuran Gambar Terlalu Besar',
-          'is_image' => 'Yang Anda Masukkan Bukan File Gambar',
-          'mime_in' => 'Yang Anda Masukkan Bukan File Gambar'
+        'rules'   => 'max_size[foto_kk, 2028]|is_image[foto_kk]|mime_in[foto_kk,image/jpg,image/jpeg,image/png]',
+        'errors'  => [
+          'max_size'  => 'Ukuran Gambar Terlalu Besar',
+          'is_image'  => 'Yang Anda Masukkan Bukan File Gambar',
+          'mime_in'   => 'Yang Anda Masukkan Bukan File Gambar'
         ]
       ]
     ])) {
@@ -188,9 +198,11 @@ class Data_pasien extends BaseController
 
     // Ambil File
     $file_Fotoktp = $this->request->getFile('foto_ktp');
-    $file_Fotokk = $this->request->getFile('foto_kk');
+    $file_Fotokk  = $this->request->getFile('foto_kk');
+
     // nama File
     $nama_file = $file_Fotoktp->getRandomName();
+
     // cek gambar
     // KTP
     if ($file_Fotoktp->getError() == 4) {
@@ -203,6 +215,7 @@ class Data_pasien extends BaseController
       $nama_file_ktp = 'KTP - ' . $nama_file;
       $file_Fotoktp->move('gambar/foto_ktp', 'KTP - ' . $nama_file);
     }
+
     // KK
     if ($file_Fotokk->getError() == 4) {
       $nama_file_kk = $this->request->getVar('file_kk_lama');
@@ -222,17 +235,17 @@ class Data_pasien extends BaseController
     }
 
     $this->pasienModel->save([
-      'id_pasien' => $id,
-      'nama_pasien' => $this->request->getVar('nama_pasien'),
-      'slug' => $slug,
-      'nik_pasien' => $this->request->getVar('nik_pasien'),
-      'tgl_lahir' => $this->request->getVar('tgl_lahir'),
-      'jenis_kelamin' => $this->request->getVar('jenis_kelamin'),
-      'alamat' => $this->request->getVar('alamat'),
-      'no_hp' => $this->request->getVar('no_hp'),
-      'email' => $this->request->getVar('email'),
-      'foto_ktp' => $nama_file_ktp,
-      'foto_kk' => $nama_file_kk
+      'id_pasien'       => $id,
+      'nama_pasien'     => $this->request->getVar('nama_pasien'),
+      'slug'            => $slug,
+      'nik_pasien'      => $this->request->getVar('nik_pasien'),
+      'tgl_lahir'       => $this->request->getVar('tgl_lahir'),
+      'jenis_kelamin'   => $this->request->getVar('jenis_kelamin'),
+      'alamat'          => $this->request->getVar('alamat'),
+      'no_hp'           => $this->request->getVar('no_hp'),
+      'email'           => $this->request->getVar('email'),
+      'foto_ktp'        => $nama_file_ktp,
+      'foto_kk'         => $nama_file_kk
     ]);
 
     session()->setFLashdata('pesan', 'Ubah');
@@ -242,8 +255,8 @@ class Data_pasien extends BaseController
   public function detail_pasien($slug)
   {
     $data = [
-      'title'    => 'Detail Data Pasien',
-      'validation' => \Config\Services::validation(),
+      'title'       => 'Detail Data Pasien',
+      'validation'  => \Config\Services::validation(),
       'data_pasien' => $this->pasienModel->getPasien($slug)
     ];
     return view('/administrator/detail_pasien', $data);
