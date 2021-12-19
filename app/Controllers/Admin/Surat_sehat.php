@@ -34,6 +34,7 @@ class Surat_sehat extends BaseController
     $this->suratBuilder->select('id_sks, nomor_surat, surat_kesehatan.nik_pasien as nik_p, pasien.tgl_lahir, nama_pasien, kepentingan, hasil_periksa, surat_kesehatan.tanggal_dibuat as tgl_dibuat, TIMESTAMPDIFF(
 MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     $this->suratBuilder->join('pasien', 'pasien.nik_pasien = surat_kesehatan.nik_pasien');
+    $this->suratBuilder->orderBy('id_sks', 'DESC');
 
     $keyword = $this->request->getVar('keyword');
 
@@ -150,14 +151,21 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     $tgl_exp = ($te[0] . "-" . $te[1] . "-" . $tm) . "<br>";
 
     if ($id == null) {
-      $this->pasienModel->insert([
-        'nik_pasien'    => $this->request->getVar('nik_pasien'),
-        'slug'          => $slugPasien,
-        'nama_pasien'   => $this->request->getVar('nama_pasien'),
-        'tgl_lahir'     => $this->request->getVar('tgl_lahir'),
-        'jenis_kelamin' => $this->request->getVar('jenis_kelamin'),
-        'alamat'        => $this->request->getVar('alamat')
-      ]);
+      $this->pasienBuilder->select('nik_pasien');
+      $this->pasienBuilder->where('nik_pasien', $this->request->getVar('nik_pasien'));
+      $query = $this->pasienBuilder->get();
+      $queryp = $query->getResult();
+      // dd(empty($queryp));
+      if (empty($queryp)) {
+        $this->pasienModel->insert([
+          'nik_pasien'    => $this->request->getVar('nik_pasien'),
+          'slug'          => $slugPasien,
+          'nama_pasien'   => $this->request->getVar('nama_pasien'),
+          'tgl_lahir'     => $this->request->getVar('tgl_lahir'),
+          'jenis_kelamin' => $this->request->getVar('jenis_kelamin'),
+          'alamat'        => $this->request->getVar('alamat')
+        ]);
+      }
     }
     // $pasienBuilder->insert($data);
 
@@ -269,9 +277,9 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
 
   public function detail_surat($id)
   {
-    $this->suratBuilder->select('id_sks, nomor_surat, pasien.nik_pasien as nik_p, nama_pasien, jenis_kelamin, tgl_lahir, alamat,
+    $this->suratBuilder->select('id_sks, nomor_surat, pasien.nik_pasien as nik_p, nama_pasien, nama_kapus, kapus.nip_kapus as nip_kp, jenis_kelamin, tgl_lahir, alamat,
           pekerjaan, kepentingan, tinggi_badan, berat_badan, tensi_darah, suhu_tubuh, nadi, respirasi, mata_buta, tubuh_tato, tubuh_tindik,
-          hasil_periksa, nama_kapus, kapus.nip_kapus as nip_kp, nama_kapus, pasien.tgl_lahir as tgl_lahir, TIMESTAMPDIFF(MONTH , pasien.tgl_lahir, NOW() ) AS umur');
+          hasil_periksa, nama_kapus, kapus.nip_kapus as nip_kp, nama_kapus, pasien.tgl_lahir as tgl_lahir, surat_kesehatan.tanggal_dibuat as tgl_dibuat, TIMESTAMPDIFF(MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     $this->suratBuilder->join('pasien', 'pasien.nik_pasien = surat_kesehatan.nik_pasien');
     $this->suratBuilder->join('kapus', 'kapus.nip_kapus = surat_kesehatan.nip_kapus');
     $this->suratBuilder->where('id_sks', $id);

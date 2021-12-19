@@ -186,6 +186,26 @@
                 <p class="text-muted"><?= $ds['hasil_periksa']; ?></p>
               </div>
             </div>
+            <hr>
+            <br>
+            <div class="row">
+              <div class="col-md-6">
+                <strong>Tanggal Dibuat</strong>
+              </div>
+
+              <div class="col-md-6">
+                <strong>Nama Kepala Puskesmas</strong>
+              </div>
+
+              <div class="col-md-6">
+                <p class="text-muted"><?= $ds['tgl_dibuat']; ?></p>
+              </div>
+
+              <div class="col-md-6">
+                <p class="text-muted"><?= $ds['nama_kapus']; ?></p>
+              </div>
+
+            </div>
           </div>
 
         </div>

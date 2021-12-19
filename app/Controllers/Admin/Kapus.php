@@ -67,20 +67,30 @@ class Kapus extends BaseController
 
         $slug = url_title($this->request->getVar('nip_kapus') . '-' . $this->request->getVar('nama_kapus'), '-', true);
 
-        $this->kapusBuilder->select('id_kapus, nama_kapus, nip_kapus, active, publik_key, private_key, hash_publik_key, hash_private_key');
+        $this->kapusBuilder->select('id_kapus, nama_kapus, nip_kapus, active, publik_key, private_key, hash_publik_key, hash_private_key, tanggal_dibuat, tanggal_diubah');
         $this->kapusBuilder->where('nip_kapus', $this->request->getVar('nip_kapus'));
         $query = $this->kapusBuilder->get();
         $nip_kp = $query->getResultArray();
+        // dd($nip_kp);
 
         // dd($nip_kp);
 
-        if ($nip_kp == 0) {
+        if (empty($nip_kp)) {
             // dd('yes');
+            $gen_key = get_key();
+
+
             $data = [
-                'nama_kapus'  => $this->request->getVar('nama_kapus'),
-                'slug'        => $slug,
-                'nip_kapus'   => $this->request->getVar('nip_kapus'),
-                'active'  => 1
+                'nama_kapus'         => $this->request->getVar('nama_kapus'),
+                'slug'               => $slug,
+                'nip_kapus'          => $this->request->getVar('nip_kapus'),
+                'publik_key'         => $gen_key[0],
+                'private_key'        => $gen_key[1],
+                'hash_publik_key'    => md5($gen_key[0]),
+                'hash_private_key'   => md5($gen_key[1]),
+                'tanggal_dibuat'     => date("Y-m-d", time()),
+                'tanggal_diubah'     => date("Y-m-d", time()),
+                'active'             => 1
             ];
             // $this->kapusModel->insert([
             //   'nama_kapus' => $this->request->getVar('nama_kapus'),
@@ -92,10 +102,15 @@ class Kapus extends BaseController
             session()->setFLashdata('pesan', ' Tambahkan');
         } else {
             // dd('no');
-            $nip_kapus = $nip_kp[0]['nip_kapus'];
-            $active = $nip_kp[0]['active'];
-            $id = $nip_kp[0]['id_kapus'];
-            $nama_kapus = $nip_kp[0]['nama_kapus'];
+            $nip_kapus          = $nip_kp[0]['nip_kapus'];
+            $active             = $nip_kp[0]['active'];
+            $id                 = $nip_kp[0]['id_kapus'];
+            $nama_kapus         = $nip_kp[0]['nama_kapus'];
+            $publik_key         = $nip_kp[0]['publik_key'];
+            $private_key        = $nip_kp[0]['private_key'];
+            $hash_publik_key    = $nip_kp[0]['hash_publik_key'];
+            $hash_private_key   = $nip_kp[0]['hash_private_key'];
+            $tanggal_dibuat     = $nip_kp[0]['tanggal_dibuat'];
 
             if ($nip_kapus == $this->request->getVar('nip_kapus')) {
                 // dd('yes');
@@ -114,8 +129,9 @@ class Kapus extends BaseController
                         // dd('no');
 
                         $data = [
-                            'nama_kapus' => $this->request->getVar('nama_kapus'),
-                            'active' => 1
+                            'nama_kapus'        => $this->request->getVar('nama_kapus'),
+                            'tanggal_diubah'    => date("Y-m-d", time()),
+                            'active'            => 1
                         ];
                         $this->kapusBuilder->where('id_kapus', $id);
                         $this->kapusBuilder->update($data);
@@ -124,10 +140,16 @@ class Kapus extends BaseController
                 } else {
                     // dd('no');
                     $data = [
-                        'nama_kapus' => $this->request->getVar('nama_kapus'),
-                        'slug' => $slug,
-                        'nip_kapus' => $nip_kapus,
-                        'active'  => 1
+                        'nama_kapus'        => $this->request->getVar('nama_kapus'),
+                        'slug'              => $slug,
+                        'nip_kapus'         => $nip_kapus,
+                        'publik_key'        => $publik_key,
+                        'private_key'       => $private_key,
+                        'hash_publik_key'   => $hash_publik_key,
+                        'hash_private_key'  => $hash_private_key,
+                        'tanggal_dibuat'    => $tanggal_dibuat,
+                        'tanggal_diubah'    => date("Y-m-d", time()),
+                        'active'            => 1
                     ];
                     // $this->kapusModel->insert([
                     //   'nama_kapus' => $this->request->getVar('nama_kapus'),
@@ -143,17 +165,24 @@ class Kapus extends BaseController
                 if ($active == 1) {
                     // dd('yes');
                     $data = [
-                        'active' => 0
+                        'tanggal_diubah'    => date("Y-m-d", time()),
+                        'active'            => 0
                     ];
                     $this->kapusBuilder->where('id_kapus', $id);
                     $this->kapusBuilder->update($data);
                     session()->setFLashdata('pesan', ' Edit');
                 }
                 $data = [
-                    'nama_kapus'  => $this->request->getVar('nama_kapus'),
-                    'slug'        => $slug,
-                    'nip_kapus'   => $this->request->getVar('nip_kapus'),
-                    'active'  => 1
+                    'nama_kapus'        => $this->request->getVar('nama_kapus'),
+                    'slug'              => $slug,
+                    'nip_kapus'         => $this->request->getVar('nip_kapus'),
+                    'publik_key'        => $publik_key,
+                    'private_key'       => $private_key,
+                    'hash_publik_key'   => $hash_publik_key,
+                    'hash_private_key'  => $hash_private_key,
+                    'tanggal_dibuat'    => $tanggal_dibuat,
+                    'tanggal_diubah'    => date("Y-m-d", time()),
+                    'active'            => 1
                 ];
                 // $this->kapusModel->insert([
                 //   'nama_kapus' => $this->request->getVar('nama_kapus'),
@@ -161,7 +190,7 @@ class Kapus extends BaseController
                 //   'nip_kapus' => $nip_kapus,
                 //   'active' => 1
                 // ]);
-                $this->kapusBuilder->insert($data);
+                $this->kapusBuilder->replace($data);
                 session()->setFLashdata('pesan', ' Edit');
             }
             // code...
