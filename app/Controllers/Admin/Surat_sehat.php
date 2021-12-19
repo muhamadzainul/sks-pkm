@@ -158,12 +158,14 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
       // dd(empty($queryp));
       if (empty($queryp)) {
         $this->pasienModel->insert([
-          'nik_pasien'    => $this->request->getVar('nik_pasien'),
-          'slug'          => $slugPasien,
-          'nama_pasien'   => $this->request->getVar('nama_pasien'),
-          'tgl_lahir'     => $this->request->getVar('tgl_lahir'),
-          'jenis_kelamin' => $this->request->getVar('jenis_kelamin'),
-          'alamat'        => $this->request->getVar('alamat')
+          'nik_pasien'      => $this->request->getVar('nik_pasien'),
+          'slug'            => $slugPasien,
+          'nama_pasien'     => $this->request->getVar('nama_pasien'),
+          'tgl_lahir'       => $this->request->getVar('tgl_lahir'),
+          'jenis_kelamin'   => $this->request->getVar('jenis_kelamin'),
+          'alamat'          => $this->request->getVar('alamat'),
+          'tanggal_dibuat'  => date("Y-m-d", time()),
+          'tanggal_diubah'  => date("Y-m-d", time()),
         ]);
       }
     }
