@@ -14,7 +14,7 @@ class Surat_sehat extends BaseController
   protected $db;
   protected $suratBuilder;
   protected $pasienBuilder;
-  protected $kapusBuilder;
+  protected $rsaBuilder;
   public function __construct()
   {
     $this->suratModel     = new Model_surat();
@@ -23,6 +23,7 @@ class Surat_sehat extends BaseController
     $this->suratBuilder   = $this->db->table('surat_kesehatan');
     $this->pasienBuilder   = $this->db->table('pasien');
     $this->kapusBuilder   = $this->db->table('kapus');
+    $this->rsaBuilder   = $this->db->table('surat_rsa');
   }
 
   public function index()
@@ -112,7 +113,6 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
 
   public function simpan($id = null)
   {
-
     // Form Validasi
     if (!$this->validate([
       'nomor_surat' => [
@@ -150,8 +150,9 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     $tm = (intval($te[2]) + 2);
     $tgl_exp = ($te[0] . "-" . $te[1] . "-" . $tm) . "<br>";
 
+    $gen_key = get_key();
+
     if ($id == null) {
-      $gen_key = get_key();
 
       $this->pasienBuilder->select('nik_pasien');
       $this->pasienBuilder->where('nik_pasien', $this->request->getVar('nik_pasien'));
@@ -188,27 +189,60 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     // $query2 = $this->suratBuilder->get();
 
     $this->suratModel->insert([
-      'nomor_surat' => $this->request->getVar('nomor_surat'),
-      'nik_pasien' => $this->request->getVar('nik_pasien'),
-      'nip_kapus' => $this->request->getVar('nip_kapus'),
-      'pekerjaan' => $this->request->getVar('pekerjaan'),
-      'slug' => $slug,
-      'tinggi_badan' => $this->request->getVar('tinggi_badan'),
-      'berat_badan' => $this->request->getVar('berat_badan'),
-      'suhu_tubuh' => $this->request->getVar('suhu_tubuh'),
-      'tensi_darah' => $this->request->getVar('tensi_darah'),
-      'nadi' => $this->request->getVar('nadi'),
-      'respirasi' => $this->request->getVar('respirasi'),
-      'mata_buta' => $this->request->getVar('mata_buta'),
-      'tubuh_tato' => $this->request->getVar('tubuh_tato'),
-      'tubuh_tindik' => $this->request->getVar('tubuh_tindik'),
-      'kepentingan' => $this->request->getVar('kepentingan'),
-      'hasil_periksa' => $this->request->getVar('hasil_periksa'),
-      'tanggal_dibuat' => date("Y-m-d", time()),
-      'tanggal_diubah' => date("Y-m-d", time()),
-      'tanggal_exp' => $tgl_exp
+      'nomor_surat'     => $this->request->getVar('nomor_surat'),
+      'nik_pasien'      => $this->request->getVar('nik_pasien'),
+      'nip_kapus'       => $this->request->getVar('nip_kapus'),
+      'pekerjaan'       => $this->request->getVar('pekerjaan'),
+      'slug'            => $slug,
+      'tinggi_badan'    => $this->request->getVar('tinggi_badan'),
+      'berat_badan'     => $this->request->getVar('berat_badan'),
+      'suhu_tubuh'      => $this->request->getVar('suhu_tubuh'),
+      'tensi_darah'     => $this->request->getVar('tensi_darah'),
+      'nadi'            => $this->request->getVar('nadi'),
+      'respirasi'       => $this->request->getVar('respirasi'),
+      'mata_buta'       => $this->request->getVar('mata_buta'),
+      'tubuh_tato'      => $this->request->getVar('tubuh_tato'),
+      'tubuh_tindik'    => $this->request->getVar('tubuh_tindik'),
+      'kepentingan'     => $this->request->getVar('kepentingan'),
+      'hasil_periksa'   => $this->request->getVar('hasil_periksa'),
+      'tanggal_dibuat'  => date("Y-m-d", time()),
+      'tanggal_diubah'  => date("Y-m-d", time()),
+      'tanggal_exp'     => $tgl_exp
     ]);
 
+    $teks = $this->request->getVar('nomor_surat') . "-" . $this->request->getVar('nik_pasien') . "-" . $this->request->getVar('nik_pasien') . "-" . $this->request->getVar('nama_pasien') . "-" . $this->request->getVar('kepentingan') . "-" . $this->request->getVar('hasil_periksa') . "-" . date("Y-m-d", time());
+    $hash_teks = md5($teks);
+    // dd($teks);
+
+    $this->kapusBuilder->select('id_kapus, nama_kapus, nip_kapus, publik_key, private_key');
+    $queryKapus   = $this->kapusBuilder->get();
+    $kapusQ       = $queryKapus->getResultArray();
+
+    $kapus_publik_key   = $kapusQ[0]['publik_key'];
+    // $kapus_private_key  = $kapusQ[0]['private_key'];
+
+    // dd($kapusQ[0]['nama_kapus']);
+
+    $enk_teks = enkripsi_text($hash_teks, $gen_key[1], $kapus_publik_key);
+    // dd($enk_teks);
+    if ($id == null) {
+      $this->rsaBuilder->insert([
+        'nomor_surat'   => $this->request->getVar('nomor_surat'),
+        'nik_pasien'    => $this->request->getVar('nik_pasien'),
+        'nip_kapus'     => $this->request->getVar('nip_kapus'),
+        'teks_asli'     => $hash_teks,
+        'teks_enkripsi' => $enk_teks[1]
+      ]);
+    } else {
+      $dataRSA = [
+        'nomor_surat'   => $this->request->getVar('nomor_surat'),
+        'nik_pasien'    => $this->request->getVar('nik_pasien'),
+        'nip_kapus'     => $this->request->getVar('nip_kapus'),
+        'teks_asli'     => $hash_teks,
+        'teks_enkripsi' => $enk_teks[1]
+      ];
+      $this->rsaBuilder->replace($dataRSA);
+    }
 
     // $dataSurat = [
     //     'nomor_surat' => $this->request->getVar('nomor_surat'),

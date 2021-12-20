@@ -92,9 +92,9 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Nomor surat</th>
                                     <th>Nama Pasien</th>
                                     <th>Umur</th>
+                                    <th>Kepentingan</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -103,9 +103,9 @@
                                 foreach ($data_surat as $ds) : ?>
                                     <tr>
                                         <td><?= $n++; ?></td>
-                                        <td><?= $ds['nomor_surat']; ?></td>
                                         <td><?= $ds['nama_pasien']; ?></td>
                                         <td><?= floor($ds['umur'] / 12); ?></td>
+                                        <td><?= $ds['kepentingan']; ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>

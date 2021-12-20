@@ -101,7 +101,7 @@ function get_key()
 }
 
 // enkripsi
-function enkripsi_text($hash_text, $text, $get_k, $get_k2)
+function enkripsi_text($hash_text, $get_k, $get_k2)
 {
     // private key kapus
     $private_key = explode(".", $get_k);
@@ -111,7 +111,7 @@ function enkripsi_text($hash_text, $text, $get_k, $get_k2)
     //     echo "Kunci Tidak Cocok";
     // }
     // publik key pasien
-    $public_key2 = explode(".", $get_k2[0]);
+    $public_key2 = explode(".", $get_k2);
     $e2 = $public_key2[0];
     $n3 = $public_key2[1];
     // if ($n3 != $n4) {
@@ -120,7 +120,7 @@ function enkripsi_text($hash_text, $text, $get_k, $get_k2)
     $hasil = "";
     $hasil_sem = "";
     $ascii = "";
-    $angka_0 = "";
+    // $angka_0 = "";
 
     for ($i = 0; $i < strlen($hash_text); $i++) {
         $ascii .= ord($hash_text[$i]);
@@ -194,6 +194,7 @@ function enkripsi_text($hash_text, $text, $get_k, $get_k2)
         $v_k = $v_k * 0;
     }
     echo "<br>Nilai text ASCII = $ascii";
+    echo "<br>Nilai text ASCII = $hasil";
     $hs = "";
     $pecah_enkrip = explode(".", $hasil);
     // echo "<br>". (count($pecah_enkrip));

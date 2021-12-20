@@ -25,6 +25,8 @@ class Administrator extends BaseController
         $this->SuratBuilder->select('id_sks, nomor_surat, surat_kesehatan.nik_pasien as nik_p, pasien.tgl_lahir, nama_pasien, kepentingan, hasil_periksa, TIMESTAMPDIFF(
             MONTH , pasien.tgl_lahir, NOW() ) AS umur');
         $this->SuratBuilder->join('pasien', 'pasien.nik_pasien = surat_kesehatan.nik_pasien');
+        $this->SuratBuilder->orderBy('id_sks', 'DESC');
+        $this->PasienBuilder->orderBy('id_pasien', 'DESC');
         $suratQuery = $this->SuratBuilder->get(10, 0);
         // $suratQuery       = $this->SuratBuilder->get(10, 0);
         $pasienQuery      = $this->PasienBuilder->get(10, 0);
