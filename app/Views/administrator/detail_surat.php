@@ -46,7 +46,7 @@
                 <strong>Umur</strong>
               </div>
               <div class="col-md-9">
-                <p class="text-muted"><?= $ds['umur']; ?></p>
+                <p class="text-muted"><?= floor($ds['umur'] / 12); ?></p>
               </div>
 
               <div class="col-md-3 b-r">
