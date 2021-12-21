@@ -206,6 +206,12 @@
               </div>
 
             </div>
+            </hr>
+            <div class="row">
+              <div class="col-md-12">
+                <img width="20%" alt="qr_code" src="<?php base_url(); ?>/gambar/qr_code/<?= $ds['qr_code']; ?>" class="m-t-10">
+              </div>
+            </div>
           </div>
 
         </div>

@@ -7,6 +7,15 @@ use App\Models\Model_pasien;
 
 use App\Controllers\BaseController;
 
+use Endroid\QrCode\Color\Color;
+use \Endroid\QrCode\Encoding\Encoding;
+use \Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelLow;
+use \Endroid\QrCode\QrCode;
+use \Endroid\QrCode\Label\Label;
+use \Endroid\QrCode\Logo\Logo;
+use \Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
+use \Endroid\QrCode\Writer\PngWriter;
+
 class Surat_sehat extends BaseController
 {
   protected $suratModel;
@@ -177,16 +186,48 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
         ]);
       }
     }
-    // $pasienBuilder->insert($data);
 
-    // $this->suratBuilder->select('pasien.nik_pasien');
-    // $this->suratBuilder->join('pasien', 'pasien.nik_pasien = surat_kesehatan.nik_pasien');
-    // $this->suratModel->where('nik_pasien', $this->request->getVar('nik_pasien'))
-    // $query = $this->suratBuilder->get();
+    $teks = $this->request->getVar('nomor_surat') . "-" . $this->request->getVar('nik_pasien') . "-" . $this->request->getVar('nip_kapus') . "-" . $this->request->getVar('nama_pasien') . "-" . $this->request->getVar('kepentingan') . "-" . $this->request->getVar('hasil_periksa') . "-" . date("Y-m-d", time());
+    $hash_teks = md5($teks);
+    // dd($teks);
 
-    // $this->suratBuilder->select('kapus.nip_kapus');
-    // $this->suratBuilder->join('kapus', 'kapus.nip_kapus = surat_kesehatan.nip_kapus');
-    // $query2 = $this->suratBuilder->get();
+    $this->kapusBuilder->select('id_kapus, nama_kapus, nip_kapus, publik_key, private_key');
+    $queryKapus   = $this->kapusBuilder->get();
+    $kapusQ       = $queryKapus->getResultArray();
+
+    $kapus_publik_key   = $kapusQ[0]['publik_key'];
+    // $kapus_private_key  = $kapusQ[0]['private_key'];
+
+    // dd($kapusQ[0]['nama_kapus']);
+    //create QRcode
+
+    $this->gen_qr   = QrCode::create($hash_teks);
+    $writer         = new PngWriter();
+
+    $qrCode = $this->gen_qr->setEncoding(new Encoding('UTF-8'))
+      ->setErrorCorrectionLevel(new ErrorCorrectionLevelLow())
+      ->setSize(300)
+      ->setMargin(10)
+      ->setRoundBlockSizeMode(new RoundBlockSizeModeMargin())
+      ->setForegroundColor(new Color(0, 0, 0))
+      ->setBackgroundColor(new Color(255, 255, 255));
+
+    // Create generic logo
+    $logo = Logo::create('./gambar/Logo-Mojokerto.png')
+      ->setResizeToWidth(50);
+
+    // Create generic label
+    // $label = Label::create('Zainul')
+    //     ->setTextColor(new Color(255, 0, 0));
+
+    $test = $writer->write($qrCode, $logo);
+
+    header('Content-Type: ' . $test->getMimeType());
+    // echo $test->getString();
+    // $qr_name = getRandomName();
+    $test->saveToFile('./gambar/qr_code/' . $hash_teks . '.png');
+    $db_qrcode = $hash_teks . '.png';
+    // dd();
 
     $this->suratModel->insert([
       'nomor_surat'     => $this->request->getVar('nomor_surat'),
@@ -205,23 +246,12 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
       'tubuh_tindik'    => $this->request->getVar('tubuh_tindik'),
       'kepentingan'     => $this->request->getVar('kepentingan'),
       'hasil_periksa'   => $this->request->getVar('hasil_periksa'),
+      'qr_code'         => $db_qrcode,
       'tanggal_dibuat'  => date("Y-m-d", time()),
       'tanggal_diubah'  => date("Y-m-d", time()),
       'tanggal_exp'     => $tgl_exp
     ]);
 
-    $teks = $this->request->getVar('nomor_surat') . "-" . $this->request->getVar('nik_pasien') . "-" . $this->request->getVar('nip_kapus') . "-" . $this->request->getVar('nama_pasien') . "-" . $this->request->getVar('kepentingan') . "-" . $this->request->getVar('hasil_periksa') . "-" . date("Y-m-d", time());
-    $hash_teks = md5($teks);
-    // dd($teks);
-
-    $this->kapusBuilder->select('id_kapus, nama_kapus, nip_kapus, publik_key, private_key');
-    $queryKapus   = $this->kapusBuilder->get();
-    $kapusQ       = $queryKapus->getResultArray();
-
-    $kapus_publik_key   = $kapusQ[0]['publik_key'];
-    // $kapus_private_key  = $kapusQ[0]['private_key'];
-
-    // dd($kapusQ[0]['nama_kapus']);
 
     $enk_teks = enkripsi_text($hash_teks, $gen_key[1], $kapus_publik_key);
     // dd($enk_teks);
@@ -244,26 +274,6 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
       $this->rsaBuilder->replace($dataRSA);
     }
 
-    // $dataSurat = [
-    //     'nomor_surat' => $this->request->getVar('nomor_surat'),
-    //     'nik_pasien' => $this->request->getVar('nik_pasien'),
-    //     'nip_kapus' => $this->request->getVar('nip_kapus'),
-    //     'pekerjaan' => $this->request->getVar('pekerjaan'),
-    //     'slug' => $slug,
-    //     'tinggi_badan' => $this->request->getVar('tinggi_badan'),
-    //     'berat_badan' => $this->request->getVar('berat_badan'),
-    //     'suhu_tubuh' => $this->request->getVar('suhu_tubuh'),
-    //     'tensi_darah' => $this->request->getVar('tensi_darah'),
-    //     'nadi' => $this->request->getVar('nadi'),
-    //     'respirasi' => $this->request->getVar('respirasi'),
-    //     'mata_buta' => $this->request->getVar('mata_buta'),
-    //     'tubuh_tato' => $this->request->getVar('tubuh_tato'),
-    //     'tubuh_tindik' => $this->request->getVar('tubuh_tindik'),
-    //     'kepentingan' => $this->request->getVar('kepentingan'),
-    //     'hasil_periksa' => $this->request->getVar('hasil_periksa')
-    // ];
-    // $this->suratBuilder->insert($dataSurat);
-
     session()->setFLashdata('pesan', 'Tambahkan');
 
     return redirect()->to('/admin/surat_sehat');
@@ -281,7 +291,7 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
   {
     $this->suratBuilder->select('id_sks, nomor_surat, pasien.nik_pasien as nik_p, nama_pasien, jenis_kelamin, tgl_lahir, alamat,
     pekerjaan, kepentingan, tinggi_badan, berat_badan, tensi_darah, suhu_tubuh, nadi, respirasi, mata_buta, tubuh_tato, tubuh_tindik,
-    hasil_periksa, nama_kapus, kapus.nip_kapus as nip_kp, nama_kapus, pasien.tgl_lahir as tgl_lahir, TIMESTAMPDIFF(MONTH , pasien.tgl_lahir, NOW() ) AS umur');
+    hasil_periksa, qr_code, nama_kapus, kapus.nip_kapus as nip_kp, nama_kapus, pasien.tgl_lahir as tgl_lahir, TIMESTAMPDIFF(MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     $this->suratBuilder->join('pasien', 'pasien.nik_pasien = surat_kesehatan.nik_pasien');
     $this->suratBuilder->join('kapus', 'kapus.nip_kapus = surat_kesehatan.nip_kapus');
     $this->suratBuilder->where('id_sks', $id);
@@ -322,7 +332,7 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
   {
     $this->suratBuilder->select('id_sks, nomor_surat, pasien.nik_pasien as nik_p, nama_pasien, nama_kapus, kapus.nip_kapus as nip_kp, jenis_kelamin, tgl_lahir, alamat,
           pekerjaan, kepentingan, tinggi_badan, berat_badan, tensi_darah, suhu_tubuh, nadi, respirasi, mata_buta, tubuh_tato, tubuh_tindik,
-          hasil_periksa, nama_kapus, kapus.nip_kapus as nip_kp, nama_kapus, pasien.tgl_lahir as tgl_lahir, surat_kesehatan.tanggal_dibuat as tgl_dibuat, 
+          hasil_periksa, qr_code, nama_kapus, kapus.nip_kapus as nip_kp, nama_kapus, pasien.tgl_lahir as tgl_lahir, surat_kesehatan.tanggal_dibuat as tgl_dibuat, 
           TIMESTAMPDIFF(MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     $this->suratBuilder->join('pasien', 'pasien.nik_pasien = surat_kesehatan.nik_pasien');
     $this->suratBuilder->join('kapus', 'kapus.nip_kapus = surat_kesehatan.nip_kapus');

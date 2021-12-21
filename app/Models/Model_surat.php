@@ -14,7 +14,7 @@ class Model_surat extends Model
     protected $allowedFields = [
         'nomor_surat', 'nik_pasien', 'nama_pasien', 'jenis_kelamin', 'tgl_lahir', 'alamat',
         'pekerjaan', 'kepentingan', 'tinggi_badan', 'berat_badan', 'tensi_darah', 'suhu_tubuh', 'nadi', 'respirasi', 'mata_buta', 'tubuh_tato', 'tubuh_tindik',
-        'hasil_periksa', 'nama_kapus', 'nip_kapus', 'tanggal_dibuat', 'tanggal_dibuat', 'tanggal_exp'
+        'hasil_periksa', 'nama_kapus', 'nip_kapus', 'qr_code', 'tanggal_dibuat', 'tanggal_dibuat', 'tanggal_exp'
     ];
 
     public function getPetugas($slug = false)
