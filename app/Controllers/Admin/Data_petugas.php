@@ -226,12 +226,20 @@ class Data_petugas extends BaseController
 
     return redirect()->to('/admin/data_petugas/detail_petugas/' . $slug);
   }
-  public function detail_petugas($slug)
+  public function detail_petugas($id)
   {
+    $this->userPetugas->select('users.id as id_satgas, email, fullname, user_profile, auth_groups_users.group_id as akses');
+    $this->userPetugas->join('auth_groups_users', 'auth_groups_users.user_id = users.id');
+    $this->userPetugas->join('auth_groups', 'auth_groups_users.group_id = auth_groups.id');
+    $this->userPetugas->where('users.id', $id);
+    $query = $this->userPetugas->get();
+    // dd($query->getRowArray());
+
     $data = [
       'title'    => 'Detail Data Petugas',
       'validation' => \Config\Services::validation(),
-      'data_petugas' => $this->petugasModel->getPetugas($slug)
+      // 'data_petugas' => $this->petugasModel->getPetugas($slug)
+      'data_petugas' => $query->getRowArray()
     ];
     return view('/administrator/detail_petugas', $data);
   }
