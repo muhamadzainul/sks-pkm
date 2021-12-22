@@ -48,6 +48,9 @@ class Administrator extends BaseController
 
     public function profile()
     {
-        return view('/administrator/my_profile');
+        $data = [
+            'title'    => 'Dashboard',
+        ];
+        return view('/administrator/my_profile', $data);
     }
 }

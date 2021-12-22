@@ -52,16 +52,6 @@
               <hr>
             <?php endif; ?>
 
-            <div class="row">
-              <div class="col-md-3 col-xs-6 b-r">
-                <strong>Nik Petugas</strong>
-              </div>
-              <div class="col-md-9 col-xs-6">
-                <p class="text-muted"><?= user()->nik; ?></p>
-              </div>
-            </div>
-            <hr>
-
             <?php if (user()->jenis_kelamin) : ?>
               <div class="row">
                 <div class="col-md-3 col-xs-6 b-r">

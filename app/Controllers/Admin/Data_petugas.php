@@ -9,15 +9,23 @@ use App\Controllers\BaseController;
 class Data_petugas extends BaseController
 {
   protected $petugasModel;
+  protected $userPetugas;
   public function __construct()
   {
     $this->petugasModel = new Model_petugas();
+    $this->db           = \Config\Database::connect();
+    $this->userPetugas  = $this->db->table('users');
   }
 
   public function index()
   {
     $currentPage = $this->request->getVar('page') ? $this->request->getVar('page') : 1;
     // $data_pasien = $this->pasienModel->findAll();
+
+    $this->userPetugas->select('users.id as id_satgas, email, fullname, user_profile, auth_groups_users.group_id as akses');
+    $this->userPetugas->join('auth_groups_users', 'auth_groups_users.user_id = users.id');
+    $this->userPetugas->join('auth_groups', 'auth_groups_users.group_id = auth_groups.id');
+    $query = $this->userPetugas->get();
 
     $keyword = $this->request->getVar('keyword');
 
@@ -30,10 +38,10 @@ class Data_petugas extends BaseController
     // $data_petugas = $this->petugasModel->findAll();
     $data = [
       // 'data_petugas' => $data_petugas
-      'title'    => 'Data Petugas',
-      'data_petugas' => $petugas->paginate(4),
-      'pager' => $this->petugasModel->pager,
-      'currentPage' => $currentPage
+      'title'         => 'Data Petugas',
+      'data_petugas'  => $query->getResultArray(),
+      // 'pager'         => $this->petugasModel->pager,
+      // 'currentPage'   => $currentPage
     ];
     return view('/administrator/data_petugas', $data);
   }
@@ -105,13 +113,26 @@ class Data_petugas extends BaseController
 
   public function hapus_data($id)
   {
+
+    $this->userPetugas->select('users.id as id_satgas, user_profile, auth_groups_users.group_id as akses');
+    $this->userPetugas->join('auth_groups_users', 'auth_groups_users.user_id = users.id');
+    $this->userPetugas->join('auth_groups', 'auth_groups_users.group_id = auth_groups.id');
+    $query = $this->userPetugas->get();
+    $petugas_data = $query->getResultArray();
+
     // cari nama gambar berdasarkan id
-    $petugas_data = $this->petugasModel->find($id);
+    // $petugas_data = $this->petugasModel->find($id);
     // hapus Gambar
-    if (!empty($petugas_data['foto_profil'])) {
-      unlink('gambar/profil_petugas/' . $petugas_data['foto_profil']);
+    if (!empty($petugas_data['user_profile'])) {
+      if ($petugas_data['user_profile'] != 'default-profile.png') {
+        unlink('gambar/profil_petugas/' . $petugas_data['user_profile']);
+      }
     }
-    $this->petugasModel->delete($id);
+    $this->table_akses = $this->db->table('auth_groups_users');
+    $this->table_akses->delete(['user_id' => $id]);
+    $this->userPetugas->delete(['id' => $id]);
+    // $this->petugasModel->delete($id);
+
 
     session()->setFLashdata('pesan', 'Hapus');
     return redirect()->to('/admin/data_petugas');

@@ -42,7 +42,6 @@
                 <tr>
                   <th scope="col">No</th>
                   <th scope="col">Nama Petugas</th>
-                  <th scope="col">NIK</th>
                   <th scope="col">Email</th>
                   <th scope="col">Foto Profil</th>
                   <th scope="col" colspan="3">Aksi</th>
@@ -57,32 +56,33 @@
                 <?php else : ?>
                   <?php $n = 1; ?>
                   <?php foreach ($data_petugas as $dp) : ?>
-                    <tr>
-                      <td><?= $n++; ?></td>
-                      <td><?= $dp['nama_petugas']; ?></td>
-                      <td><?= $dp['nik_petugas']; ?></td>
-                      <td><?= $dp['email']; ?></td>
-                      <?php if (empty($dp['foto_profil'])) : ?>
-                        <td><span class="label label-danger">Belum</span></td>
-                      <?php else : ?>
-                        <td><span class="label label-success">Sudah</span></td>
-                      <?php endif; ?>
-                      <td><a href="<?php base_url(); ?>/admin/data_petugas/detail_petugas/<?= $dp['slug']; ?>" class="btn btn-warning btn-sm"><i class="fa fa-fw fa-edit"></i>Detail</a></td>
-                      <td>
-                        <!-- <a href="" class="btn btn-danger btn-rounded swal_delete" data-hapusId="<?php base_url(); ?>/admin/data_pasien/<?= $dp['id_satgas']; ?>">Hapus</a> -->
-                        <!-- <span class="delete_url" ></span> -->
-                        <form action="<?php base_url(); ?>/Admin/data_petugas/<?= $dp['id_satgas']; ?>" method="post">
-                          <?php csrf_field(); ?>
-                          <input type="hidden" name="_method" value="DELETE">
-                          <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda Yakin ?')"><i class="fa fa-fw fa-trash"></i>Hapus</button>
-                        </form>
-                      </td>
-                    </tr>
+                    <?php if ($dp['akses'] != 1) : ?>
+                      <tr>
+                        <td><?= $n++; ?></td>
+                        <td><?= $dp['fullname']; ?></td>
+                        <td><?= $dp['email']; ?></td>
+                        <?php if (empty($dp['user_profile'])) : ?>
+                          <td><span class="label label-danger">Belum</span></td>
+                        <?php else : ?>
+                          <td><span class="label label-success">Sudah</span></td>
+                        <?php endif; ?>
+                        <td><a href="<?php base_url(); ?>/admin/data_petugas/detail_petugas/<?= $dp['id_satgas']; ?>" class="btn btn-warning btn-sm"><i class="fa fa-fw fa-edit"></i>Detail</a></td>
+                        <td>
+                          <!-- <a href="" class="btn btn-danger btn-rounded swal_delete" data-hapusId="<?php base_url(); ?>/admin/data_pasien/<?= $dp['id_satgas']; ?>">Hapus</a> -->
+                          <!-- <span class="delete_url" ></span> -->
+                          <form action="<?php base_url(); ?>/Admin/data_petugas/<?= $dp['id_satgas']; ?>" method="post">
+                            <?php csrf_field(); ?>
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda Yakin ?')"><i class="fa fa-fw fa-trash"></i>Hapus</button>
+                          </form>
+                        </td>
+                      </tr>
+                    <?php endif; ?>
                   <?php endforeach; ?>
                 <?php endif; ?>
               </tbody>
             </table>
-            <?= $pager->Links(); ?>
+
           </div>
         </div>
       </div>
