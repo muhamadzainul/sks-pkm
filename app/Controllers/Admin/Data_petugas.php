@@ -151,84 +151,95 @@ class Data_petugas extends BaseController
   public function update_data($id)
   {
     // data Alama
-    $data_lama = $this->petugasModel->getPetugas($this->request->getVar('slug'));
-    if ($data_lama['nik_petugas'] == $this->request->getVar('nik_petugas')) {
-      $rule_nik = 'required';
-    } else {
-      $rule_nik = 'required|is_unique[satgas.nik_petugas]';
-    }
+
+
+    // $data_lama = $this->petugasModel->getPetugas($this->request->getVar('slug'));
+    // dd($id);
+    $this->userPetugas->select('*');
+    $data_l = $this->userPetugas->getWhere(['id' => $id]);
+    $data_lama = $data_l->getRowArray();
+    // dd($data_lama);
     // Form Validasi
-    if (!$this->validate([
-      'nik_petugas' => [
-        'rules' => $rule_nik,
-        'errors' => [
-          'required' => 'NIK petugas harus di isi',
-          'is_unique' => 'NIK petugas sudah terdaftar'
-        ]
-      ],
-      'foto_profil' => [
-        'rules' => 'max_size[foto_profil, 2028]|is_image[foto_profil]|mime_in[foto_profil,image/jpg,image/jpeg,image/png]',
-        'errors' => [
-          'max_size' => 'Ukuran Gambar Terlalu Besar',
-          'is_image' => 'Yang Anda Masukkan Bukan File Gambar',
-          'mime_in' => 'Yang Anda Masukkan Bukan File Gambar'
-        ]
-      ]
-    ])) {
-      // $valid = \Config\Services::validation();
-      // return redirect()->to('/admin/data_petugas/edit_data/'.$slug)->withInput()->with('Validation', $valid);
-      return redirect()->to('/admin/data_petugas/edit_data/' . $this->request->getVar('slug'))->withInput();
-    }
+    // if (!$this->validate([
+    //   'user_profile' => [
+    //     'rules' => 'max_size[user_profile, 2028]|is_image[user_profile]|mime_in[user_profile,image/jpg,image/jpeg,image/png]',
+    //     'errors' => [
+    //       'max_size' => 'Ukuran Gambar Terlalu Besar',
+    //       'is_image' => 'Yang Anda Masukkan Bukan File Gambar',
+    //       'mime_in' => 'Yang Anda Masukkan Bukan File Gambar'
+    //     ]
+    //   ]
+    // ])) {
+    // $valid = \Config\Services::validation();
+    // return redirect()->to('/admin/data_petugas/edit_data/'.$slug)->withInput()->with('Validation', $valid);
+    // return redirect()->to('/admin/data_petugas/edit_data/' . $this->request->getVar('slug'))->withInput();
+    //   return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+    // }
 
     // Ambil File
-    $file_FotoProfil = $this->request->getFile('foto_profil');
+    // $file_FotoProfil = $this->request->getFile('user_profile');
     // cek gambar
     // KTP
-    if ($file_FotoProfil->getError() == 4) {
-      if (empty($data_lama['foto_profil'])) {
-        $nama_file = null;
-      } else {
-        $nama_file = $this->request->getVar('file_profil_lama');
-      }
-    } else {
-      // pindah file ke directori kita
-      if ($data_lama['foto_profil'] != 'default-profil.png') {
-        if (!empty($data_lama['foto_profil'])) {
-          unlink('gambar/profil_petugas/' . $this->request->getVar('file_profil_lama'));
-        }
-      }
-      // nama File
-      $nama_file = $file_FotoProfil->getRandomName();
-      $file_FotoProfil->move('gambar/profil_petugas', $nama_file);
-    }
+    // if ($file_FotoProfil->getError() == 4) {
+    //   if (empty($data_lama['user_profile'])) {
+    //     $nama_file = null;
+    //   } else {
+    //     $nama_file = $this->request->getVar('file_profil_lama');
+    //   }
+    // } else {
+    // pindah file ke directori kita
+    // if ($data_lama['user_profile'] != 'default-profil.png') {
+    //   if (!empty($data_lama['user_profile'])) {
+    //     unlink('gambar/profil_petugas/' . $this->request->getVar('file_profil_lama'));
+    //   }
+    // }
+    // nama File
+    // $nama_file = $file_FotoProfil->getRandomName();
+    // $file_FotoProfil->move('gambar/profil_petugas', $nama_file);
+
 
     // cek slug
-    if ($data_lama['nik_petugas'] == $this->request->getVar('nik_petugas') || $data_lama['nama_petugas'] == $this->request->getVar('nama_petugas')) {
-      $slug = url_title($this->request->getVar('nik_petugas') . '-' . $this->request->getVar('nama_petugas'), '-', true);
-    } else {
-      $slug = $this->request->getVar('slug');
-    }
+    // if ($data_lama['nik_petugas'] == $this->request->getVar('nik_petugas') || $data_lama['nama_petugas'] == $this->request->getVar('nama_petugas')) {
+    //   $slug = url_title($this->request->getVar('nik_petugas') . '-' . $this->request->getVar('nama_petugas'), '-', true);
+    // } else {
+    //   $slug = $this->request->getVar('slug');
+    // }
 
-    $this->petugasModel->save([
-      'id_satgas' => $id,
-      'nama_petugas' => $this->request->getVar('nama_petugas'),
-      'slug' => $slug,
-      'nip_petugas' => $this->request->getVar('nip_petugas'),
-      'nik_petugas' => $this->request->getVar('nik_petugas'),
-      'jenis_kelamin' => $this->request->getVar('jenis_kelamin'),
-      'alamat' => $this->request->getVar('alamat'),
-      'no_hp' => $this->request->getVar('no_hp'),
-      'email' => $this->request->getVar('email'),
-      'foto_profil' => $nama_file
+
+    $data_replace = [
+      'id'              => $id,
+      'email'           => $this->request->getVar('email'),
+      'username'        => $this->request->getVar('username'),
+      'fullname'        => $this->request->getVar('fullname'),
+      'user_profile'    => $data_lama['user_profile'],
+      'password_hash'   => $data_lama['password_hash'],
+      'reset_hash'      => $data_lama['reset_hash'],
+      'reset_at'        => $data_lama['reset_at'],
+      'reset_expires'   => $data_lama['reset_expires'],
+      'activate_hash'   => $data_lama['activate_hash'],
+      'status'          => $data_lama['status'],
+      'status_message'  => $data_lama['status_message'],
+      'active'          => $data_lama['active'],
+      'force_pass_reset' => $data_lama['force_pass_reset'],
+      'created_at'      => $data_lama['created_at'],
+      'updated_at'      => $data_lama['updated_at'],
+      'deleted_at'      => $data_lama['deleted_at']
+    ];
+    $this->userPetugas->replace($data_replace);
+
+    $auth_group_user = $this->db->table('auth_groups_users');
+    $auth_group_user->insert([
+      'group_id'  => 2,
+      'user_id'   => $id
     ]);
 
     session()->setFLashdata('pesan', 'Ubah');
 
-    return redirect()->to('/admin/data_petugas/detail_petugas/' . $slug);
+    return redirect()->to('/admin/data_petugas/detail_petugas/' . $id);
   }
   public function detail_petugas($id)
   {
-    $this->userPetugas->select('users.id as id_satgas, email, fullname, user_profile, auth_groups_users.group_id as akses');
+    $this->userPetugas->select('users.id as id_satgas, email, username, fullname, user_profile, auth_groups_users.group_id as akses');
     $this->userPetugas->join('auth_groups_users', 'auth_groups_users.user_id = users.id');
     $this->userPetugas->join('auth_groups', 'auth_groups_users.group_id = auth_groups.id');
     $this->userPetugas->where('users.id', $id);

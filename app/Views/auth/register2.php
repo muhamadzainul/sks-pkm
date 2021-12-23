@@ -21,6 +21,12 @@
                     </div>
                 </div>
 
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <input type="text" class="form-control <?php if (session('errors.username')) : ?>is-invalid<?php endif ?>" name="username" placeholder="<?= lang('Auth.username') ?>" value="<?= old('username') ?>">
+                    </div>
+                </div>
+
                 <div class="form-group ">
                     <div class="col-xs-12">
                         <input class="form-control <?php if (session('errors.email')) : ?>is-invalid<?php endif ?>" type="email" name="email" aria-describedby="emailHelp" placeholder="<?= lang('Auth.email') ?>" value="<?= old('email') ?>">

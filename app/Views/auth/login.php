@@ -12,14 +12,26 @@
             <form class="form-horizontal form-material" action="<?= route_to('login') ?>" method="post">
                 <?= csrf_field() ?>
 
-                <div class="form-group m-t-40">
-                    <div class="col-xs-12">
-                        <input type="email" class="form-control <?php if (session('errors.login')) : ?>is-invalid<?php endif ?>" name="login" placeholder="<?= lang('Auth.email') ?>">
+                <?php if ($config->validFields === ['email']) : ?>
+                    <div class="form-group m-t-40">
+                        <div class="col-xs-12">
+                            <input type="email" class="form-control <?php if (session('errors.login')) : ?>is-invalid<?php endif ?>" name="login" placeholder="<?= lang('Auth.email') ?>">
+                        </div>
+                        <div class="invalid-feedback">
+                            <?= session('errors.login') ?>
+                        </div>
                     </div>
-                    <div class="invalid-feedback">
-                        <?= session('errors.login') ?>
+                <?php else : ?>
+                    <div class="form-group m-t-40">
+                        <div class="col-xs-12">
+                            <input type="text" class="form-control <?php if (session('errors.login')) : ?>is-invalid<?php endif ?>" name="login" placeholder="<?= lang('Auth.emailOrUsername') ?>">
+                        </div>
+                        <div class="invalid-feedback">
+                            <?= session('errors.login') ?>
+                        </div>
                     </div>
-                </div>
+                <?php endif; ?>
+
 
                 <div class="form-group">
                     <div class="col-xs-12">
@@ -49,14 +61,6 @@
                         <button class="btn btn-info btn-lg btn-block text-uppercase waves-effect waves-light" type="submit">Log In</button>
                     </div>
                 </div>
-                <!-- <div class="row">
-                        <div class="col-xs-12 col-sm-12 col-md-12 m-t-10 text-center">
-                            <div class="social">
-                                <a href="javascript:void(0)" class="btn  btn-facebook" data-toggle="tooltip" title="Login with Facebook"> <i aria-hidden="true" class="fa fa-facebook"></i> </a>
-                                <a href="javascript:void(0)" class="btn btn-googleplus" data-toggle="tooltip" title="Login with Google"> <i aria-hidden="true" class="fa fa-google-plus"></i> </a>
-                            </div>
-                        </div>
-                    </div> -->
                 <div class="form-group m-b-0">
                     <div class="col-sm-12 text-center">
                         <p>Belum Punya Akun ? <a href="<?= route_to('register'); ?>" class="text-primary m-l-5"><b>Daftar</b></a></p>
