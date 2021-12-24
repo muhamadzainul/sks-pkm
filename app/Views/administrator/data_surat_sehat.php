@@ -47,7 +47,7 @@
                   <th scope="col">Kepentingan</th>
                   <th scope="col">Hasil Pemeriksaan</th>
                   <th scope="col">Tanggal dibuat</th>
-                  <th scope="col" colspan="2">Aksi</th>
+                  <th scope="col" colspan="3">Aksi</th>
                 </tr>
               </thead>
               <tbody>
@@ -67,6 +67,7 @@
                       <td><?= $ds['hasil_periksa']; ?></td>
                       <td><?= $ds['tgl_dibuat']; ?></td>
                       <td><a href="<?php base_url(); ?>/admin/surat_sehat/detail_surat/<?= $ds['id_sks']; ?>" class="btn btn-warning btn-rounded">Detail</a></td>
+                      <td><a href="<?php base_url(); ?>/admin/surat_sehat/cetak_surat/<?= $ds['id_sks']; ?>" class="btn btn-inverse btn-rounded">Cetak</a></td>
                       <td>
                         <!-- <a href="" class="btn btn-danger btn-rounded swal_delete" data-hapusId="<?php base_url(); ?>/admin/data_pasien/<?= $ds['id_sks']; ?>">Hapus</a> -->
                         <!-- <span class="delete_url" ></span> -->

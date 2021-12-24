@@ -15,6 +15,8 @@ use \Endroid\QrCode\Label\Label;
 use \Endroid\QrCode\Logo\Logo;
 use \Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
 use \Endroid\QrCode\Writer\PngWriter;
+use MYPDF;
+use TCPDF;
 
 class Surat_sehat extends BaseController
 {
@@ -347,6 +349,56 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
       'data_surat' => $query->getResultArray()
     ];
     return view('/administrator/detail_surat', $data);
+  }
+  public function cetak_surat($id)
+  {
+    $this->suratBuilder->select('id_sks, nomor_surat, pasien.nik_pasien as nik_p, nama_pasien, nama_kapus, kapus.nip_kapus as nip_kp, jenis_kelamin, tgl_lahir, alamat,
+    pekerjaan, kepentingan, tinggi_badan, berat_badan, tensi_darah, suhu_tubuh, nadi, respirasi, mata_buta, tubuh_tato, tubuh_tindik,
+    hasil_periksa, qr_code, nama_kapus, kapus.nip_kapus as nip_kp, nama_kapus, pasien.tgl_lahir as tgl_lahir, surat_kesehatan.tanggal_dibuat as tgl_dibuat, 
+    TIMESTAMPDIFF(MONTH , pasien.tgl_lahir, NOW() ) AS umur');
+    $this->suratBuilder->join('pasien', 'pasien.nik_pasien = surat_kesehatan.nik_pasien');
+    $this->suratBuilder->join('kapus', 'kapus.nip_kapus = surat_kesehatan.nip_kapus');
+    $this->suratBuilder->where('id_sks', $id);
+    $query = $this->suratBuilder->get();
+    $data_cetak = $query->getRowArray();
+
+    $data_logo = '/gambar/Logo-Mojokerto.png';
+
+
+    $data = [
+      'data_cetak'  => $data_cetak,
+      'logo_mjk'    => $data_logo
+    ];
+    $html = view('/administrator/cetak_surat', $data);
+
+    $pdf = new MYPDF('P', PDF_UNIT, 'LEGAL', true, 'UTF-8', false);
+
+    $pdf->SetCreator(PDF_CREATOR);
+    $pdf->SetAuthor('SKS-Puskesmas Dawarblandong');
+    $pdf->SetTitle('Cetak Surat');
+    $pdf->SetSubject('Surat Kesehatan');
+
+
+    // set default header data
+    $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE . '', PDF_HEADER_STRING);
+
+    // set header and footer fonts
+    $pdf->setHeaderFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+    $pdf->setFooterFont(array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+    // set margins
+    $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+    $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+    $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+    $pdf->addPage();
+
+    // output the HTML content
+    $pdf->writeHTML($html, true, false, true, false, '');
+    //line ini penting
+    $this->response->setContentType('application/pdf');
+    //Close and output PDF document
+    $pdf->Output($data_cetak['nama_pasien'] . '.pdf', 'I');
   }
   // public function update_data($id)
   // {
