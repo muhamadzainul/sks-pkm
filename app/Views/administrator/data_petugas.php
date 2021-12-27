@@ -37,7 +37,7 @@
             </li>
           </ul>
           <div class="kol-fix">
-            <table class="table-striped table-hover table">
+            <table class="table-striped table-hover table-responsive table">
               <thead>
                 <tr>
                   <th scope="col">No</th>

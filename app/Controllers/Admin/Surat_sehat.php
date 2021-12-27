@@ -6,7 +6,7 @@ use App\Models\Model_surat;
 use App\Models\Model_pasien;
 
 use App\Controllers\BaseController;
-
+use DateTime;
 use Endroid\QrCode\Color\Color;
 use \Endroid\QrCode\Encoding\Encoding;
 use \Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelLow;
@@ -124,6 +124,7 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
 
   public function simpan($id = null)
   {
+    // dd($id);
     // Form Validasi
     if (!$this->validate([
       'nomor_surat' => [
@@ -163,15 +164,14 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
 
     $gen_key = get_key();
 
-    if ($id == null) {
+    $this->pasienBuilder->select('nik_pasien');
+    $this->pasienBuilder->where('nik_pasien', $this->request->getVar('nik_pasien'));
+    $query = $this->pasienBuilder->get();
+    $queryp = $query->getResult();
+    if (empty($queryp)) {
+      if ($id == null) {
+        // dd(empty($queryp));
 
-      $this->pasienBuilder->select('nik_pasien');
-      $this->pasienBuilder->where('nik_pasien', $this->request->getVar('nik_pasien'));
-      $query = $this->pasienBuilder->get();
-      $queryp = $query->getResult();
-      // dd(empty($queryp));
-
-      if (empty($queryp)) {
         $this->pasienModel->insert([
           'nik_pasien'          => $this->request->getVar('nik_pasien'),
           'slug'                => $slugPasien,
@@ -191,19 +191,37 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
 
     $teks = $this->request->getVar('nomor_surat') . "-" . $this->request->getVar('nik_pasien') . "-" . $this->request->getVar('nip_kapus') . "-" . $this->request->getVar('nama_pasien') . "-" . $this->request->getVar('kepentingan') . "-" . $this->request->getVar('hasil_periksa') . "-" . date("Y-m-d", time());
     $hash_teks = md5($teks);
-    // dd($teks);
+    // dd($hash_teks);
 
     $this->kapusBuilder->select('id_kapus, nama_kapus, nip_kapus, publik_key, private_key');
     $queryKapus   = $this->kapusBuilder->get();
     $kapusQ       = $queryKapus->getResultArray();
 
-    $kapus_publik_key   = $kapusQ[0]['publik_key'];
+    if (empty($queryp)) {
+      $pasien_key = $gen_key[1];
+    } else {
+      $this->pasienBuilder->select('publik_key');
+      $pp = $this->pasienBuilder->where('nik_pasien', $this->request->getVar('nik_pasien'))->get();
+      $ps_pr = $pp->getRow();
+      $pasien_key = $ps_pr->publik_key;
+    }
+    // dd($pasien_key);
+
+    $kapus_private_key   = $kapusQ[0]['private_key'];
+    // dd($kapus_private_key);
+    // dd();
     // $kapus_private_key  = $kapusQ[0]['private_key'];
+
+    $enk_teks = enkripsi_text($hash_teks, $kapus_private_key, $pasien_key);
+    dd($enk_teks);
+    // dd(strlen($enk_teks[1]));
+    // dd($enk_teks);
 
     // dd($kapusQ[0]['nama_kapus']);
     //create QRcode
+    $text_qr = base_url() . '/validasi' . '/' . md5($enk_teks[0]);
 
-    $this->gen_qr   = QrCode::create($hash_teks);
+    $this->gen_qr   = QrCode::create($text_qr);
     $writer         = new PngWriter();
 
     $qrCode = $this->gen_qr->setEncoding(new Encoding('UTF-8'))
@@ -224,12 +242,12 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
 
     $test = $writer->write($qrCode, $logo);
 
-    header('Content-Type: ' . $test->getMimeType());
+    // header('Content-Type: ' . $test->getMimeType());
     // echo $test->getString();
     // $qr_name = getRandomName();
     $test->saveToFile('./gambar/qr_code/' . $hash_teks . '.png');
     $db_qrcode = $hash_teks . '.png';
-    // dd();
+
 
     $this->suratModel->insert([
       'nomor_surat'     => $this->request->getVar('nomor_surat'),
@@ -254,16 +272,15 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
       'tanggal_exp'     => $tgl_exp
     ]);
 
-
-    $enk_teks = enkripsi_text($hash_teks, $gen_key[1], $kapus_publik_key);
-    // dd($enk_teks);
     if ($id == null) {
       $this->rsaBuilder->insert([
         'nomor_surat'   => $this->request->getVar('nomor_surat'),
         'nik_pasien'    => $this->request->getVar('nik_pasien'),
         'nip_kapus'     => $this->request->getVar('nip_kapus'),
         'teks_asli'     => $hash_teks,
-        'teks_enkripsi' => $enk_teks[1]
+        'teks_enkripsi' => $enk_teks[1],
+        'hash_enkrip'   => md5($enk_teks[0]),
+        'tanggal_dibuat' => date("Y-m-d", time()),
       ]);
     } else {
       $dataRSA = [
@@ -271,7 +288,9 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
         'nik_pasien'    => $this->request->getVar('nik_pasien'),
         'nip_kapus'     => $this->request->getVar('nip_kapus'),
         'teks_asli'     => $hash_teks,
-        'teks_enkripsi' => $enk_teks[1]
+        'teks_enkripsi' => $enk_teks[1],
+        'hash_enkrip'   => md5($enk_teks[0]),
+        'tanggal_dibuat' => date("Y-m-d", time()),
       ];
       $this->rsaBuilder->replace($dataRSA);
     }

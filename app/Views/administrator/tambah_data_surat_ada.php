@@ -44,10 +44,10 @@
                                 <div class="row">
                                     <div class="col-md">
                                         <div class="col-md-7">
-                                            <input type="text" name="nama_pasien" class="form-control" placeholder="Masukkan Nama Pasien" value="<?= (old('nama_pasien')) ? old('nama_pasien') : $ds->nama_pasien; ?>">
+                                            <input type="text" name="nama_pasien" class="form-control" placeholder="Masukkan Nama Pasien" value="<?= (old('nama_pasien')) ? old('nama_pasien') : $ds->nama_pasien; ?>" readonly>
                                         </div>
                                         <div class="col-md-5">
-                                            <input type="text" name="nik_pasien" class="form-control" placeholder="Masukkan Nik Pasien" value="<?= (old('nik_pasien')) ? old('nik_pasien') : $ds->nik_pasien; ?>">
+                                            <input type="text" name="nik_pasien" class="form-control" placeholder="Masukkan Nik Pasien" value="<?= (old('nik_pasien')) ? old('nik_pasien') : $ds->nik_pasien; ?>" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -61,28 +61,28 @@
                                 <div class="row">
                                     <div class="col-md">
                                         <div class="col-md-4">
-                                            <select class="form-control" name="jenis_kelamin">
+                                            <input type="text" name="jenis_kelamin" class="form-control" value="<?= $ds->jenis_kelamin; ?>" readonly>
+                                            <!-- <select class="form-control" name="jenis_kelamin" readonly>
                                                 <?php if (($ds->jenis_kelamin) == "Perempuan") : ?>
                                                     <option value="null" class="dropdown-item">-- Pilih salah satu --</option>
                                                     <option class="dropdown-item">Laki-laki</option>
-                                                    <option class="dropdown-item" selected>Perempuan</option>
+                                                    <option class="dropdown-item" selected readonly>Perempuan</option>
                                                 <?php elseif (($ds->jenis_kelamin) == "Laki-laki") : ?>
                                                     <option value="null" class="dropdown-item">-- Pilih salah satu --</option>
-                                                    <option class="dropdown-item" selected>Laki-laki</option>
+                                                    <option class="dropdown-item" selected readonly>Laki-laki</option>
                                                     <option class="dropdown-item">Perempuan</option>
                                                 <?php else : ?>
                                                     <option value="null" class="dropdown-item" selected>-- Pilih salah satu --</option>
                                                     <option class="dropdown-item">Laki-laki</option>
                                                     <option class="dropdown-item">Perempuan</option>
                                                 <?php endif; ?>
-
-                                            </select>
+                                            </select> -->
                                         </div>
                                         <div class="col-md-4">
                                             <input type="text" name="pekerjaan" class="form-control" placeholder="Masukkan Pekerjaan" value="<?= old('pekerjaan'); ?>">
                                         </div>
                                         <div class="col-md-4">
-                                            <input type="date" name="tgl_lahir" class="form-control" placeholder="Masukkan Suhu Tubuh" value="<?= (old('tgl_lahir')) ? old('tgl_lahir') : $ds->tgl_lahir; ?>">
+                                            <input type="date" name="tgl_lahir" class="form-control" placeholder="Masukkan Suhu Tubuh" value="<?= (old('tgl_lahir')) ? old('tgl_lahir') : $ds->tgl_lahir; ?>" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -92,7 +92,7 @@
                                 <label class="col-md-12" for="alamat"><span>ALamat</span>
                                 </label>
                                 <div class="col-md-12">
-                                    <input type="text" name="alamat" class="form-control" placeholder="Masukkan Alamat" value="<?= (old('alamat')) ? old('alamat') : $ds->alamat; ?>">
+                                    <input type="text" name="alamat" class="form-control" placeholder="Masukkan Alamat" value="<?= (old('alamat')) ? old('alamat') : $ds->alamat; ?>" readonly>
                                 </div>
                             </div>
                         <?php endforeach; ?>

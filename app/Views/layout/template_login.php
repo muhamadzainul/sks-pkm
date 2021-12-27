@@ -43,9 +43,9 @@
     <?= $this->renderSection('content'); ?>
 
 
-    </div>
+    <!-- </div> -->
     <!-- /#page-wrapper -->
-    </div>
+    <!-- </div> -->
     <!-- /#wrapper -->
     <!-- jQuery -->
     <script src="<?= base_url(); ?>/plugins/bower_components/jquery/dist/jquery.min.js"></script>

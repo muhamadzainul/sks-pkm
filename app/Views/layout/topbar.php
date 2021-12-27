@@ -108,7 +108,7 @@
             </li> -->
                 <!-- /.dropdown -->
                 <li class="dropdown">
-                    <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#"> <img src="<?= base_url(); ?>/gambar/profil_petugas/<?= user()->user_profile; ?>" alt="user-img" width="36" class="img-circle"><b class="hidden-xs"><?= user()->fullname; ?></b> </a>
+                    <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#"> <img src="<?= base_url(); ?>/gambar/profil_petugas/<?= strval(user()->user_profile) ? strval(user()->user_profile) : "default-profil.png"; ?>" alt="user-img" width="36" class="img-circle"><b class="hidden-xs"><?= user()->fullname; ?></b> </a>
                     <ul class="dropdown-menu dropdown-user animated flipInY">
                         <li><a href="<?= base_url(); ?>/administrator/profile"><i class="ti-user"></i> My Profile</a></li>
                         <li><a href="<?= base_url('logout'); ?>"><i class="fa fa-power-off"></i> Logout</a></li>
