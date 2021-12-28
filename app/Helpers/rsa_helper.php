@@ -312,12 +312,12 @@ function dekrip_text($hash_text, $enkripsi_t, $get_k, $get_k2)
     for ($i = 0; $i < strlen($hash_text); $i++) {
         $ascii .= ord($hash_text[$i]);
     }
-    echo "<br>" . $ascii;
+    // echo "<br>" . $ascii;
 
     // dekripsi
     $hasil = $enkripsi_t;
 
-    echo "<br>";
+    // echo "<br>";
     $h_dekrip = "";
     $dekrip_sem = "";
 
@@ -377,6 +377,7 @@ function dekrip_text($hash_text, $enkripsi_t, $get_k, $get_k2)
     $hasil_ascii = "";
     $var = 0;
     $kap = strlen($h_dekrip) - 2;
+    // echo "<br>" . $kap;
     for ($i = 0; $i < strlen($h_dekrip); $i++) {
         if (($i % 2 == $var)) {
             $re = substr($h_dekrip, $i, 1);
@@ -397,33 +398,41 @@ function dekrip_text($hash_text, $enkripsi_t, $get_k, $get_k2)
                 $hasil_ascii .= substr($h_dekrip, $i, 2);
                 if ($i != $kap) {
                     $hasil_ascii .= ".";
-                    // code...
                 }
-                // code...
             }
+            // echo "<br> i = " . $i;
+            // echo "<br> kap = " . $kap;
         }
     }
 
     $hh = "";
     $tra = explode(".", $hasil_ascii);
-    foreach ($tra as $val) {
-        $hh .= chr($val);
+    // echo "<br>";
+    // var_dump($tra);
+    for ($i = 0; $i < count($tra); $i++) {
+        if (strlen($tra[$i]) != 0) {
+            $hh .= chr(intval($tra[$i]));
+            # code...
+        }
+        # code...
     }
+    // foreach ($tra as $val) {
+    // }
 
     // echo "<br>Nil text ASCII = $ascii";
-    echo "<br>Hasil Dekripsi = $h_dekrip";
-    echo "<br>Hasil Dekripsi = $hasil_ascii";
-    echo "<br>hash kata awal = $hash_text";
-    echo "<br>Hasil Dekripsi = $hh<br>";
+    // echo "<br>Hasil Dekripsi = $h_dekrip";
+    // echo "<br>Hasil Dekripsi = $hasil_ascii";
+    // echo "<br>hash kata awal = $hash_text";
+    // echo "<br>Hasil Dekripsi = $hh<br>";
     // echo "<br>";
     // var_dump($hash_text);
     // echo "<br>";
     // var_dump($hh);
 
     if ($hh == $hash_text) {
-        $hasil_akhir = "Valid";
+        $hasil_akhir = "Data Surat Keterangan Sehat Valid";
     } else {
-        $hasil_akhir = "Not Valid";;
+        $hasil_akhir = "Data Surat Keterangan Sehat Tidak Valid";;
     }
     return $hasil_akhir;
 }
