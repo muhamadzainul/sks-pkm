@@ -76,12 +76,12 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
 
   public function tambah_data_surat()
   {
-    $this->suratBuilder->select('id_sks, nomor_surat, surat_kesehatan.nik_pasien as nik_p, nama_pasien, jenis_kelamin, tgl_lahir, alamat,
-        pekerjaan, kepentingan, tinggi_badan, berat_badan, tensi_darah, suhu_tubuh, nadi, respirasi, mata_buta, tubuh_tato, tubuh_tindik,
-        hasil_periksa, nama_kapus, kapus.nip_kapus as nip_kp, nama_kapus, TIMESTAMPDIFF(
-MONTH , pasien.tgl_lahir, NOW() ) AS umur');
-    $this->suratBuilder->join('pasien', 'pasien.nik_pasien = surat_kesehatan.nik_pasien');
-    $this->suratBuilder->join('kapus', 'kapus.nip_kapus = surat_kesehatan.nip_kapus');
+    $this->kapusBuilder = $this->db->table('kapus');
+    $this->kapusBuilder->select('nip_kapus');
+    $this->kapusBuilder->where('active', 1);
+    $querySurat = $this->kapusBuilder->get();
+    $kapus = $querySurat->getRowArray();
+    // dd($kapus['nip_kapus']);
 
 
     $keyword = $this->request->getVar('keyword');
@@ -116,7 +116,7 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     $data = [
       'title'       => 'Tambah Daa Surat',
       'validation'  => \Config\Services::validation(),
-      'data_surat'  => $querySurat->getResultArray(),
+      'data_kapus'  => $kapus['nip_kapus'],
       'data_pasien' => $data_pasien,
       'kosong'      => $keyword
     ];
@@ -198,6 +198,8 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     $this->kapusBuilder->select('id_kapus, nama_kapus, nip_kapus, publik_key, private_key');
     $queryKapus   = $this->kapusBuilder->get();
     $kapusQ       = $queryKapus->getResultArray();
+    $kapus_private_key   = $kapusQ[0]['private_key'];
+    $priv_kap = $this->enkripsi->decrypt(base64_decode($kapus_private_key));
 
     if (empty($queryp)) {
       $pasien_key = $gen_key[1];
@@ -209,8 +211,6 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     }
     // dd($pasien_key);
 
-    $kapus_private_key   = $kapusQ[0]['private_key'];
-    $priv_kap = $this->enkripsi->decrypt(base64_decode($kapus_private_key));
     // dd($kapus_private_key);
     // dd();
     // $kapus_private_key  = $kapusQ[0]['private_key'];
@@ -250,6 +250,7 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     // $qr_name = getRandomName();
     $test->saveToFile('./gambar/qr_code/' . $hash_teks . '.png');
     $db_qrcode = $hash_teks . '.png';
+    // dd($this->request->getVar('nip_kapus'));
 
 
     $this->suratModel->insert([

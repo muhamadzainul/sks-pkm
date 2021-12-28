@@ -92,7 +92,8 @@ class Validasi extends BaseController
             $data_cetak = $query->getRowArray();
             // dd($data_cetak['nama_pasien']);
         } else {
-            $has_dek = "Data Palsu Surat Tidak Sama";
+            $has_dek    = "Data Palsu Surat Tidak Sama";
+            $data_cetak = "";
         }
         $data = [
             'hasil_validasi' => $has_dek,

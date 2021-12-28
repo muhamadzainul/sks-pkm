@@ -252,20 +252,7 @@
                 </select>
               </div>
             </div>
-            <?php foreach ($data_surat as $ds) : ?>
-              <input type="hidden" name="nip_kapus" value="<?= $ds['nip_kp']; ?>">
-            <?php endforeach; ?>
-            <!-- <div class="form-group">
-                    <label class="col-md-12" for="hasil_periksa"><span>Nama Kapus</span>
-                    </label>
-                    <div class="col-md-12">
-                      <select class="custom-select custom-select-sm col-sm" name="nip_kapus" >
-                        <?php foreach ($data_surat as $ds) : ?>
-                          <option value="<?= $ds['nip_kp']; ?>" class="dropdown-item" selected><?= $ds['nama_kapus']; ?></option>
-                        <?php endforeach; ?>
-                      </select>
-                    </div>
-                </div> -->
+            <input type="hidden" name="nip_kapus" value="<?= $data_kapus; ?>">
             <button type="submit" class="btn btn-info waves-effect waves-light m-r-10">Submit</button>
             <a href="<?php base_url(); ?>/admin/surat_sehat/" class="btn btn-inverse waves-effect waves-light">Cancel</a>
           </form>
