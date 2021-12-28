@@ -12,6 +12,7 @@ class Data_pasien extends BaseController
   public function __construct()
   {
     $this->pasienModel = new Model_pasien();
+    $this->enkripsi    = \Config\Services::encrypter();
   }
 
   public function index()
@@ -104,6 +105,7 @@ class Data_pasien extends BaseController
     $slug = url_title($this->request->getVar('nik_pasien') . '-' . $this->request->getVar('nama_pasien'), '-', true);
 
     $gen_key = get_key();
+    $private_key = base64_encode($this->enkripsi->encrypt($gen_key[1]));
 
     $this->pasienModel->save([
       'nama_pasien'       => $this->request->getVar('nama_pasien'),
@@ -115,7 +117,7 @@ class Data_pasien extends BaseController
       'no_hp'             => $this->request->getVar('no_hp'),
       'email'             => $this->request->getVar('email'),
       'publik_key'        => $gen_key[0],
-      'private_key'       => $gen_key[1],
+      'private_key'       => $private_key,
       'hash_publik_key'   => md5($gen_key[0]),
       'hash_private_key'  => md5($gen_key[1]),
       'foto_ktp'          => $nama_file_ktp,

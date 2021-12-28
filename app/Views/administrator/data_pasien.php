@@ -57,7 +57,7 @@
                     <h5 class="text-grey-500 text-center">Data Pasien Belum Ada</h5>
                   </td>
                 <?php else : ?>
-                  <?php $n = 1 + (4 * ($currentPage - 1)); ?>
+                  <?php $n = 1 + (10 * ($currentPage - 1)); ?>
                   <?php foreach ($data_pasien as $dp) : ?>
                     <tr>
                       <td><?= $n++; ?></td>

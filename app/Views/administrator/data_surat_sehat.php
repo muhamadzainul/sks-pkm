@@ -71,7 +71,7 @@
                       <td>
                         <!-- <a href="" class="btn btn-danger btn-rounded swal_delete" data-hapusId="<?php base_url(); ?>/admin/data_pasien/<?= $ds['id_sks']; ?>">Hapus</a> -->
                         <!-- <span class="delete_url" ></span> -->
-                        <form action="<?php base_url(); ?>/Admin/surat_sehat/<?= $ds['id_sks']; ?>" method="post">
+                        <form action="<?php base_url(); ?>/Admin/surat_sehat/<?= $ds['nomor_surat']; ?>" method="post">
                           <?php csrf_field(); ?>
                           <input type="hidden" name="_method" value="DELETE">
                           <button type="submit" class="btn btn-danger btn-rounded" onclick="return confirm('Apakah Anda Yakin ?')">Hapus</button>

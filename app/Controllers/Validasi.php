@@ -4,10 +4,12 @@ namespace App\Controllers;
 
 class Validasi extends BaseController
 {
+    protected $dekripsi;
     public function __construct()
     {
         $this->db           = \Config\Database::connect();
         $this->request      = \Config\Services::request();
+        $this->dekripsi     = \Config\Services::encrypter();
     }
 
     public function index()
@@ -42,6 +44,7 @@ class Validasi extends BaseController
     public function hasil_validasi($data_scan)
     {
         // dd($data_scan);
+        // dd($this->request->getVar('nik_pasien'));
         $this->suratBuilder = $this->db->table('surat_rsa');
         $this->suratBuilder->select('nomor_surat, nik_pasien, nip_kapus, teks_asli, teks_enkripsi, hash_enkrip, tanggal_dibuat');
         $this->suratBuilder->where('hash_enkrip', $data_scan);
@@ -49,12 +52,14 @@ class Validasi extends BaseController
         $data_scan = $query->getRowArray();
 
         if ($data_scan['nik_pasien'] == $this->request->getVar('nik_pasien') && $data_scan['tanggal_dibuat'] == $this->request->getVar('tgl_dibuatsurat')) {
+            // dd($data_scan['nik_pasien']);
             // private key pasien
             $this->pasienBuilder = $this->db->table('pasien');
             $this->pasienBuilder->select('private_key');
             $pr = $this->pasienBuilder->where('nik_pasien', $this->request->getVar('nik_pasien'))->get();
             $pasien_key = $pr->getRow();
-            $ps_pr = $pasien_key->private_key;
+            $priv_pas = $pasien_key->private_key;
+            $ps_pr    = $this->dekripsi->decrypt(base64_decode($priv_pas));
             // echo "private Key Pasien = " . $ps_pr;
 
             // private key pasien
@@ -82,9 +87,10 @@ class Validasi extends BaseController
             $this->skBuilder->join('surat_kesehatan', 'surat_kesehatan.nomor_surat = surat_rsa.nomor_surat');
             $this->skBuilder->join('pasien', 'pasien.nik_pasien = surat_rsa.nik_pasien');
             $this->skBuilder->join('kapus', 'kapus.nip_kapus = surat_rsa.nip_kapus');
-            // $this->skBuilder->where('id_sks', $id);
+            $this->skBuilder->where('surat_rsa.nik_pasien', $data_scan['nik_pasien']);
             $query = $this->skBuilder->get();
             $data_cetak = $query->getRowArray();
+            // dd($data_cetak['nama_pasien']);
         } else {
             $has_dek = "Data Palsu Surat Tidak Sama";
         }
@@ -99,7 +105,17 @@ class Validasi extends BaseController
 
     public function coba()
     {
-
+        $contoh = base64_encode($this->dekripsi->encrypt('28429.89147'));
+        echo $contoh;
+        echo "<br>" . $this->dekripsi->decrypt(base64_decode($contoh)) . "<br>";
+        $this->pasienBuilder = $this->db->table('pasien');
+        $this->pasienBuilder->select('private_key');
+        $pr = $this->pasienBuilder->where('nik_pasien', '678324562345322')->get();
+        $pasien_key = $pr->getRow();
+        $priv_pas = $pasien_key->private_key;
+        echo $priv_pas . "<br>";
+        // $ps_pr    = $this->dekripsi->decrypt($priv_pas);
+        echo "<br>" . $this->dekripsi->decrypt(base64_decode($priv_pas)) . "<br>";
         echo generateRandomString(6);
         // $pow = gmp_pow(5750, 36415);
         dd(chr(57));

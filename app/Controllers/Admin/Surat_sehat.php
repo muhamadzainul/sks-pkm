@@ -26,15 +26,17 @@ class Surat_sehat extends BaseController
   protected $suratBuilder;
   protected $pasienBuilder;
   protected $rsaBuilder;
+  protected $enkripsi;
   public function __construct()
   {
     $this->suratModel     = new Model_surat();
     $this->pasienModel    = new Model_pasien();
     $this->db             = \Config\Database::connect();
     $this->suratBuilder   = $this->db->table('surat_kesehatan');
-    $this->pasienBuilder   = $this->db->table('pasien');
+    $this->pasienBuilder  = $this->db->table('pasien');
     $this->kapusBuilder   = $this->db->table('kapus');
-    $this->rsaBuilder   = $this->db->table('surat_rsa');
+    $this->rsaBuilder     = $this->db->table('surat_rsa');
+    $this->enkripsi       = \Config\Services::encrypter();
   }
 
   public function index()
@@ -172,6 +174,8 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
       if ($id == null) {
         // dd(empty($queryp));
 
+        $priv_key = base64_encode($this->enkripsi->encrypt($gen_key[1]));
+
         $this->pasienModel->insert([
           'nik_pasien'          => $this->request->getVar('nik_pasien'),
           'slug'                => $slugPasien,
@@ -180,9 +184,7 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
           'jenis_kelamin'       => $this->request->getVar('jenis_kelamin'),
           'alamat'              => $this->request->getVar('alamat'),
           'publik_key'          => $gen_key[0],
-          'private_key'         => $gen_key[1],
-          'hash_publik_key'     => md5($gen_key[0]),
-          'hash_private_key'    => md5($gen_key[1]),
+          'private_key'         => $priv_key,
           'tanggal_dibuat'      => date("Y-m-d", time()),
           'tanggal_diubah'      => date("Y-m-d", time()),
         ]);
@@ -208,185 +210,12 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     // dd($pasien_key);
 
     $kapus_private_key   = $kapusQ[0]['private_key'];
+    $priv_kap = $this->enkripsi->decrypt(base64_decode($kapus_private_key));
     // dd($kapus_private_key);
     // dd();
     // $kapus_private_key  = $kapusQ[0]['private_key'];
 
-    // Proses Enkripsi
-    // $private_key = explode(".", $kapus_private_key);
-    // $d = $private_key[0];
-    // $n = $private_key[1];
-    // $public_key2 = explode(".", $pasien_key);
-    // $e2 = $public_key2[0];
-    // $n3 = $public_key2[1];
-
-    // $hasil = "";
-    // $hasil_sem = "";
-    // $ascii = "";
-    // $angka_0 = "";
-
-    // for ($i = 0; $i < strlen($hash_teks); $i++) {
-    //   $ascii .= ord($hash_teks[$i]);
-    // }
-    // echo "<br>Hash text = " . $hash_teks;
-    // echo "<br>Nilai Ascii = " . $ascii;
-    // echo "<br>";
-    // $rq = strlen($ascii) - 4;
-    // $v_k = 0; // inisisalisasi angka 0 yang ada di depan pada nilai ascii yang telah dibagi menjadi blok-blok
-
-    // for ($j = 0; $j < strlen($ascii); $j++) {
-    //   // echo "<br>",$j+1;
-    //   // // echo "<br>";
-    //   // echo "<br>" . $ascii[$j];
-    //   if ((($j) % 4) == 0) {
-    //     // echo "<br>Nilai text ASCII = $j";
-    //     // $ph = intval(substr($ascii, $j, 4));
-    //     // echo "<br>.$ph";
-    //     // echo "<br>";
-    //     $pl = intval(substr($ascii, $j, 1)); // inisisalisasi nilai 1 pada tiap blok
-    //     if ($pl == 0) {
-    //       for ($k = 0; $k < 4; $k++) {
-    //         $rf = intval(substr($ascii, $j + $k, 1)); //inisisalisasi angka 0 yang berada di depan pada tiap blok
-    //         if ($rf == 0) {
-    //           // code...
-    //           $hasil .= "0";
-    //           $v_k = $v_k + 1;
-    //         } else {
-    //           break;
-    //         }
-    //       }
-    //       $hasil .= "_";
-    //     }
-
-    //     $ht = intval(substr($ascii, $j + $v_k, 4 - $v_k)); //inisisalisasi untuk mencari nilai yang sudah tidak ada nilai 0 di depannya pada tiap blok
-    //     echo "<br>Nilai Ascii Yang di Ambil Untuk menggunakan Private Key pengirim = " . $ht;
-    //     // echo $ht*2;
-    //     // echo "<br>Nilai text ASCII = " . $j;
-    //     // echo "<br>";
-    //     $hasil_sem .= gmp_mod(gmp_pow($ht, $d), $n);
-    //     $dfd = explode(".", $hasil_sem);
-    //     $fdf = $dfd[count($dfd) - 1];
-    //     echo "<br>enkripsi menggunakan private key pengirim = (Pn ** d) mod n";
-    //     echo "<br> hasil sementara = " . $hasil_sem;
-    //     echo "<br>";
-    //     echo "<br>hasil sementara akan di split jika lebih dari 4 digit nomor";
-    //     // echo "<br>" . $fdf;
-    //     // var_dump($fdf);
-    //     $ex1 = explode("_", $fdf);
-    //     // var_dump($ex1);
-    //     // echo "<br> if ex1[1] = ".(!empty($ex1[1])) ? "ada" : "tidak";
-    //     if (!empty($ex1[1])) {
-    //       $ks2 = explode(".", $hasil);
-    //       // echo "<br> iterasi = ".count($ks2);
-    //       // echo "<br>".$ex1[1];
-    //       // echo "<br>".strlen($ex1[1]);
-    //     } else {
-    //       // code...
-    //       // echo "<br>".$ex1[0];
-    //       // echo "<br>".strlen($ex1[0]);
-    //       $rd = 0;
-    //       $zr = intval(substr($ex1[0], 0, 4));
-    //       // echo "<br> e2 = $e2";
-    //       // echo "<br> n2 = $n3";
-    //       $hasil .= gmp_mod(gmp_pow($zr, $e2), $n3);
-    //       // echo "<br>Hasil Coba = ".gmp_mod(gmp_pow($zr, $e2), $n3);
-    //       $zr2 = intval(substr($ex1[0], 4, strlen($ex1[0]) - 4));
-    //       if (strlen($fdf) > 4) {
-    //         $zx = "." . $zr2;
-    //       } else {
-    //         $zx = "";
-    //       }
-    //       echo "<br>hasil split = $zr$zx";
-    //       echo "<br>";
-    //       echo "<br>Kemudian hasil split dipisah dan akan di enkripsi lagi menggunakan publik key penerima = (Pn ** e2) mod n2";
-    //       echo "<br>";
-    //       if (strlen($ex1[0]) > 4) {
-    //         if ($zr2 == 0) {
-    //           $hasil .= "*";
-    //           for ($k = 0; $k < (strlen($ex1[0]) - 4); $k++) {
-    //             $rj = intval(substr($ex1[0], 4 + $k, 1)); //inisisalisasi angka 0 yang berada di depan pada tiap blok
-    //             // echo "<br> panjang ex1[0]" . (strlen($ex1[0]) - 4);
-    //             // echo "<br> rj = " . $rj;
-    //             if ($rj == 0) {
-    //               $hasil .= "0";
-    //               $rd = $rd + 1;
-    //             } else {
-    //               $zr3 = intval(substr($ex1[0], $k, (strlen($ex1[0]) - 4)));
-    //               if (((strlen($ex1[0]) - 4) - $rd) != 0) {
-    //                 $hasil .= "*";
-    //                 $hasil .= gmp_mod(gmp_pow($zr2, $e2), $n3);
-    //               }
-    //               break;
-    //             }
-    //           }
-    //           // echo "<br> RD = $rd";
-    //           // if ((strlen($ex1[0]-4)) != 0) {
-    //           // $zr3 = intval(substr($ex1[0], 4+$rd, (strlen($ex1[0])-4)));
-    //           // echo "<br> ZR2 = $zr2";
-    //           // echo "<br> ZR3 = $zr3";
-    //           // echo "<br> if  = ".((strlen($ex1[0])-4)-$rd);
-    //           // if (((strlen($ex1[0])-4)-$rd) != 0) {
-    //           // code...
-    //           // $hasil .= "*";
-    //           // $hasil .= gmp_mod(gmp_pow($zr2, $e2), $n3);
-    //           // echo "<br>Hasil coba 2 ada 0 = ".gmp_mod(gmp_pow($zr2, $e2), $n3);
-    //           // }
-    //           // }
-    //         } else {
-    //           $zr3 = intval(substr($ex1[0], 4, ($ex1[0] - 4)));
-    //           // echo "<br> ZR2 = $zr3";
-    //           $hasil .= "*";
-    //           $hasil .= gmp_mod(gmp_pow($zr2, $e2), $n3);
-    //           // echo "<br>Hasil coba 2 = ".gmp_mod(gmp_pow($zr2, $e2), $n3);
-    //         }
-    //       }
-    //       $rd = $rd * 0;
-
-
-    //       $ks2 = explode(".", $hasil);
-    //       $ks4 = $ks2[(count($ks2) - 1)];
-    //       $ks = explode("*", $zr);
-    //       echo "<br>haiil akan di appand pada string kosong pada hasil enkripsi : " . $ks4;
-    //       // echo "<br>Jumlah angka = " . strlen($ex1[0]);
-    //       echo "<br> iterasi = " . count($ks2);
-
-    //       echo "<hr>";
-    //     }
-
-
-
-    //     if (($j + 5) <= strlen($ascii)) {
-    //       $hasil .= ".";
-    //     }
-    //   }
-    //   // echo "<br>$v_k";
-    //   $hasil_sem = "";
-    //   $v_k = $v_k * 0;
-    // }
-    // echo "<br>Nilai text ASCII = $ascii";
-    // $hs = "";
-    // $pecah_enkrip = explode(".", $hasil);
-    // // echo "<br>". (count($pecah_enkrip));
-    // for ($ol = 0; $ol < count($pecah_enkrip); $ol++) {
-    //   $pecah_enkrip2 = explode("*", $pecah_enkrip[$ol]);
-    //   $pecah_0 = explode("_", $pecah_enkrip2[0]);
-    //   // echo "<br>".(count($pecah_0));
-    //   for ($io = 0; $io < count($pecah_enkrip2); $io++) {
-    //     if (count($pecah_0) == 2) {
-    //       $hs .= $pecah_0[0];
-    //       $hs .= $pecah_0[1];
-    //     } else {
-    //       $hs .= $pecah_enkrip2[$io];
-    //       // code...
-    //     }
-    //   }
-    // }
-    // // echo "<br>Nilai Hasil Enkripsi asli = " . $hs;
-    // echo "<br>Nilai hasil Enkripsi = $hasil";
-    // dd($hasil);
-
-
-    $enk_teks = enkripsi_text($hash_teks, $kapus_private_key, $pasien_key);
+    $enk_teks = enkripsi_text($hash_teks, $priv_kap, $pasien_key);
     // dd($enk_teks);
     // dd(strlen($enk_teks[1]));
     // dd($enk_teks);
@@ -476,7 +305,22 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
 
   public function hapus_data($id)
   {
-    $this->suratModel->delete($id);
+
+    $this->srt_rsa = $this->db->table('surat_rsa');
+    $this->srt_rsa->select('id_surat_rsa');
+    $kd = $this->srt_rsa->where('nomor_surat', $id)->get();
+    $ns = $kd->getRowArray();
+    $id_surat = $ns['id_surat_rsa'];
+    // dd($id_surat);
+    $this->srt_rsa->delete(['id_surat_rsa' => $id_surat]);
+
+    $this->suratBuilder->select('id_sks');
+    $td = $this->suratBuilder->where('nomor_surat', $id)->get();
+    $idk = $td->getRowArray();
+    $id_sks = $idk['id_sks'];
+    // dd($id_sks);
+
+    $this->suratModel->delete($id_sks);
 
     session()->setFLashdata('pesan', 'Hapus');
     return redirect()->to('/admin/surat_sehat');
