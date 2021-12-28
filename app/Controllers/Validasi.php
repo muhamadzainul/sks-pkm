@@ -100,6 +100,7 @@ class Validasi extends BaseController
     public function coba()
     {
 
+        echo generateRandomString(6);
         // $pow = gmp_pow(5750, 36415);
         dd(chr(57));
         // echo "<br> hasil pow = " . gmp_mod(gmp_pow(5750, 51193), 73033);
