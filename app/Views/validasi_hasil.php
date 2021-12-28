@@ -2,17 +2,17 @@
 <?= $this->section('content'); ?>
 
 <!-- Page Content -->
-<div style="background-color: #bbbbbb;" class="wrapper">
-    <div class="row bg-title">
-        <div class="col-lg-12">
-            <a href=""><img src="<?= base_url(); ?>/gambar/Logo-pkm.png" alt="logo" style="width: 30%;"></a>
+<div style="background-color: #ffffff;" class="wrapper">
+    <div class="row">
+        <div class="col-lg-12 pl-5">
+            <img src="<?= base_url(); ?>/gambar/Logo-pkm.png" alt="logo" width="30%" class="m-t-10">
         </div>
         <!-- /.col-lg-12 -->
     </div>
     <div class="white-box w-100">
         <div class="row">
             <div class="col-lg">
-                <h1 class="box-title"><strong> Hasil Valdasi</strong></h1>
+                <h2><strong> Hasil Valdasi</strong></h2>
             </div>
         </div>
         <div class="row">
@@ -21,7 +21,7 @@
                 <strong> <?= $hasil_validasi; ?></strong>
             </div>
             <div class="col-lg-6">
-                <h4>Data Surat Pasien : <?= $data_surat["nama_pasien"]; ?></h4>
+                <h4><strong> Data Surat Pasien :</strong></h4>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="row">

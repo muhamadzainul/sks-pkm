@@ -2,17 +2,17 @@
 <?= $this->section('content'); ?>
 
 <!-- Page Content -->
-<div style="background-color: #bbbbbb;" class="wrapper">
-    <div class="row bg-title">
-        <div class="col-lg-12">
-            <a href=""><img src="<?= base_url(); ?>/gambar/Logo-pkm.png" alt="logo" style="width: 30%;"></a>
+<div style="background-color: #ffffff;" class="wrapper">
+    <div class="row">
+        <div class="col-lg-12 pl-5">
+            <a href=""><img src="<?= base_url(); ?>/gambar/Logo-pkm.png" alt="logo" width="30%" class="m-t-10"></a>
         </div>
         <!-- /.col-lg-12 -->
     </div>
     <div class="white-box w-100">
         <div class="row">
             <div class="col-lg">
-                <h3 class="box-title">Cek Validasi Surat</h3>
+                <h3>Cek Validasi Surat</h3>
             </div>
         </div>
         <div class="row">
