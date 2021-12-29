@@ -200,7 +200,7 @@
                             </hr>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <img width="40%" alt="qr_code" src="<?php base_url(); ?>/gambar/qr_code/<?= $data_surat['qr_code']; ?>" class="m-t-10">
+                                    <img width="40%" alt="qr_code" src="<?php base_url(); ?>/gambar/qr_code/<?= $data_surat['surat_qr']; ?>" class="m-t-10">
                                 </div>
                             </div>
                         </div>

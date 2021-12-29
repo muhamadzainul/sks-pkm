@@ -5,6 +5,14 @@ namespace App\Controllers\Admin;
 use App\Models\Model_pasien;
 
 use App\Controllers\BaseController;
+use Endroid\QrCode\Color\Color;
+use \Endroid\QrCode\Encoding\Encoding;
+use \Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelLow;
+use \Endroid\QrCode\QrCode;
+use \Endroid\QrCode\Label\Label;
+use \Endroid\QrCode\Logo\Logo;
+use \Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
+use \Endroid\QrCode\Writer\PngWriter;
 
 class Data_pasien extends BaseController
 {
@@ -107,6 +115,28 @@ class Data_pasien extends BaseController
     $gen_key = get_key();
     $private_key = base64_encode($this->enkripsi->encrypt($gen_key[1]));
 
+
+    $text_qr = $private_key;
+
+    $this->gen_qr   = QrCode::create($text_qr);
+    $writer         = new PngWriter();
+
+    $qrCode = $this->gen_qr->setEncoding(new Encoding('UTF-8'))
+      ->setErrorCorrectionLevel(new ErrorCorrectionLevelLow())
+      ->setSize(300)
+      ->setMargin(10)
+      ->setRoundBlockSizeMode(new RoundBlockSizeModeMargin())
+      ->setForegroundColor(new Color(0, 0, 0))
+      ->setBackgroundColor(new Color(255, 255, 255));
+
+    // Create generic logo
+    $logo = Logo::create('./gambar/Logo-Mojokerto.png')
+      ->setResizeToWidth(50);
+    $test = $writer->write($qrCode, $logo);
+    $nama_file = generateRandomString(32);
+    $test->saveToFile('./gambar/qr_code/pasien/' . $nama_file . '.png');
+    $db_qrcode_pasien = $nama_file . '.png';
+
     $this->pasienModel->save([
       'nama_pasien'       => $this->request->getVar('nama_pasien'),
       'slug'              => $slug,
@@ -118,8 +148,7 @@ class Data_pasien extends BaseController
       'email'             => $this->request->getVar('email'),
       'publik_key'        => $gen_key[0],
       'private_key'       => $private_key,
-      'hash_publik_key'   => md5($gen_key[0]),
-      'hash_private_key'  => md5($gen_key[1]),
+      'qr_code'           => $db_qrcode_pasien,
       'foto_ktp'          => $nama_file_ktp,
       'foto_kk'           => $nama_file_kk
     ]);

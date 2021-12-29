@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url(); ?>/plugins/images/favicon.png">
-    <title>SKS Puskesmas</title>
+    <title><?= $title; ?></title>
     <!-- Bootstrap Core CSS -->
     <link href="<?= base_url(); ?>/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="<?= base_url(); ?>/plugins/bower_components/bootstrap-extension/css/bootstrap-extension.css" rel="stylesheet" type="text/css">
@@ -30,6 +30,9 @@
 
     <!-- color CSS -->
     <link href="<?= base_url(); ?>/css/colors/megna.css" id="theme" rel="stylesheet" type="text/css">
+    <!-- camera -->
+    <script src="<?= base_url(); ?>/js/scanner/jquery.min.js"></script>
+    <script src="<?= base_url(); ?>/js/scanner/instascan.min.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -124,6 +127,41 @@
                 }
             })
         });
+    </script>
+    <!-- camera -->
+    <script type="text/javascript">
+        // var scan = false;
+        // document.getElementById('qr_scan').innerHTML = scan;
+
+        // function tscan() {
+        //     document.getElementById('qr_scan').innerHTML = scan;
+        //     if (scan == true) {
+        //         scan = false;
+        //     } else {
+        //         scan = true;
+        //     }
+        // };
+        // if (scan == true) {
+        let scanner = new Instascan.Scanner({
+            video: document.getElementById('preview')
+        });
+        scanner.addListener('scan', function(content) {
+            // menampilkan hasil dari scan qr code
+            $('#qrcode').val(content);
+            $('#scane_qr').modal('hide');
+            tscan();
+        });
+        // scanner.stop();
+        Instascan.Camera.getCameras().then(function(cameras) {
+            if (cameras.length > 0) {
+                scanner.start(cameras[0]);
+            } else {
+                console.error('camera tidak di temukan');
+            }
+        }).catch(function(e) {
+            console.error(e);
+        });
+        // }
     </script>
     <!--Style Switcher -->
     <script src="<?= base_url(); ?>/plugins/bower_components/styleswitcher/jQuery.style.switcher.js"></script>

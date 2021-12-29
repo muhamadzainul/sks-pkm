@@ -170,11 +170,34 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     $this->pasienBuilder->where('nik_pasien', $this->request->getVar('nik_pasien'));
     $query = $this->pasienBuilder->get();
     $queryp = $query->getResult();
+
+
     if (empty($queryp)) {
       if ($id == null) {
         // dd(empty($queryp));
 
         $priv_key = base64_encode($this->enkripsi->encrypt($gen_key[1]));
+
+        $text_qr = $priv_key;
+
+        $this->gen_qr   = QrCode::create($text_qr);
+        $writer         = new PngWriter();
+
+        $qrCode = $this->gen_qr->setEncoding(new Encoding('UTF-8'))
+          ->setErrorCorrectionLevel(new ErrorCorrectionLevelLow())
+          ->setSize(300)
+          ->setMargin(10)
+          ->setRoundBlockSizeMode(new RoundBlockSizeModeMargin())
+          ->setForegroundColor(new Color(0, 0, 0))
+          ->setBackgroundColor(new Color(255, 255, 255));
+
+        // Create generic logo
+        $logo = Logo::create('./gambar/Logo-Mojokerto.png')
+          ->setResizeToWidth(50);
+        $test = $writer->write($qrCode, $logo);
+        $nama_file = generateRandomString(32);
+        $test->saveToFile('./gambar/qr_code/pasien/' . $nama_file . '.png');
+        $db_qrcode_pasien = $nama_file . '.png';
 
         $this->pasienModel->insert([
           'nik_pasien'          => $this->request->getVar('nik_pasien'),
@@ -185,6 +208,7 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
           'alamat'              => $this->request->getVar('alamat'),
           'publik_key'          => $gen_key[0],
           'private_key'         => $priv_key,
+          'qr_code'             => $db_qrcode_pasien,
           'tanggal_dibuat'      => date("Y-m-d", time()),
           'tanggal_diubah'      => date("Y-m-d", time()),
         ]);
