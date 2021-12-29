@@ -48,6 +48,7 @@ $routes->get('/admin/data_pasien', 'Admin\Data_pasien::index');
 $routes->delete('/Admin/data_pasien/(:num)', 'Admin\data_pasien::hapus_data/$1');
 $routes->get('/admin/admin/data_pasien/(:num)', 'Admin\data_pasien::hapus_data/$1');
 $routes->get('/admin/data_pasien/edit_data/(:segment)', 'Admin\Data_pasien::edit_data/$1');
+$routes->get('/admin/surat_sehat/cetak_qr/(:segment)', 'Admin\Surat_sehat::cetak_qr/$1');
 $routes->get('/admin/data_pasien/detail_pasien/(:segment)', 'Admin\Data_pasien::detail_pasien/$1');
 $routes->get('/admin/data_pasien/update_data/(:segment)', 'Admin\Data_pasien::update_data/$1');
 $routes->get('/admin/data_pasien/(:any)', 'Admin\Data_pasien::$1');

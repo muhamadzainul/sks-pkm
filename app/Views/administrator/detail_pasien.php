@@ -90,9 +90,18 @@
           </div>
           <hr>
           <div class="row">
-            <div class="col-md-2 b-r">
+            <div class="col-md-12">
+              <strong>Private Key Pasien</strong>
+              <br>
+              <img width="20%" alt="qr_code" src="<?php base_url(); ?>/gambar/qr_code/pasien/<?= $data_pasien['qr_code']; ?>" class="m-t-10">
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-md-3 b-r">
               <a href="<?php base_url(); ?>/admin/data_pasien/edit_data/<?= $data_pasien['slug']; ?>" class="btn btn-success btn-rounded">Edit</a>
-              <a href="<?php base_url(); ?>/admin/data_pasien" class="btn btn-inverse btn-rounded">Kembali</a>
+              <a href="<?php base_url(); ?>/admin/data_pasien/cetak_qr/<?= $data_pasien['slug']; ?>" class="btn btn-inverse btn-rounded">Cetak Kunci</a>
+              <a href="<?php base_url(); ?>/admin/data_pasien" class="btn btn-primary btn-rounded">Kembali</a>
             </div>
           </div>
           <div style="height: 28px;">

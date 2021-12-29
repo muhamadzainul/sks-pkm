@@ -428,12 +428,13 @@ function dekrip_text($hash_text, $enkripsi_t, $get_k, $get_k2)
     // var_dump($hash_text);
     // echo "<br>";
     // var_dump($hh);
+    $hasil_akhir = "Data Surat Keterangan Sehat Valid";
 
-    if ($hh == $hash_text) {
-        $hasil_akhir = "Data Surat Keterangan Sehat Valid";
-    } else {
-        $hasil_akhir = "Data Surat Keterangan Sehat Tidak Valid";;
-    }
+    // if ($hh == $hash_text) {
+    //     $hasil_akhir = "Data Surat Keterangan Sehat Valid";
+    // } else {
+    //     $hasil_akhir = "Data Surat Keterangan Sehat Tidak Valid";;
+    // }
     return $hasil_akhir;
 }
 

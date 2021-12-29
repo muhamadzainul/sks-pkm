@@ -13,6 +13,8 @@ use \Endroid\QrCode\Label\Label;
 use \Endroid\QrCode\Logo\Logo;
 use \Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
 use \Endroid\QrCode\Writer\PngWriter;
+use MYPDF;
+use TCPDF;
 
 class Data_pasien extends BaseController
 {
@@ -20,6 +22,8 @@ class Data_pasien extends BaseController
   public function __construct()
   {
     $this->pasienModel = new Model_pasien();
+    $this->db             = \Config\Database::connect();
+    $this->pasienBuilder  = $this->db->table('pasien');
     $this->enkripsi    = \Config\Services::encrypter();
   }
 
@@ -291,5 +295,53 @@ class Data_pasien extends BaseController
       'data_pasien' => $this->pasienModel->getPasien($slug)
     ];
     return view('/administrator/detail_pasien', $data);
+  }
+
+  public function cetak_qr($id)
+  {
+    $this->pasienBuilder->select('nik_pasien as nik_p, nama_pasien, qr_code as pas_qr, 
+    TIMESTAMPDIFF(MONTH , pasien.tgl_lahir, NOW() ) AS umur');
+    $this->pasienBuilder->where('slug', $id);
+    $query = $this->pasienBuilder->get();
+    $data_cetak = $query->getRowArray();
+
+    $data_logo = '/gambar/Logo-Mojokerto.png';
+
+
+    $data = [
+      'data_cetak'  => $data_cetak,
+      'logo_mjk'    => $data_logo
+    ];
+
+    $pdf = new MYPDF('P', PDF_UNIT, 'LEGAL', true, 'UTF-8', false);
+
+    $pdf->SetCreator(PDF_CREATOR);
+    $pdf->SetAuthor('SKS-Puskesmas Dawarblandong');
+    $pdf->SetTitle('Cetak Surat');
+    $pdf->SetSubject('Surat Kesehatan');
+
+
+    // set default header data
+    $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE . '', PDF_HEADER_STRING);
+
+    // set header and footer fonts
+    $pdf->setHeaderFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+    $pdf->setFooterFont(array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+    // set margins
+    $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+    $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+    $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+    $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+    $pdf->addPage();
+
+    // output the HTML content
+    $html = view('/administrator/cetak_qr', $data);
+    $pdf->writeHTML($html, true, false, true, false, '');
+    //line ini penting
+    $this->response->setContentType('application/pdf');
+    //Close and output PDF document
+    $pdf->Output($data_cetak['nama_pasien'] . '.pdf', 'I');
   }
 }
