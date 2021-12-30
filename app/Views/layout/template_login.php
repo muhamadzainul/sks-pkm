@@ -129,7 +129,7 @@
         });
     </script>
     <!-- camera -->
-    <script type="text/javascript">
+    <!-- <script type="text/javascript">
         // var scan = false;
         // document.getElementById('qr_scan').innerHTML = scan;
 
@@ -162,7 +162,7 @@
             console.error(e);
         });
         // }
-    </script>
+    </script> -->
     <!--Style Switcher -->
     <script src="<?= base_url(); ?>/plugins/bower_components/styleswitcher/jQuery.style.switcher.js"></script>
 </body>

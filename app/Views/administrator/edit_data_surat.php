@@ -24,13 +24,13 @@
         <div class="white-box">
           <?php foreach ($data_surat as $ds) : ?>
             <!-- <h3 class="box-title">Basic Information</h3> -->
-            <form class="form-material form-horizontal" action="<?php base_url(); ?>/Admin/surat_sehat/simpan/<?= $ds->id_sks; ?>" method="post" enctype="">
+            <form class="form-material form-horizontal" action="<?php base_url(); ?>/Admin/surat_sehat/simpan/<?= $ds->nomor_surat; ?>" method="post" enctype="">
               <?= csrf_field(); ?>
               <div class="form-group">
                 <label class="col-md-12" for="nomor_surat"><span>No. Suat</span>
                 </label>
                 <div class="col-md-12">
-                  <input type="text" name="nomor_surat" class="form-control" placeholder="Masukkan Nomor Surat" value="<?= (old('nomor_surat')) ? old('nomor_surat') : $ds->nomor_surat; ?>">
+                  <input type="text" name="nomor_surat" class="form-control" placeholder="Masukkan Nomor Surat" value="<?= (old('nomor_surat')) ? old('nomor_surat') : $ds->nomor_surat; ?>" readonly>
                 </div>
                 <input type="hidden" name="nip_kapus" value="<?= $ds->nip_kp; ?>">
               </div>
@@ -46,10 +46,10 @@
                 <div class="row">
                   <div class="col-md">
                     <div class="col-md-7">
-                      <input type="text" name="nama_pasien" class="form-control" placeholder="Masukkan Nama Pasien" value="<?= (old('nama_pasien')) ? old('nama_pasien') : $ds->nama_pasien; ?>" disabled>
+                      <input type="text" name="nama_pasien" class="form-control" placeholder="Masukkan Nama Pasien" value="<?= (old('nama_pasien')) ? old('nama_pasien') : $ds->nama_pasien; ?>" readonly>
                     </div>
                     <div class="col-md-5">
-                      <input type="text" name="nik_pasien" class="form-control" placeholder="Masukkan Nik Pasien" value="<?= $ds->nik_p; ?>">
+                      <input type="text" name="nik_pasien" class="form-control" placeholder="Masukkan Nik Pasien" value="<?= $ds->nik_p; ?>" readonly>
                     </div>
                   </div>
                 </div>
@@ -65,7 +65,7 @@
                       <input type="text" name="pekerjaan" class="form-control" placeholder="Masukkan Pekerjaan" value="<?= (old('pekerjaan')) ? old('pekerjaan') : $ds->pekerjaan; ?>">
                     </div>
                     <div class="col-md-5">
-                      <input type="date" name="tgl_lahir" class="form-control" placeholder="Masukkan Suhu Tubuh" value="<?= (old('tgl_lahir')) ? old('tgl_lahir') : $ds->tgl_lahir; ?>" disabled>
+                      <input type="date" name="tgl_lahir" class="form-control" placeholder="Masukkan Suhu Tubuh" value="<?= (old('tgl_lahir')) ? old('tgl_lahir') : $ds->tgl_lahir; ?>" readonly>
                     </div>
                   </div>
                 </div>
@@ -75,7 +75,7 @@
                 <label class="col-md-12" for="alamat"><span>ALamat</span>
                 </label>
                 <div class="col-md-12">
-                  <input type="text" name="alamat" class="form-control" placeholder="Masukkan Alamat" value="<?= (old('alamat')) ? old('alamat') : $ds->alamat; ?>">
+                  <input type="text" name="alamat" class="form-control" placeholder="Masukkan Alamat" value="<?= (old('alamat')) ? old('alamat') : $ds->alamat; ?>" readonly>
                 </div>
               </div>
 
@@ -207,6 +207,14 @@
                     <?php endif; ?>
                   </select>
                 </div>
+              </div>
+              <div class="form-group">
+                <label for="" class="col-md-12" for="password_surat"><span>Ubah Password Untuk Validasi</span></label>
+                <div class="col-md-12">
+                  <input type="hidden" name="pass_pas" class="form-control" value="<?php $password_pas; ?>">
+                  <input type="text" name="ubah_pass_pas" class="form-control" placeholder="Ubah Password Validasi">
+                </div>
+                <small style="color: red;">*Password digunakan saat melakukan validasi surat jadi harus mudah di ingat</small>
               </div>
               <button type="submit" class="btn btn-info waves-effect waves-light m-r-10">Submit</button>
               <a href="<?php base_url(); ?>/admin/surat_sehat/" class="btn btn-inverse waves-effect waves-light">Cancel</a>

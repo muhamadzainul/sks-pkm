@@ -35,11 +35,13 @@
                             <td>Tanggal Pembuatan Surat</td>
                             <td><input type="text" name="tgl_dibuatsurat" id="tgl_dibuatsurat" class="form-control" placeholder="Tanggal Dibuat"></td>
                         </tr>
-                        <tr>
+                        <!-- <tr>
                             <td colspan="2"><a href="" class="btn btn-sm btn-primary mb-3" data-toggle="modal" data-target="#scane_qr" onclick="tscan()">Scan Kunci</a></td>
-                        </tr>
+                        </tr> -->
                         <tr>
-                            <td colspan="2"><input type="text" name="privete_key" id="qrcode" class="form-control" readonly></td>
+                            <td>Masukkan Password Untuk Validasi></td>
+                            <td><input type="text" name="password_pas" class="form-control" placeholder="Password Validasi"></td>
+                            <!-- <td colspan="2"><input type="text" name="privete_key" id="qrcode" class="form-control" readonly></td> -->
                         </tr>
                         <tr>
                             <td colspan="2"><button type="submit" class="btn btn-sm btn-success">Cek Data</button></td>
@@ -51,7 +53,7 @@
     </div>
     <!-- /.container-fluid -->
     <!-- Modal Tambah Kapus -->
-    <div class="modal fade" id="scane_qr" tabindex="-1" role="dialog" aria-labelledby="userBaruLabel" aria-hidden="true">
+    <!-- <div class="modal fade" id="scane_qr" tabindex="-1" role="dialog" aria-labelledby="userBaruLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -67,8 +69,8 @@
             </div>
         </div>
 
-        <!-- /#page-wrapper -->
-    </div>
+    </div> -->
+    <!-- /#page-wrapper -->
     <footer class="w-100 py-4 flex-shrink-0" style="position: fixed; background-color:#212529;">
         <div class="container py-4">
             <div class="row gy-4 gx-5">

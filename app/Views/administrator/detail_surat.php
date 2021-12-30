@@ -217,8 +217,8 @@
         </div>
         <div class="row m-t-30">
           <div class="col-md-4">
-            <a href="<?php base_url(); ?>/admin/surat_sehat/edit_data/<?= $ds['id_sks']; ?>" class="btn btn-success ">Edit</a>
-            <a href="<?php base_url(); ?>/admin/surat_sehat/cetak_surat/<?= $ds['id_sks']; ?>" class="btn btn-info ">Cetak</a>
+            <a href="<?php base_url(); ?>/admin/surat_sehat/edit_data/<?= $ds['nomor_surat']; ?>" class="btn btn-success ">Edit</a>
+            <a href="<?php base_url(); ?>/admin/surat_sehat/cetak_surat/<?= $ds['nomor_surat']; ?>" class="btn btn-info ">Cetak</a>
             <a href="<?php base_url(); ?>/admin/surat_sehat" class="btn btn-inverse ">Kembali</a>
           </div>
         </div>

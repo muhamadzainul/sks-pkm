@@ -16,6 +16,7 @@ use \Endroid\QrCode\Logo\Logo;
 use \Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
 use \Endroid\QrCode\Writer\PngWriter;
 use MYPDF;
+use SebastianBergmann\CodeCoverage\Driver\Selector;
 use TCPDF;
 
 class Surat_sehat extends BaseController
@@ -275,42 +276,24 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     $test->saveToFile('./gambar/qr_code/' . $hash_teks . '.png');
     $db_qrcode = $hash_teks . '.png';
     // dd($this->request->getVar('nip_kapus'));
+    if ($id != null) {
 
+      $this->suratBuilder->select('id_sks, nomor_surat');
+      $ka = $this->suratBuilder->where('nomor_surat', $id)->get();
+      $tr = $ka->getRowArray();
+      // dd($tr['id_sks']);
 
-    $this->suratModel->insert([
-      'nomor_surat'     => $this->request->getVar('nomor_surat'),
-      'nik_pasien'      => $this->request->getVar('nik_pasien'),
-      'nip_kapus'       => $this->request->getVar('nip_kapus'),
-      'pekerjaan'       => $this->request->getVar('pekerjaan'),
-      'slug'            => $slug,
-      'tinggi_badan'    => $this->request->getVar('tinggi_badan'),
-      'berat_badan'     => $this->request->getVar('berat_badan'),
-      'suhu_tubuh'      => $this->request->getVar('suhu_tubuh'),
-      'tensi_darah'     => $this->request->getVar('tensi_darah'),
-      'nadi'            => $this->request->getVar('nadi'),
-      'respirasi'       => $this->request->getVar('respirasi'),
-      'mata_buta'       => $this->request->getVar('mata_buta'),
-      'tubuh_tato'      => $this->request->getVar('tubuh_tato'),
-      'tubuh_tindik'    => $this->request->getVar('tubuh_tindik'),
-      'kepentingan'     => $this->request->getVar('kepentingan'),
-      'hasil_periksa'   => $this->request->getVar('hasil_periksa'),
-      'qr_code'         => $db_qrcode,
-      'tanggal_dibuat'  => date("Y-m-d", time()),
-      'tanggal_diubah'  => date("Y-m-d", time()),
-      'tanggal_exp'     => $tgl_exp
-    ]);
+      // dd(empty($this->request->getVar('ubah_pass_pas')));
+      if (empty($this->request->getVar('ubah_pass_pas'))) {
+        $surat_rsa = $this->db->table('surat_rsa');
+        $surat_rsa->select('kunci_pasien');
+        $sr = $surat_rsa->where('nik_pasien', $this->request->getVar('nik_pasien'))->get();
+        $srt = $sr->getRowArray();
+        $pass_pas = $srt['kunci_pasien'];
+      } else {
+        $pass_pas = base64_encode($this->enkripsi->encrypt($this->request->getVar('pass_pas')));
+      }
 
-    if ($id == null) {
-      $this->rsaBuilder->insert([
-        'nomor_surat'   => $this->request->getVar('nomor_surat'),
-        'nik_pasien'    => $this->request->getVar('nik_pasien'),
-        'nip_kapus'     => $this->request->getVar('nip_kapus'),
-        'teks_asli'     => $hash_teks,
-        'teks_enkripsi' => $enk_teks[1],
-        'hash_enkrip'   => md5($enk_teks[0]),
-        'tanggal_dibuat' => date("Y-m-d", time()),
-      ]);
-    } else {
       $dataRSA = [
         'nomor_surat'   => $this->request->getVar('nomor_surat'),
         'nik_pasien'    => $this->request->getVar('nik_pasien'),
@@ -318,10 +301,75 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
         'teks_asli'     => $hash_teks,
         'teks_enkripsi' => $enk_teks[1],
         'hash_enkrip'   => md5($enk_teks[0]),
+        'kunci_pasien'  => $pass_pas,
         'tanggal_dibuat' => date("Y-m-d", time()),
       ];
       $this->rsaBuilder->replace($dataRSA);
+
+      $data = [
+        'id_sks'          => $tr['id_sks'],
+        'nik_pasien'      => $this->request->getVar('nik_pasien'),
+        'nip_kapus'       => $this->request->getVar('nip_kapus'),
+        'pekerjaan'       => $this->request->getVar('pekerjaan'),
+        'slug'            => $slug,
+        'tinggi_badan'    => $this->request->getVar('tinggi_badan'),
+        'berat_badan'     => $this->request->getVar('berat_badan'),
+        'suhu_tubuh'      => $this->request->getVar('suhu_tubuh'),
+        'tensi_darah'     => $this->request->getVar('tensi_darah'),
+        'nadi'            => $this->request->getVar('nadi'),
+        'respirasi'       => $this->request->getVar('respirasi'),
+        'mata_buta'       => $this->request->getVar('mata_buta'),
+        'tubuh_tato'      => $this->request->getVar('tubuh_tato'),
+        'tubuh_tindik'    => $this->request->getVar('tubuh_tindik'),
+        'kepentingan'     => $this->request->getVar('kepentingan'),
+        'hasil_periksa'   => $this->request->getVar('hasil_periksa'),
+        'qr_code'         => $db_qrcode,
+        'tanggal_dibuat'  => date("Y-m-d", time()),
+        'tanggal_diubah'  => date("Y-m-d", time()),
+        'tanggal_exp'     => $tgl_exp
+      ];
+      $this->suratModel->save($data);
+    } else {
+      $this->suratModel->insert([
+        'nomor_surat'     => $this->request->getVar('nomor_surat'),
+        'nik_pasien'      => $this->request->getVar('nik_pasien'),
+        'nip_kapus'       => $this->request->getVar('nip_kapus'),
+        'pekerjaan'       => $this->request->getVar('pekerjaan'),
+        'slug'            => $slug,
+        'tinggi_badan'    => $this->request->getVar('tinggi_badan'),
+        'berat_badan'     => $this->request->getVar('berat_badan'),
+        'suhu_tubuh'      => $this->request->getVar('suhu_tubuh'),
+        'tensi_darah'     => $this->request->getVar('tensi_darah'),
+        'nadi'            => $this->request->getVar('nadi'),
+        'respirasi'       => $this->request->getVar('respirasi'),
+        'mata_buta'       => $this->request->getVar('mata_buta'),
+        'tubuh_tato'      => $this->request->getVar('tubuh_tato'),
+        'tubuh_tindik'    => $this->request->getVar('tubuh_tindik'),
+        'kepentingan'     => $this->request->getVar('kepentingan'),
+        'hasil_periksa'   => $this->request->getVar('hasil_periksa'),
+        'qr_code'         => $db_qrcode,
+        'tanggal_dibuat'  => date("Y-m-d", time()),
+        'tanggal_diubah'  => date("Y-m-d", time()),
+        'tanggal_exp'     => $tgl_exp
+      ]);
+
+      $pass_pas = base64_encode($this->enkripsi->encrypt($this->request->getVar('pass_pas')));
+      $this->rsaBuilder->insert([
+        'nomor_surat'   => $this->request->getVar('nomor_surat'),
+        'nik_pasien'    => $this->request->getVar('nik_pasien'),
+        'nip_kapus'     => $this->request->getVar('nip_kapus'),
+        'teks_asli'     => $hash_teks,
+        'teks_enkripsi' => $enk_teks[1],
+        'hash_enkrip'   => md5($enk_teks[0]),
+        'kunci_pasien'  => $pass_pas,
+        'tanggal_dibuat' => date("Y-m-d", time()),
+      ]);
     }
+
+
+    // if ($id == null) {
+    // } else {
+    // }
 
     session()->setFLashdata('pesan', 'Tambahkan');
 
@@ -358,7 +406,7 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     hasil_periksa, surat_kesehatan.qr_code as qr_code, nama_kapus, kapus.nip_kapus as nip_kp, nama_kapus, pasien.tgl_lahir as tgl_lahir, TIMESTAMPDIFF(MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     $this->suratBuilder->join('pasien', 'pasien.nik_pasien = surat_kesehatan.nik_pasien');
     $this->suratBuilder->join('kapus', 'kapus.nip_kapus = surat_kesehatan.nip_kapus');
-    $this->suratBuilder->where('id_sks', $id);
+    $this->suratBuilder->where('nomor_surat', $id);
     $query = $this->suratBuilder->get();
 
     // dd($query->getResult());
@@ -400,15 +448,27 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
           TIMESTAMPDIFF(MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     $this->suratBuilder->join('pasien', 'pasien.nik_pasien = surat_kesehatan.nik_pasien');
     $this->suratBuilder->join('kapus', 'kapus.nip_kapus = surat_kesehatan.nip_kapus');
-    $this->suratBuilder->where('id_sks', $id);
+    $this->suratBuilder->where('nomor_surat', $id);
     $query = $this->suratBuilder->get();
+    $surat = $query->getResultArray();
+    // dd($surat[0]['nomor_surat']);
 
+    $this->rsaBuilder->select('kunci_pasien');
+    $ps = $this->rsaBuilder->where('nomor_surat', $surat[0]['nomor_surat'])->get();
+    $pas = $ps->getRowArray();
+    // dd(empty($pas));
+    if (empty($pas['kunci_pasisen'])) {
+      $pp = "";
+    } else {
+      $pp = $pas['kunci_pasisen'];
+    }
     // dd($query->getResult());
 
     $data = [
-      'title'    => 'Detail data surat',
-      'validation' => \Config\Services::validation(),
-      'data_surat' => $query->getResultArray()
+      'title'         => 'Detail data surat',
+      'validation'    => \Config\Services::validation(),
+      'data_surat'    => $surat,
+      'password_pas'  => $pp
     ];
     return view('/administrator/detail_surat', $data);
   }
@@ -420,7 +480,7 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     TIMESTAMPDIFF(MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     $this->suratBuilder->join('pasien', 'pasien.nik_pasien = surat_kesehatan.nik_pasien');
     $this->suratBuilder->join('kapus', 'kapus.nip_kapus = surat_kesehatan.nip_kapus');
-    $this->suratBuilder->where('id_sks', $id);
+    $this->suratBuilder->where('nomor_surat', $id);
     $query = $this->suratBuilder->get();
     $data_cetak = $query->getRowArray();
 
@@ -458,12 +518,12 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
 
     // output the HTML content
     $pdf->writeHTML($html, true, false, true, false, '');
-    $pdf->lastPage();
-    $pdf->addPage();
+    // $pdf->lastPage();
+    // $pdf->addPage();
 
-    $html = view('/administrator/cetak_qr', $data);
-    $pdf->writeHTML($html, true, false, true, false, '');
-    $pdf->lastPage();
+    // $html = view('/administrator/cetak_qr', $data);
+    // $pdf->writeHTML($html, true, false, true, false, '');
+    // $pdf->lastPage();
     //line ini penting
     $this->response->setContentType('application/pdf');
     //Close and output PDF document

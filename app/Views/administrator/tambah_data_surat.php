@@ -252,6 +252,13 @@
                 </select>
               </div>
             </div>
+            <div class="form-group">
+              <label for="" class="col-md-12" for="password_surat"><span>Password Untuk Validasi</span></label>
+              <div class="col-md-12">
+                <input type="text" name="pass_pas" class="form-control" placeholder="Password Validasi">
+              </div>
+              <small style="color: red;">*Password digunakan saat melakukan validasi surat jadi harus mudah di ingat</small>
+            </div>
             <input type="hidden" name="nip_kapus" value="<?= $data_kapus; ?>">
             <button type="submit" class="btn btn-info waves-effect waves-light m-r-10">Submit</button>
             <a href="<?php base_url(); ?>/admin/surat_sehat/" class="btn btn-inverse waves-effect waves-light">Cancel</a>

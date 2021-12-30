@@ -205,6 +205,13 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label for="" class="col-md-12" for="password_surat"><span>Password Untuk Validasi</span></label>
+                            <div class="col-md-12">
+                                <input type="text" name="pass_pas" class="form-control" placeholder="Password Validasi">
+                            </div>
+                            <small style="color: red;">*Password digunakan saat melakukan validasi surat jadi harus mudah di ingat</small>
+                        </div>
                         <?php foreach ($data_kapus as $dk) : ?>
                             <?php if (($dk->active) == 1) : ?>
                                 <input type="hidden" name="nip_kapus" value="<?= $dk->nip_kapus; ?>">

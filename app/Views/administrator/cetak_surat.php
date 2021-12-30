@@ -74,7 +74,10 @@
             <td style="text-align: center; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
                 <p style="font-size: 10;">
                     KABUPATEN MOJOKERTO,<br>
-                    <?= date("j F Y") ?><br>
+                    <?php
+                    $d = strtotime($data_cetak['tgl_dibuat']);
+                    // dd($d);
+                    echo date("j F Y", $d); ?><br>
                     Kepala UPT Puskesmas Dawarblandong
                     <br>
                     <img width="100px" alt="qr_code" src="<?php base_url(); ?>/gambar/qr_code/<?= $data_cetak['qr_code']; ?>" class="m-t-10">
