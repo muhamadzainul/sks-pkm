@@ -57,6 +57,7 @@
                     <h5 class="text-grey-500 text-center">Data Surat Sehat Belum Ada</h5>
                   </td>
                 <?php else : ?>
+                  <?php $n = 1 + (10 * ($currentPage - 1)); ?>
                   <?php $n = 1; ?>
                   <?php foreach ($data_surat as $ds) : ?>
                     <tr>
@@ -82,6 +83,7 @@
                 <?php endif; ?>
               </tbody>
             </table>
+            <?= $pager->Links(); ?>
           </div>
         </div>
       </div>

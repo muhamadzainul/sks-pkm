@@ -43,7 +43,7 @@ class Data_pasien extends BaseController
     $data = [
       // 'data_pasien' => $data_pasien
       'title'         => 'Data Pasien',
-      'data_pasien'   => $pasien->paginate(10),
+      'data_pasien'   => $pasien->orderBy('id_pasien', 'DESC')->paginate(10),
       'pager'         => $this->pasienModel->pager,
       'currentPage'   => $currentPage
     ];
@@ -122,24 +122,24 @@ class Data_pasien extends BaseController
 
     $text_qr = $private_key;
 
-    $this->gen_qr   = QrCode::create($text_qr);
-    $writer         = new PngWriter();
+    // $this->gen_qr   = QrCode::create($text_qr);
+    // $writer         = new PngWriter();
 
-    $qrCode = $this->gen_qr->setEncoding(new Encoding('UTF-8'))
-      ->setErrorCorrectionLevel(new ErrorCorrectionLevelLow())
-      ->setSize(300)
-      ->setMargin(10)
-      ->setRoundBlockSizeMode(new RoundBlockSizeModeMargin())
-      ->setForegroundColor(new Color(0, 0, 0))
-      ->setBackgroundColor(new Color(255, 255, 255));
+    // $qrCode = $this->gen_qr->setEncoding(new Encoding('UTF-8'))
+    //   ->setErrorCorrectionLevel(new ErrorCorrectionLevelLow())
+    //   ->setSize(300)
+    //   ->setMargin(10)
+    //   ->setRoundBlockSizeMode(new RoundBlockSizeModeMargin())
+    //   ->setForegroundColor(new Color(0, 0, 0))
+    //   ->setBackgroundColor(new Color(255, 255, 255));
 
-    // Create generic logo
-    $logo = Logo::create('./gambar/Logo-Mojokerto.png')
-      ->setResizeToWidth(50);
-    $test = $writer->write($qrCode, $logo);
-    $nama_file = generateRandomString(32);
-    $test->saveToFile('./gambar/qr_code/pasien/' . $nama_file . '.png');
-    $db_qrcode_pasien = $nama_file . '.png';
+    // // Create generic logo
+    // $logo = Logo::create('./gambar/Logo-Mojokerto.png')
+    //   ->setResizeToWidth(50);
+    // $test = $writer->write($qrCode, $logo);
+    // $nama_file = generateRandomString(32);
+    // $test->saveToFile('./gambar/qr_code/pasien/' . $nama_file . '.png');
+    // $db_qrcode_pasien = $nama_file . '.png';
 
     $this->pasienModel->save([
       'nama_pasien'       => $this->request->getVar('nama_pasien'),
@@ -152,7 +152,7 @@ class Data_pasien extends BaseController
       'email'             => $this->request->getVar('email'),
       'publik_key'        => $gen_key[0],
       'private_key'       => $private_key,
-      'qr_code'           => $db_qrcode_pasien,
+      // 'qr_code'           => $db_qrcode_pasien,
       'foto_ktp'          => $nama_file_ktp,
       'foto_kk'           => $nama_file_kk
     ]);

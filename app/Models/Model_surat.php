@@ -26,18 +26,21 @@ class Model_surat extends Model
         return $this->where(['slug' => $slug])->first();
     }
 
-    public function search($keyword)
+    public function search($keyword = null)
     {
         // return $this->table('surat_kesehatan')->like('nomor_surat', $keyword)->orlike('');
 
         $suratBuilder   = $this->table('surat_kesehatan');
         $suratBuilder->select('id_sks, nomor_surat, surat_kesehatan.nik_pasien as nik_p, nama_pasien, jenis_kelamin, tgl_lahir, alamat,
-        pekerjaan, kepentingan, tinggi_badan, berat_badan, tensi_darah, suhu_tubuh, nadi, respirasi, mata_buta, tubuh_tato, tubuh_tindik,
-        hasil_periksa, nama_kapus, kapus.nip_kapus as nip_kp');
+        pekerjaan, kepentingan, tinggi_badan, berat_badan, tensi_darah, suhu_tubuh, nadi, respirasi, mata_buta, tubuh_tato, tubuh_tindik,surat_kesehatan.tanggal_dibuat as tgl_dibuat,
+        hasil_periksa, nama_kapus, kapus.nip_kapus as nip_kp, TIMESTAMPDIFF(MONTH , pasien.tgl_lahir, NOW() ) AS umur');
         $suratBuilder->join('pasien', 'pasien.nik_pasien = surat_kesehatan.nik_pasien');
         $suratBuilder->join('kapus', 'kapus.nip_kapus = surat_kesehatan.nip_kapus');
-        $suratBuilder->like('nomor_surat', $keyword);
-        $suratBuilder->like('nik_pasien', $keyword);
+        if ($keyword != null) {
+            $suratBuilder->like('nomor_surat', $keyword);
+            $suratBuilder->like('nik_pasien', $keyword);
+            # code...
+        }
         //
         return $suratBuilder;
     }

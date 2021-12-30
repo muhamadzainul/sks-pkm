@@ -43,7 +43,6 @@ class Surat_sehat extends BaseController
   public function index()
   {
     $currentPage = $this->request->getVar('page') ? $this->request->getVar('page') : 1;
-    // $data_pasien = $this->pasienModel->findAll();
 
 
     $this->suratBuilder->select('id_sks, nomor_surat, surat_kesehatan.nik_pasien as nik_p, pasien.tgl_lahir, nama_pasien, kepentingan, hasil_periksa, surat_kesehatan.tanggal_dibuat as tgl_dibuat, TIMESTAMPDIFF(
@@ -54,23 +53,24 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     $keyword = $this->request->getVar('keyword');
 
     if ($keyword) {
-      // $sks = $this->suratModel->search($keyword);
+      $sks = $this->suratModel->search($keyword);
       $this->suratBuilder->like('nama_pasien', $keyword);
       $this->suratBuilder->orLike('surat_kesehatan.nik_pasien', $keyword);
       $query = $this->suratBuilder->get();
     } else {
+      $sks = $this->suratModel->search("");
       $query = $this->suratBuilder->get();
     }
 
     // $data_surat = $this->suratModel->findAll();
     $data = [
-      // 'data_surat' => $data_surat
+      // 'data_surat' => $data_surat,
       // 'cek_data' => $kosong,
-      // 'data_surat' => $sks->paginate(4),
-      // 'pager' => $this->suratModel->pager,
-      // 'currentPage' => $currentPage
+      'data_surat' => $sks->orderBy('id_pasien', 'DESC')->paginate(10),
+      'pager' => $this->suratModel->pager,
+      'currentPage' => $currentPage,
       'title'    => 'Data Surat',
-      'data_surat' => $query->getResultArray()
+      // 'data_surat' => $query->getResultArray()
     ];
     return view('/administrator/data_surat_sehat', $data);
   }
@@ -181,24 +181,24 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
 
         $text_qr = $priv_key;
 
-        $this->gen_qr   = QrCode::create($text_qr);
-        $writer         = new PngWriter();
+        // $this->gen_qr   = QrCode::create($text_qr);
+        // $writer         = new PngWriter();
 
-        $qrCode = $this->gen_qr->setEncoding(new Encoding('UTF-8'))
-          ->setErrorCorrectionLevel(new ErrorCorrectionLevelLow())
-          ->setSize(300)
-          ->setMargin(10)
-          ->setRoundBlockSizeMode(new RoundBlockSizeModeMargin())
-          ->setForegroundColor(new Color(0, 0, 0))
-          ->setBackgroundColor(new Color(255, 255, 255));
+        // $qrCode = $this->gen_qr->setEncoding(new Encoding('UTF-8'))
+        //   ->setErrorCorrectionLevel(new ErrorCorrectionLevelLow())
+        //   ->setSize(300)
+        //   ->setMargin(10)
+        //   ->setRoundBlockSizeMode(new RoundBlockSizeModeMargin())
+        //   ->setForegroundColor(new Color(0, 0, 0))
+        //   ->setBackgroundColor(new Color(255, 255, 255));
 
-        // Create generic logo
-        $logo = Logo::create('./gambar/Logo-Mojokerto.png')
-          ->setResizeToWidth(50);
-        $test = $writer->write($qrCode, $logo);
-        $nama_file = generateRandomString(32);
-        $test->saveToFile('./gambar/qr_code/pasien/' . $nama_file . '.png');
-        $db_qrcode_pasien = $nama_file . '.png';
+        // // Create generic logo
+        // $logo = Logo::create('./gambar/Logo-Mojokerto.png')
+        //   ->setResizeToWidth(50);
+        // $test = $writer->write($qrCode, $logo);
+        // $nama_file = generateRandomString(32);
+        // $test->saveToFile('./gambar/qr_code/pasien/' . $nama_file . '.png');
+        // $db_qrcode_pasien = $nama_file . '.png';
 
         $this->pasienModel->insert([
           'nik_pasien'          => $this->request->getVar('nik_pasien'),
@@ -209,7 +209,7 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
           'alamat'              => $this->request->getVar('alamat'),
           'publik_key'          => $gen_key[0],
           'private_key'         => $priv_key,
-          'qr_code'             => $db_qrcode_pasien,
+          // 'qr_code'             => $db_qrcode_pasien,
           'tanggal_dibuat'      => date("Y-m-d", time()),
           'tanggal_diubah'      => date("Y-m-d", time()),
         ]);
