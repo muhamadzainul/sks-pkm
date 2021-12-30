@@ -211,7 +211,8 @@
               <div class="form-group">
                 <label for="" class="col-md-12" for="password_surat"><span>Ubah Password Untuk Validasi</span></label>
                 <div class="col-md-12">
-                  <input type="hidden" name="pass_pas" class="form-control" value="<?php $password_pas; ?>">
+                  <input type="hidden" name="tgl_dibuat" class="form-control" value="<?= $ds->tgl_dibuat; ?>">
+                  <input type="hidden" name="pass_pas" class="form-control" value="<?= $password_pas; ?>">
                   <input type="text" name="ubah_pass_pas" class="form-control" placeholder="Ubah Password Validasi">
                 </div>
                 <small style="color: red;">*Password digunakan saat melakukan validasi surat jadi harus mudah di ingat</small>

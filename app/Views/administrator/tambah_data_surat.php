@@ -260,6 +260,7 @@
               <small style="color: red;">*Password digunakan saat melakukan validasi surat jadi harus mudah di ingat</small>
             </div>
             <input type="hidden" name="nip_kapus" value="<?= $data_kapus; ?>">
+            <input type="hidden" name="tgl_dibuat" value="<?= date("Y-m-d", time()); ?>">
             <button type="submit" class="btn btn-info waves-effect waves-light m-r-10">Submit</button>
             <a href="<?php base_url(); ?>/admin/surat_sehat/" class="btn btn-inverse waves-effect waves-light">Cancel</a>
           </form>

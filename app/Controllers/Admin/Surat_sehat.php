@@ -127,7 +127,7 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
 
   public function simpan($id = null)
   {
-    // dd($id);
+    // dd($this->request->getVar('tgl_dibuat'));
     // Form Validasi
     if (!$this->validate([
       'nomor_surat' => [
@@ -216,7 +216,7 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
       }
     }
 
-    $teks = $this->request->getVar('nomor_surat') . "-" . $this->request->getVar('nik_pasien') . "-" . $this->request->getVar('nip_kapus') . "-" . $this->request->getVar('nama_pasien') . "-" . $this->request->getVar('kepentingan') . "-" . $this->request->getVar('hasil_periksa') . "-" . date("Y-m-d", time());
+    $teks = $this->request->getVar('nomor_surat') . "-" . $this->request->getVar('nik_pasien') . "-" . $this->request->getVar('nip_kapus') . "-" . $this->request->getVar('nama_pasien') . "-" . $this->request->getVar('kepentingan') . "-" . $this->request->getVar('hasil_periksa') . "-" . $this->request->getVar('tgl_dibuat');
     $hash_teks = md5($teks);
     // dd($hash_teks);
 
@@ -283,12 +283,11 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
       $tr = $ka->getRowArray();
       // dd($tr['id_sks']);
 
+      $this->rsaBuilder->select('kunci_pasien');
+      $sr = $this->rsaBuilder->where('nik_pasien', $this->request->getVar('nik_pasien'))->get();
+      $srt = $sr->getRowArray();
       // dd(empty($this->request->getVar('ubah_pass_pas')));
       if (empty($this->request->getVar('ubah_pass_pas'))) {
-        $surat_rsa = $this->db->table('surat_rsa');
-        $surat_rsa->select('kunci_pasien');
-        $sr = $surat_rsa->where('nik_pasien', $this->request->getVar('nik_pasien'))->get();
-        $srt = $sr->getRowArray();
         $pass_pas = $srt['kunci_pasien'];
       } else {
         $pass_pas = base64_encode($this->enkripsi->encrypt($this->request->getVar('pass_pas')));
@@ -302,7 +301,8 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
         'teks_enkripsi' => $enk_teks[1],
         'hash_enkrip'   => md5($enk_teks[0]),
         'kunci_pasien'  => $pass_pas,
-        'tanggal_dibuat' => date("Y-m-d", time()),
+        'tanggal_dibuat' => $this->request->getVar('tgl_dibuat'),
+        'tanggal_diubah' => date("Y-m-d", time()),
       ];
       $this->rsaBuilder->replace($dataRSA);
 
@@ -324,7 +324,7 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
         'kepentingan'     => $this->request->getVar('kepentingan'),
         'hasil_periksa'   => $this->request->getVar('hasil_periksa'),
         'qr_code'         => $db_qrcode,
-        'tanggal_dibuat'  => date("Y-m-d", time()),
+        'tanggal_dibuat'  => $this->request->getVar('tgl_dibuat'),
         'tanggal_diubah'  => date("Y-m-d", time()),
         'tanggal_exp'     => $tgl_exp
       ];
@@ -363,6 +363,7 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
         'hash_enkrip'   => md5($enk_teks[0]),
         'kunci_pasien'  => $pass_pas,
         'tanggal_dibuat' => date("Y-m-d", time()),
+        'tanggal_diubah' => date("Y-m-d", time()),
       ]);
     }
 
@@ -403,18 +404,33 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
   {
     $this->suratBuilder->select('id_sks, nomor_surat, pasien.nik_pasien as nik_p, nama_pasien, jenis_kelamin, tgl_lahir, alamat,
     pekerjaan, kepentingan, tinggi_badan, berat_badan, tensi_darah, suhu_tubuh, nadi, respirasi, mata_buta, tubuh_tato, tubuh_tindik,
-    hasil_periksa, surat_kesehatan.qr_code as qr_code, nama_kapus, kapus.nip_kapus as nip_kp, nama_kapus, pasien.tgl_lahir as tgl_lahir, TIMESTAMPDIFF(MONTH , pasien.tgl_lahir, NOW() ) AS umur');
+    hasil_periksa, surat_kesehatan.qr_code as qr_code, nama_kapus, kapus.nip_kapus as nip_kp, nama_kapus, surat_kesehatan.tanggal_dibuat as tgl_dibuat,
+    pasien.tgl_lahir as tgl_lahir, TIMESTAMPDIFF(MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     $this->suratBuilder->join('pasien', 'pasien.nik_pasien = surat_kesehatan.nik_pasien');
     $this->suratBuilder->join('kapus', 'kapus.nip_kapus = surat_kesehatan.nip_kapus');
     $this->suratBuilder->where('nomor_surat', $id);
     $query = $this->suratBuilder->get();
+    $surat = $query->getResult();
+    // dd($surat);
 
+
+
+    $this->rsaBuilder->select('kunci_pasien, tanggal_dibuat');
+    $ps = $this->rsaBuilder->where('nomor_surat', $surat[0]->nomor_surat)->get();
+    $pas = $ps->getRowArray();
     // dd($query->getResult());
+    if (empty($pas['kunci_pasisen'])) {
+      $pp = "";
+    } else {
+      $pp = $pas['kunci_pasisen'];
+    }
 
     $data = [
       'title'    => 'Edit data surat',
       'validation' => \Config\Services::validation(),
-      'data_surat' => $query->getResult()
+      'data_surat' => $query->getResult(),
+      'password_pas'  => $pp,
+      'tgl_dibuat'    => $pas['tanggal_dibuat']
     ];
     return view('/administrator/edit_data_surat', $data);
   }
@@ -453,7 +469,7 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     $surat = $query->getResultArray();
     // dd($surat[0]['nomor_surat']);
 
-    $this->rsaBuilder->select('kunci_pasien');
+    $this->rsaBuilder->select('kunci_pasien, tanggal_dibuat');
     $ps = $this->rsaBuilder->where('nomor_surat', $surat[0]['nomor_surat'])->get();
     $pas = $ps->getRowArray();
     // dd(empty($pas));
@@ -468,7 +484,8 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
       'title'         => 'Detail data surat',
       'validation'    => \Config\Services::validation(),
       'data_surat'    => $surat,
-      'password_pas'  => $pp
+      'password_pas'  => $pp,
+      'tgl_dibuat'    => $pas['tanggal_dibuat']
     ];
     return view('/administrator/detail_surat', $data);
   }

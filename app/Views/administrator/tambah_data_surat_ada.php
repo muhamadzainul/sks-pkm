@@ -209,6 +209,7 @@
                             <label for="" class="col-md-12" for="password_surat"><span>Password Untuk Validasi</span></label>
                             <div class="col-md-12">
                                 <input type="text" name="pass_pas" class="form-control" placeholder="Password Validasi">
+                                <input type="hidden" name="tgl_dibuat" value="<?= date("Y-m-d", time()); ?>">
                             </div>
                             <small style="color: red;">*Password digunakan saat melakukan validasi surat jadi harus mudah di ingat</small>
                         </div>
