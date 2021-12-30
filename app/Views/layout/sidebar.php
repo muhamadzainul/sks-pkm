@@ -14,11 +14,11 @@
 
             <?php if (in_groups('admin')) : ?>
                 <li class="nav-small-cap m-t-10">--- Kelola Data Petugas</li>
-                <li> <a href="javascript:void(0);" class="waves-effect"><i class="fa fa-user-md p-r-10"></i> <span class="hide-menu"> Petugas <span class="fa arrow"></span></span></a>
-                    <ul class="nav nav-second-level">
-                        <li> <a href="<?= base_url(); ?>/admin/data_petugas/">Data Petugas</a> </li>
-                        <li> <a href="<?= base_url(); ?>/admin/data_petugas/tambah_data_petugas">Tambah Data Petugas</a> </li>
-                    </ul>
+                <li> <a href="<?= base_url(); ?>/admin/data_petugas/" class="waves-effect"><i class="fa fa-user-md p-r-10"></i> <span class="hide-menu"> Data Petugas</span></span></a>
+                    <!-- <ul class="nav nav-second-level"> -->
+                    <!-- <li> <a href="<?= base_url(); ?>/admin/data_petugas/">Data Petugas</a> </li> -->
+                    <!-- <li> <a href="<?= base_url(); ?>/admin/data_petugas/tambah_data_petugas">Tambah Data Petugas</a> </li> -->
+                    <!-- </ul> -->
                 </li>
                 <!-- <li><a href="#" class="waves-effect"><i class="fa fa-code-fork p-r-10"></i>  Hak Akses Peetugas</a></li> -->
                 <li><a href="<?= base_url(); ?>/admin/kapus" class="waves-effect"><i class="fa fa-user p-r-10"></i><span class="hide-menu"> Kepala Puskesmas</span></a></li>

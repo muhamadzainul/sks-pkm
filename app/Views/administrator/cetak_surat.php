@@ -6,7 +6,12 @@
 
 <body>
     <p></p>
-    <div style="font-size: 14; text-align: center;">Nomor Surat</div>
+    <p></p>
+    <p></p>
+    <div style="font-size: 14; text-align: center;"><strong>Surat Keterangan Sehat</strong></div>
+    <span style="font-size: 12; text-align: center;">Nomor : 445/<?= $data_cetak['nomor_surat']; ?>/416-102.11/<?= date("Y", time()); ?></span>
+    <p></p>
+    <p style="text-indent: 30px;">Yang bertanda tangan dibawah ini Dokter UPT Puskesmas Dawarblandong Kecamatan Dawarblandong Kabupaten Mojokerto,dengan ini menerangkan bahwa :</p>
     <table>
         <tr>
             <td>Nama Pasien</td>
@@ -29,7 +34,8 @@
             <td colspan="5">: <?= $data_cetak['kepentingan']; ?></td>
         </tr>
     </table>
-    <p></p>
+    <p><u>Hasil Periksa</u></p>
+    <br>
     <table>
         <tr>
             <td colspan="2"><b>Keterangan Fisik</b></td>
@@ -44,29 +50,34 @@
         <tr>
             <td>Berat Badan</td>
             <td>: <?= $data_cetak['berat_badan']; ?>kg</td>
-            <td colspan="2"><b>Tubuh</b></td>
         </tr>
         <tr>
             <td>Suhu</td>
             <td>: <?= $data_cetak['suhu_tubuh']; ?>&deg;</td>
-            <td>Tato</td>
-            <td>: <?= $data_cetak['tubuh_tato']; ?></td>
+            <td colspan="2"><b>Tubuh</b></td>
         </tr>
         <tr>
             <td>Tensi Darah</td>
             <td>: <?= $data_cetak['tensi_darah']; ?></td>
-            <td>Tindik</td>
-            <td>: <?= $data_cetak['tubuh_tindik']; ?></td>
+            <td>Tato</td>
+            <td>: <?= $data_cetak['tubuh_tato']; ?></td>
         </tr>
         <tr>
             <td>Nadi</td>
             <td>: <?= $data_cetak['nadi']; ?></td>
+            <td>Tindik</td>
+            <td>: <?= $data_cetak['tubuh_tindik']; ?></td>
         </tr>
         <tr>
             <td>Respirasi</td>
             <td>: <?= $data_cetak['respirasi']; ?></td>
         </tr>
+        <tr>
+            <td>Hasil Pemerisa Pasien</td>
+            <td>: <strong><?= $data_cetak['hasil_periksa']; ?></strong></td>
+        </tr>
     </table>
+    <p style="text-indent: 30px;">Demikian surat keterangan sehat ini dibuat agar digunakan sebagaimana perlunya. </p>
     <p></p>
     <table align="right">
         <tr>
