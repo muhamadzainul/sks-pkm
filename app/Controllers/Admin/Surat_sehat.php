@@ -290,7 +290,8 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
       if (empty($this->request->getVar('ubah_pass_pas'))) {
         $pass_pas = $srt['kunci_pasien'];
       } else {
-        $pass_pas = base64_encode($this->enkripsi->encrypt($this->request->getVar('pass_pas')));
+        $pass_pas = base64_encode($this->enkripsi->encrypt($this->request->getVar('ubah_pass_pas')));
+        // dd($pass_pas);
       }
 
       $dataRSA = [

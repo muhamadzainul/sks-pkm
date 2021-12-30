@@ -56,24 +56,29 @@ class Validasi extends BaseController
         // dd($data_scan);
         // dd($this->request->getVar('nik_pasien'));
         $this->suratBuilder = $this->db->table('surat_rsa');
-        $this->suratBuilder->select('nomor_surat, nik_pasien, nip_kapus, teks_asli, teks_enkripsi, hash_enkrip, tanggal_dibuat');
+        $this->suratBuilder->select('nomor_surat, nik_pasien, nip_kapus, teks_asli, teks_enkripsi, hash_enkrip, tanggal_dibuat, kunci_pasien');
         $this->suratBuilder->where('hash_enkrip', $data_scan);
         $query = $this->suratBuilder->get();
         $data_scan = $query->getRowArray();
 
+        $pass       = $this->request->getVar('password_pas');
+        // dd($data_scan['kunci_pasien']);
+        $srt_deck   = $this->dekripsi->decrypt(base64_decode($data_scan['kunci_pasien']));
+        // dd($srt_deck);
+        // 
         if ($data_scan['nik_pasien'] == $this->request->getVar('nik_pasien') && $data_scan['tanggal_dibuat'] == $this->request->getVar('tgl_dibuatsurat')) {
-            // dd($data_scan['nik_pasien']);
-            // private key pasien
-            $this->pasienBuilder = $this->db->table('pasien');
-            $this->pasienBuilder->select('private_key');
-            $pr = $this->pasienBuilder->where('nik_pasien', $this->request->getVar('nik_pasien'))->get();
-            $pasien_key = $pr->getRow();
-            $priv_pas = $pasien_key->private_key;
-            $ps_pr    = $this->dekripsi->decrypt(base64_decode($priv_pas));
+            if ($srt_deck == $pass) {
+                // dd($data_scan['nik_pasien']);
+                // private key pasien
+                $this->pasienBuilder = $this->db->table('pasien');
+                $this->pasienBuilder->select('private_key');
+                $pr = $this->pasienBuilder->where('nik_pasien', $this->request->getVar('nik_pasien'))->get();
+                $pasien_key = $pr->getRow();
+                $priv_pas = $pasien_key->private_key;
+                $ps_pr    = $this->dekripsi->decrypt(base64_decode($priv_pas));
 
-            $in_priv = $this->request->getVar('privete_key');
-            // dd($in_priv);
-            if ($priv_pas == $in_priv) {
+                // $in_priv = $this->request->getVar('privete_key');
+                // dd($in_priv);
                 $this->kapusBuilder = $this->db->table('kapus');
                 $this->kapusBuilder->select('publik_key');
                 $pr = $this->kapusBuilder->where('nip_kapus', $this->request->getVar('nip_kapus'))->get();

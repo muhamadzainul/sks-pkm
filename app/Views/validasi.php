@@ -40,7 +40,7 @@
                         </tr> -->
                         <tr>
                             <td>Masukkan Password Untuk Validasi></td>
-                            <td><input type="text" name="password_pas" class="form-control" placeholder="Password Validasi"></td>
+                            <td><input type="password" name="password_pas" class="form-control" placeholder="Password Validasi"></td>
                             <!-- <td colspan="2"><input type="text" name="privete_key" id="qrcode" class="form-control" readonly></td> -->
                         </tr>
                         <tr>
