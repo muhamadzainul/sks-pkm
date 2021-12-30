@@ -29,10 +29,17 @@ class Administrator extends BaseController
         $this->PasienBuilder->orderBy('id_pasien', 'DESC');
         $suratQuery = $this->SuratBuilder->get(10, 0);
         // $suratQuery       = $this->SuratBuilder->get(10, 0);
+
+        $this->UserBuilder->select('group_id');
+        $this->UserBuilder->join('auth_groups_users', 'auth_groups_users.user_id = users.id');
+        $this->UserBuilder->join('auth_groups', 'auth_groups.id = auth_groups_users.group_id');
+        $us = $this->UserBuilder->where('group_id', 2)->get();
+        $usr = $us->getResultArray();
+        // dd();
         $pasienQuery      = $this->PasienBuilder->get(10, 0);
         $pasienCount      = $this->PasienBuilder->countAllResults();
         $suratCount       = $this->SuratBuilder->countAllResults();
-        $userCount        = $this->UserBuilder->countAllResults();
+        $userCount        = count($usr);
 
 
         $data = [
