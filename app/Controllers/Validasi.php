@@ -108,7 +108,7 @@ class Validasi extends BaseController
                 $data_cetak = $query->getRowArray();
                 # code...
             } else {
-                $has_dek = "Kunci Surat Tidak Sama";
+                $has_dek = "Password Yang Dimasukkan Salah";
                 $data_cetak = "";
             }
             // echo "private Key Pasien = " . $ps_pr;
@@ -116,7 +116,7 @@ class Validasi extends BaseController
             // private key pasien
             // dd($data_cetak['nama_pasien']);
         } else {
-            $has_dek    = "Data Palsu Surat Tidak Sama";
+            $has_dek    = "Surat Palsu Data Verifikasi Tidak Sama";
             $data_cetak = "";
         }
         $data = [

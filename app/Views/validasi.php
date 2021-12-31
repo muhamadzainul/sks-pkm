@@ -33,7 +33,7 @@
                         </tr>
                         <tr>
                             <td>Tanggal Pembuatan Surat</td>
-                            <td><input type="text" name="tgl_dibuatsurat" id="tgl_dibuatsurat" class="form-control" placeholder="Tanggal Dibuat"></td>
+                            <td><input type="date" name="tgl_dibuatsurat" id="tgl_dibuatsurat" class="form-control" placeholder="Tanggal Dibuat"></td>
                         </tr>
                         <!-- <tr>
                             <td colspan="2"><a href="" class="btn btn-sm btn-primary mb-3" data-toggle="modal" data-target="#scane_qr" onclick="tscan()">Scan Kunci</a></td>
