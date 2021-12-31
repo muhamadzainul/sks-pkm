@@ -18,7 +18,7 @@
         <div class="row">
             <div class="col-lg-6">
                 <h4>Data hasil scaning</h4><br>
-                <strong> <?= $hasil_validasi; ?></strong>
+                <h3><strong> <?= $hasil_validasi; ?></strong></h3>
             </div>
             <?php if (!empty($data_surat)) : ?>
                 <div class="col-lg-6">
