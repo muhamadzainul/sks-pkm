@@ -53,7 +53,7 @@
       </div>
       <br>
       </hr>
-      <a href="" data-toggle="modal" data-target="#Edit_petugas<?= $data_petugas['id_satgas']; ?>" class="btn btn-success btn-sm"><i class="fa fa-fw fa-edit"></i>Edit</a>
+      <!-- <a href="" data-toggle="modal" data-target="#Edit_petugas<?= $data_petugas['id_satgas']; ?>" class="btn btn-success btn-sm"><i class="fa fa-fw fa-edit"></i>Edit</a> -->
       <!-- <a href="" data-toggle="modal" data-target="#reset_password<?= $data_petugas['id_satgas']; ?>" class="btn btn-primary btn-sm"><i class="fa fa-fw fa-key"></i>Reset Password</a> -->
       <a href="<?php base_url(); ?>/admin/data_petugas" class="btn btn-inverse btn-sm"><i class="fa fa-fw fa-arrow-left"></i>Kembali</a>
     </div>

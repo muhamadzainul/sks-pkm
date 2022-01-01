@@ -24,7 +24,11 @@
         <div class="white-box">
           <!-- <h3 class="box-title m-b-0">Kitchen Sink</h3> -->
           <!-- <p class="text-muted m-b-20">Swipe Mode, ModeSwitch, Minimap, Sortable, SortableSwitch</p> -->
-          <div class="pesan_flash" data-flashdata="<?= session()->getFlashdata('pesan'); ?>"></div>
+          <?php if (session()->getFlashdata('pesan')) : ?>
+            <div class="pesan_flash" data-flashdata="<?= session()->getFlashdata('pesan'); ?>"></div>
+          <?php else : ?>
+            <div class="error_flash" data-flashdata="<?= session()->getFlashdata('pesan_error'); ?>"></div>
+          <?php endif; ?>
           <!-- <?php if (session()->getFlashdata('pesan')) : ?>
                 <div class="alert alert-success alert-dismissable mt-3">
                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -97,7 +101,7 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <form action="<?= base_url() ?>/admin/kapus/simpan" method="POST">
+          <form action="<?= base_url() ?>/admin/kapus/simpan/<?= $dk['id_kapus']; ?>" method="POST">
             <div class="modal-body">
               <div class="form-group">
                 <label for="nama_kapus">Nama Kapus</label>
@@ -107,7 +111,7 @@
               </div>
               <div class="form-group">
                 <label for="nip_kapus">Nip Kapus</label>
-                <input type="text" class="form-control" name="nip_kapus" id="nip_kapus" placeholder="Nip Kapus" value="<?= $dk['nip_kapus']; ?>">
+                <input type="text" class="form-control" name="nip_kapus" id="nip_kapus" placeholder="Nip Kapus" value="<?= $dk['nip_kapus']; ?>" readonly>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -131,7 +135,7 @@
           </button>
         </div>
 
-        <form action="<?= base_url(); ?>/admin/kapus/simpan" method="POST" class="needs-validation" novalidate>
+        <form action="<?= base_url(); ?>/admin/kapus/simpan" method="POST" class="needs-validation" validate>
           <div class="modal-body">
             <div class="form-group">
               <label for="nama_kapus">Nama Kapus</label>

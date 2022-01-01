@@ -45,23 +45,9 @@ class Kapus extends BaseController
         return view('/administrator/data_kapus', $data);
     }
 
-    public function simpan()
+    public function simpan($id = null)
     {
 
-        // // Form Validasi
-        //   if (!$this->validate([
-        //     'nip_kapus' => [
-        //       'rules' => 'required|is_unique[kapus.nip_kapus]',
-        //       'errors' => [
-        //         'required' => 'NIK kapus harus di isi',
-        //         'is_unique' => 'NIK kapus sudah terdaftar'
-        //       ]
-        //     ]
-        //   ])) {
-        //       // $valid = \Config\Services::validation();
-        //       // return redirect()->to('/data_kapus/tambah_data_kapus')->withInput()->with('Validation', $valid);
-        //       return redirect()->to('/admin/data_kapus/tambah_data_kapus')->withInput();
-        //   }
 
 
 
@@ -75,8 +61,25 @@ class Kapus extends BaseController
 
         // dd($nip_kp);
 
-        if (empty($nip_kp)) {
+        if ($id == null) {
             // dd('yes');
+            // Form Validasi
+            if (!$this->validate([
+                'nip_kapus' => [
+                    'rules' => 'required|is_unique[kapus.nip_kapus]',
+                    'errors' => [
+                        'required' => 'NIK kapus harus di isi',
+                        'is_unique' => 'NIK kapus sudah terdaftar'
+                    ]
+                ]
+            ])) {
+                // $valid = \Config\Services::validation();
+                // return redirect()->to('/data_kapus/tambah_data_kapus')->withInput()->with('Validation', $valid);
+                session()->setFLashdata('pesan_error', ' Nip Petugas tidak boleh sama');
+
+                return redirect()->to('/admin/kapus');
+            }
+
             $gen_key = get_key();
 
 
@@ -141,13 +144,13 @@ class Kapus extends BaseController
                     // dd('no');
                     $data = [
                         'nama_kapus'        => $this->request->getVar('nama_kapus'),
-                        'slug'              => $slug,
-                        'nip_kapus'         => $nip_kapus,
-                        'publik_key'        => $publik_key,
-                        'private_key'       => $private_key,
-                        'hash_publik_key'   => $hash_publik_key,
-                        'hash_private_key'  => $hash_private_key,
-                        'tanggal_dibuat'    => $tanggal_dibuat,
+                        // 'slug'              => $slug,
+                        // 'nip_kapus'         => $nip_kapus,
+                        // 'publik_key'        => $publik_key,
+                        // 'private_key'       => $private_key,
+                        // 'hash_publik_key'   => $hash_publik_key,
+                        // 'hash_private_key'  => $hash_private_key,
+                        // 'tanggal_dibuat'    => $tanggal_dibuat,
                         'tanggal_diubah'    => date("Y-m-d", time()),
                         'active'            => 1
                     ];
@@ -157,7 +160,7 @@ class Kapus extends BaseController
                     //   'nip_kapus' => $nip_kapus,
                     //   'active' => 1
                     // ]);
-                    $this->kapusBuilder->replace($data);
+                    $this->kapusBuilder->update($data);
                     session()->setFLashdata('pesan', ' Edit');
                 }
             } else {
@@ -174,13 +177,13 @@ class Kapus extends BaseController
                 }
                 $data = [
                     'nama_kapus'        => $this->request->getVar('nama_kapus'),
-                    'slug'              => $slug,
-                    'nip_kapus'         => $this->request->getVar('nip_kapus'),
-                    'publik_key'        => $publik_key,
-                    'private_key'       => $private_key,
-                    'hash_publik_key'   => $hash_publik_key,
-                    'hash_private_key'  => $hash_private_key,
-                    'tanggal_dibuat'    => $tanggal_dibuat,
+                    // 'slug'              => $slug,
+                    // 'nip_kapus'         => $this->request->getVar('nip_kapus'),
+                    // 'publik_key'        => $publik_key,
+                    // 'private_key'       => $private_key,
+                    // 'hash_publik_key'   => $hash_publik_key,
+                    // 'hash_private_key'  => $hash_private_key,
+                    // 'tanggal_dibuat'    => $tanggal_dibuat,
                     'tanggal_diubah'    => date("Y-m-d", time()),
                     'active'            => 1
                 ];
@@ -190,7 +193,7 @@ class Kapus extends BaseController
                 //   'nip_kapus' => $nip_kapus,
                 //   'active' => 1
                 // ]);
-                $this->kapusBuilder->replace($data);
+                $this->kapusBuilder->update($data);
                 session()->setFLashdata('pesan', ' Edit');
             }
             // code...

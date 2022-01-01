@@ -59,6 +59,10 @@
       });
     }
 
+    const ep = $('.error_flash').data('flashdata');
+    if (ep){
+      swal("Erros", ep , "error");
+    }
     },
     //init
     $.SweetAlert = new SweetAlert, $.SweetAlert.Constructor = SweetAlert

@@ -79,6 +79,7 @@ $routes->get('/admin/kapus/hapus_data/(:segment)', 'Admin\Kapus::hapus_data/$1')
 $routes->get('/admin/kapus/update_data/(:segment)', 'Admin\Kapus::update_data/$1');
 $routes->get('/admin/kapus/(:any)', 'Admin\Kapus::$1');
 $routes->get('/admin/kapus/simpan', 'Admin\Kapus::simpan');
+$routes->get('/admin/kapus/simpan/(:segment)', 'Admin\Kapus::simpan/$1');
 
 //petugas
 // $routes->get('/petugas/data_pasien', 'Petugas\Data_pasien::index');
