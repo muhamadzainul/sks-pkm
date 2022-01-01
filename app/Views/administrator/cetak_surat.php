@@ -33,7 +33,6 @@
             <td>Alamat</td>
             <td colspan="5">: <?= $data_cetak['alamat']; ?></td>
         </tr>
-        </tr>
         <tr>
             <td>Kepentingan</td>
             <td colspan="5">: <?= $data_cetak['kepentingan']; ?></td>

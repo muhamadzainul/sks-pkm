@@ -60,25 +60,19 @@ class Data_petugas extends BaseController
 
     // Form Validasi
     if (!$this->validate([
-      'nik_petugas' => [
-        'rules' => 'required|is_unique[satgas.nik_petugas]',
+      'username' => [
+        'rules' => 'required|is_unique[users.username]',
         'errors' => [
           'required' => 'NIK petugas harus di isi',
           'is_unique' => 'NIK petugas sudah terdaftar'
-        ]
-      ],
-      'foto_profil' => [
-        'rules' => 'max_size[foto_profil, 2028]|is_image[foto_profil]|mime_in[foto_profil,image/jpg,image/jpeg,image/png]',
-        'errors' => [
-          'max_size' => 'Ukuran Gambar Terlalu Besar',
-          'is_image' => 'Yang Anda Masukkan Bukan File Gambar',
-          'mime_in' => 'Yang Anda Masukkan Bukan File Gambar'
         ]
       ]
     ])) {
       // $valid = \Config\Services::validation();
       // return redirect()->to('/admin/data_petugas/tambah_data_petugas')->withInput()->with('Validation', $valid);
-      return redirect()->to('/admin/data_petugas/tambah_data_petugas')->withInput();
+      session()->setFLashdata('pesan_error', 'Username Sudah Ada');
+
+      return redirect()->to('/admin/data_petugas');
     }
 
     // Ambil File
@@ -151,6 +145,21 @@ class Data_petugas extends BaseController
   public function update_data($id)
   {
     // data Alama
+    // Form Validasi
+    if (!$this->validate([
+      'username' => [
+        'rules' => 'is_unique[users.username]',
+        'errors' => [
+          'is_unique' => 'NIK petugas sudah terdaftar'
+        ]
+      ]
+    ])) {
+      // $valid = \Config\Services::validation();
+      // return redirect()->to('/admin/data_petugas/tambah_data_petugas')->withInput()->with('Validation', $valid);
+      session()->setFLashdata('pesan_error', 'Username Sudah Ada');
+
+      return redirect()->to('/admin/data_petugas/detail_petugas/' . $id);
+    }
 
 
     // $data_lama = $this->petugasModel->getPetugas($this->request->getVar('slug'));

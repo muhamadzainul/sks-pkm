@@ -74,7 +74,7 @@ class Kapus extends BaseController
                 ]
             ])) {
                 // $valid = \Config\Services::validation();
-                // return redirect()->to('/data_kapus/tambah_data_kapus')->withInput()->with('Validation', $valid);
+                // return redirect()->to('/data_kapus')->withInput()->with('Validation', $valid);
                 session()->setFLashdata('pesan_error', ' Nip Petugas tidak boleh sama');
 
                 return redirect()->to('/admin/kapus');

@@ -210,6 +210,8 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
           'publik_key'          => $gen_key[0],
           'private_key'         => $priv_key,
           // 'qr_code'             => $db_qrcode_pasien,
+          'foto_ktp'          => 'default-ktp.png',
+          'foto_kk'           => 'default-kk.png',
           'tanggal_dibuat'      => date("Y-m-d", time()),
           'tanggal_diubah'      => date("Y-m-d", time()),
         ]);
