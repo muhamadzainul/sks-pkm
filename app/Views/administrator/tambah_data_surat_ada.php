@@ -174,10 +174,20 @@
                                         </select>
                                     </div>
                                     <div class="col-md-4">
-                                        <input type="text" name="tubuh_tato" class="form-control" placeholder="Masukkan Tato" value="<?= old('tubuh_tato'); ?>">
+                                        <select class="custom-select custom-select-sm col-sm" name="tubuh_tato">
+                                            <option value="null" class="dropdown-item" selected>-- Pilih salah satu --</option>
+                                            <option value="YA" class="dropdown-item">YA</option>
+                                            <option value="TIDAK" class="dropdown-item">TIDAK</option>
+                                        </select>
+                                        <!-- <input type="text" name="tubuh_tato" class="form-control" placeholder="Masukkan Tato" value="<?= old('tubuh_tato'); ?>"> -->
                                     </div>
                                     <div class="col-md-4">
-                                        <input type="text" name="tubuh_tindik" class="form-control" placeholder="Masukkan Tindik" value="<?= old('tubuh_tindik'); ?>">
+                                        <select class="custom-select custom-select-sm col-sm" name="tubuh_tindik">
+                                            <option value="null" class="dropdown-item" selected>-- Pilih salah satu --</option>
+                                            <option value="YA" class="dropdown-item">YA</option>
+                                            <option value="TIDAK" class="dropdown-item">TIDAK</option>
+                                        </select>
+                                        <!-- <input type="text" name="tubuh_tindik" class="form-control" placeholder="Masukkan Tindik" value="<?= old('tubuh_tindik'); ?>"> -->
                                     </div>
                                 </div>
                             </div>
@@ -208,7 +218,7 @@
                         <div class="form-group">
                             <label for="" class="col-md-12" for="password_surat"><span>Password Untuk Validasi</span></label>
                             <div class="col-md-12">
-                                <input type="text" name="pass_pas" class="form-control" placeholder="Password Validasi">
+                                <input type="password" name="pass_pas" class="form-control" placeholder="Password Validasi">
                                 <input type="hidden" name="tgl_dibuat" value="<?= date("Y-m-d", time()); ?>">
                             </div>
                             <small style="color: red;">*Password digunakan saat melakukan validasi surat jadi harus mudah di ingat</small>
