@@ -72,6 +72,16 @@ $routes->get('/admin/surat_sehat/detail_surat/(:segment)', 'Admin\Surat_sehat::d
 $routes->get('/admin/surat_sehat/update_data/(:segment)', 'Admin\Surat_sehat::update_data/$1');
 $routes->get('/admin/surat_sehat/(:any)', 'Admin\Surat_sehat::$1');
 $routes->get('/admin/surat_sehat/simpan/(:segment)', 'Admin\Surat_sehat::simpan/$1');
+// data izin
+$routes->get('/admin/surat_izin', 'Admin\Surat_izin::index');
+$routes->delete('/Admin/surat_izin/(:num)', 'Admin\surat_izin::hapus_data/$1');
+$routes->get('/admin/surat_izin/(:num)', 'Admin\surat_izin::hapus_data/$1');
+$routes->get('/admin/surat_izin/edit_data/(:segment)', 'Admin\Surat_izin::edit_data/$1');
+$routes->get('/admin/surat_izin/cetak_surat/(:segment)', 'Admin\Surat_izin::cetak_surat/$1');
+$routes->get('/admin/surat_izin/detail_surat/(:segment)', 'Admin\Surat_izin::detail_surat/$1');
+$routes->get('/admin/surat_izin/update_data/(:segment)', 'Admin\Surat_izin::update_data/$1');
+$routes->get('/admin/surat_izin/(:any)', 'Admin\Surat_izin::$1');
+$routes->get('/admin/surat_izin/simpan/(:segment)', 'Admin\Surat_izin::simpan/$1');
 // data kapus
 $routes->get('/admin/kapus', 'Admin\Kapus::index');
 $routes->delete('/Admin/kapus/(:num)', 'Admin\Kapus::hapus_data/$1');

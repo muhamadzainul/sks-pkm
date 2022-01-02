@@ -130,7 +130,7 @@
                     <input type="text" name="pekerjaan" class="form-control" placeholder="Masukkan Pekerjaan" value="<?= old('pekerjaan'); ?>">
                   </div>
                   <div class="col-md-4">
-                    <input type="date" name="tgl_lahir" class="form-control" placeholder="Masukkan Suhu Tubuh" value="<?= old('tgl_lahir'); ?>">
+                    <input type="date" name="tgl_lahir" class="form-control" placeholder="Masukkan Tanggal Lahir" value="<?= old('tgl_lahir'); ?>">
                   </div>
                 </div>
               </div>
