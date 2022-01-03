@@ -39,6 +39,7 @@ $routes->get('/administrator/(:any)', 'Admin\Administrator::$1');
 $routes->get('/validasi/(:segment)', 'Validasi::index/$1');
 $routes->get('/coba', 'Validasi::coba');
 $routes->get('/validasi/hasil_validasi/(:segment)', 'Validasi::hasil_validasi/$1');
+$routes->get('/validasi/verif_validasi/', 'Validasi::verif_validasi');
 // auth
 $routes->get('/auth', 'Auth::index');
 $routes->get('/auth/register2', 'Auth::register2');

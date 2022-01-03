@@ -128,6 +128,36 @@ class Validasi extends BaseController
         return view("validasi_hasil", $data);
         // dd($data_scan);
     }
+    public function verif_validasi()
+    {
+        // if (!empty($this->request->uri->getSegment(2))) {
+        //     $data_ver1 = $this->request->uri->getSegment(2);
+        // } else {
+        //     $data_ver1 = null;
+        // }
+        $data_ver1 = $this->request->getVar('qr_code');
+
+        // dd($data_ver1);
+
+        $this->suratBuilder = $this->db->table('surat_rsa');
+        $this->suratBuilder->select('id_sks, surat_rsa.nomor_surat as nmr_surat, surat_rsa.nik_pasien as nik_p, nama_pasien, nama_kapus, kapus.nip_kapus as nip_kp, jenis_kelamin, tgl_lahir, alamat,
+    pekerjaan, kepentingan, tinggi_badan, berat_badan, tensi_darah, suhu_tubuh, nadi, respirasi, mata_buta, tubuh_tato, tubuh_tindik,
+    hasil_periksa, surat_kesehatan.qr_code as surat_qr, pasien.qr_code as qr_key,nama_kapus, kapus.nip_kapus as nip_kp, nama_kapus, pasien.tgl_lahir as tgl_lahir, surat_kesehatan.tanggal_dibuat as tgl_dibuat, 
+    TIMESTAMPDIFF(MONTH , pasien.tgl_lahir, NOW() ) AS umur');
+        $this->suratBuilder->join('surat_kesehatan', 'surat_kesehatan.nomor_surat = surat_rsa.nomor_surat');
+        $this->suratBuilder->join('pasien', 'pasien.nik_pasien = surat_rsa.nik_pasien');
+        $this->suratBuilder->join('kapus', 'kapus.nip_kapus = surat_rsa.nip_kapus');
+        // $this->suratBuilder->where('id_sks', $id);
+        $query = $this->suratBuilder->get();
+        $data_cetak = $query->getRowArray();
+
+        $data = [
+            'title'         => 'Validasi Surat',
+            'data_scan'     => $data_ver1,
+            'data_surat'    => $data_cetak
+        ];
+        return view('verif_validasi', $data);
+    }
 
     public function coba()
     {

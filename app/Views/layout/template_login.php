@@ -128,41 +128,6 @@
             })
         });
     </script>
-    <!-- camera -->
-    <!-- <script type="text/javascript">
-        // var scan = false;
-        // document.getElementById('qr_scan').innerHTML = scan;
-
-        // function tscan() {
-        //     document.getElementById('qr_scan').innerHTML = scan;
-        //     if (scan == true) {
-        //         scan = false;
-        //     } else {
-        //         scan = true;
-        //     }
-        // };
-        // if (scan == true) {
-        let scanner = new Instascan.Scanner({
-            video: document.getElementById('preview')
-        });
-        scanner.addListener('scan', function(content) {
-            // menampilkan hasil dari scan qr code
-            $('#qrcode').val(content);
-            $('#scane_qr').modal('hide');
-            tscan();
-        });
-        // scanner.stop();
-        Instascan.Camera.getCameras().then(function(cameras) {
-            if (cameras.length > 0) {
-                scanner.start(cameras[0]);
-            } else {
-                console.error('camera tidak di temukan');
-            }
-        }).catch(function(e) {
-            console.error(e);
-        });
-        // }
-    </script> -->
     <!--Style Switcher -->
     <script src="<?= base_url(); ?>/plugins/bower_components/styleswitcher/jQuery.style.switcher.js"></script>
 </body>

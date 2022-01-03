@@ -42,10 +42,10 @@
               <thead>
                 <tr>
                   <th scope="col">No</th>
+                  <th scope="col">Nomor Pendaftaran</th>
                   <th scope="col">Nama Pasien</th>
                   <th scope="col">Umur</th>
                   <th scope="col">Kepentingan</th>
-                  <th scope="col">Hasil Pemeriksaan</th>
                   <th scope="col">Tanggal dibuat</th>
                   <th scope="col" colspan="3">Aksi</th>
                 </tr>
@@ -62,10 +62,10 @@
                   <?php foreach ($data_surat as $ds) : ?>
                     <tr>
                       <td><?= $n++; ?></td>
+                      <td><?= $ds['nomor_surat']; ?></td>
                       <td><?= $ds['nama_pasien']; ?></td>
                       <td><?= floor($ds['umur'] / 12); ?> <span>tahun</span> </td>
                       <td><?= $ds['kepentingan']; ?></td>
-                      <td><?= $ds['hasil_periksa']; ?></td>
                       <td><?= $ds['tgl_dibuat']; ?></td>
                       <td><a href="<?php base_url(); ?>/admin/surat_sehat/detail_surat/<?= $ds['nomor_surat']; ?>" class="btn btn-warning btn-rounded">Detail</a></td>
                       <td><a href="<?php base_url(); ?>/admin/surat_sehat/cetak_surat/<?= $ds['nomor_surat']; ?>" class="btn btn-inverse btn-rounded">Cetak</a></td>

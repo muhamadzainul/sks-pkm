@@ -66,7 +66,7 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     $data = [
       // 'data_surat' => $data_surat,
       // 'cek_data' => $kosong,
-      'data_surat' => $sks->orderBy('id_pasien', 'DESC')->paginate(10),
+      'data_surat' => $sks->orderBy('id_sks', 'DESC')->paginate(10),
       'pager' => $this->suratModel->pager,
       'currentPage' => $currentPage,
       'title'    => 'Data Surat',
@@ -131,15 +131,21 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     // Form Validasi
     if (!$this->validate([
       'nomor_surat' => [
-        'rules' => 'required',
+        'rules' => 'required|is_unique[surat_kesehatan.nomor_surat]',
         'errors' => [
-          'required' => 'NIK petugas harus di isi'
+          'required' => 'NIK petugas harus di isi',
+          'is_unique' => 'Nomor Surat Sudah Terdaftar',
         ]
       ]
     ])) {
       // $valid = \Config\Services::validation();
       // return redirect()->to('/data_petugas/tambah_data_petugas')->withInput()->with('Validation', $valid);
-      return redirect()->to('/data_petugas/tambah_data_surat')->withInput();
+      if ($id != null) {
+        session()->setFLashdata('pesan_error', 'Nomor Surat Sudah Terdaftar Ada');
+        # code...
+        return redirect()->to('/admin/surat_sehat/tambah_data_surat_ada/' . $id);
+        // return redirect()->back()->withInput();
+      }
     }
 
     // dd($this->request->getVar('nip_kapus'));
@@ -249,7 +255,8 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
 
     // dd($kapusQ[0]['nama_kapus']);
     //create QRcode
-    $text_qr = base_url() . '/validasi' . '/' . md5($enk_teks[0]);
+    // $text_qr = base_url() . '/validasi' . '/' . md5($enk_teks[0]);
+    $text_qr = md5($enk_teks[0]);
 
     $this->gen_qr   = QrCode::create($text_qr);
     $writer         = new PngWriter();

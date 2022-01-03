@@ -24,7 +24,7 @@
                 <div class="col-lg-6">
                     <h4><strong> Data Surat Pasien :</strong></h4>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="row">
                                 <div class="col-md-5 b-r">
                                     <strong>Nama Pasien</strong>
@@ -75,52 +75,52 @@
                                 </div>
                                 <hr>
 
-                                <div class="col-md-4">
+                                <div class="col-md-6  b-r">
                                     <strong>Tinggi Badan</strong>
                                 </div>
 
-                                <div class="col-md-4">
+                                <div class="col-md-6">
+                                    <p class="text-muted"><?= $data_surat['tinggi_badan']; ?> cm</p>
+                                </div>
+
+                                <div class="col-md-6  b-r">
                                     <strong>Berat Badan</strong>
                                 </div>
 
-                                <div class="col-md-4">
+                                <div class="col-md-6">
+                                    <p class="text-muted"><?= $data_surat['berat_badan']; ?> kg</p>
+                                </div>
+
+                                <div class="col-md-6  b-r">
                                     <strong>Tekanan Darah</strong>
                                 </div>
 
-                                <div class="col-md-4">
-                                    <p class="text-muted"><?= $data_surat['tinggi_badan']; ?></p>
+                                <div class="col-md-6">
+                                    <p class="text-muted"><?= $data_surat['tensi_darah']; ?> mm/hg</p>
                                 </div>
 
-                                <div class="col-md-4">
-                                    <p class="text-muted"><?= $data_surat['berat_badan']; ?></p>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <p class="text-muted"><?= $data_surat['tensi_darah']; ?></p>
-                                </div>
-
-                                <div class="col-md-4">
+                                <div class="col-md-6  b-r">
                                     <strong>Suhu Tubuh</strong>
                                 </div>
 
-                                <div class="col-md-4">
+                                <div class="col-md-6">
+                                    <p class="text-muted"><?= $data_surat['suhu_tubuh']; ?>&deg;C</p>
+                                </div>
+
+                                <div class="col-md-6  b-r">
                                     <strong>Nadi</strong>
                                 </div>
 
-                                <div class="col-md-4">
+                                <div class="col-md-6">
+                                    <p class="text-muted"><?= $data_surat['nadi']; ?> /menit</p>
+                                </div>
+
+                                <div class="col-md-6  b-r">
                                     <strong>Respirasi</strong>
                                 </div>
 
-                                <div class="col-md-4">
-                                    <p class="text-muted"><?= $data_surat['suhu_tubuh']; ?></p>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <p class="text-muted"><?= $data_surat['nadi']; ?></p>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <p class="text-muted"><?= $data_surat['respirasi']; ?></p>
+                                <div class="col-md-6">
+                                    <p class="text-muted"><?= $data_surat['respirasi']; ?> /menit</p>
                                 </div>
                             </div>
                             <hr>
@@ -145,16 +145,16 @@
                                     <strong>Keterangan Kulit</strong>
                                 </div>
                                 <hr>
-                                <div class="col-md-6">
+                                <div class="col-md-6  b-r">
                                     <strong>Tatto</strong>
                                 </div>
 
                                 <div class="col-md-6">
-                                    <strong>Tindik</strong>
+                                    <p class="text-muted"><?= $data_surat['tubuh_tato']; ?></p>
                                 </div>
 
-                                <div class="col-md-6">
-                                    <p class="text-muted"><?= $data_surat['tubuh_tato']; ?></p>
+                                <div class="col-md-6  b-r">
+                                    <strong>Tindik</strong>
                                 </div>
 
                                 <div class="col-md-6">
@@ -185,11 +185,11 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <strong>Nama Kepala Puskesmas</strong>
+                                    <p class="text-muted"><?= $data_surat['tgl_dibuat']; ?></p>
                                 </div>
 
                                 <div class="col-md-6">
-                                    <p class="text-muted"><?= $data_surat['tgl_dibuat']; ?></p>
+                                    <strong>Nama Kepala Puskesmas</strong>
                                 </div>
 
                                 <div class="col-md-6">
@@ -200,7 +200,7 @@
                             </hr>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <img width="40%" alt="qr_code" src="<?php base_url(); ?>/gambar/qr_code/<?= $data_surat['surat_qr']; ?>" class="m-t-10">
+                                    <img width="30%" alt="qr_code" src="<?php base_url(); ?>/gambar/qr_code/<?= $data_surat['surat_qr']; ?>" class="m-t-10">
                                 </div>
                             </div>
                         </div>

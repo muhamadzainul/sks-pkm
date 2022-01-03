@@ -16,17 +16,35 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-12">
-                <h4 style="text-align: center;">Scan Qrcode Surat</h4>
-                <form action="<?= base_url(); ?>/validasi/verif_validasi" method="post">
+            <div class="col-lg-6">
+                <h4>Data hasil scaning</h4><br>
+                <?php if ($data_scan) {
+                    echo $data_scan;
+                }; ?>
+            </div>
+            <div class="col-lg-6">
+                <h4>Masukkan Data</h4>
+                <form action="<?= base_url(); ?>/validasi/hasil_validasi/<?= $data_scan; ?>" method="post">
                     <table class="table-borderless table">
                         <tr>
-                            <td colspan="2"><a href="" class="btn btn-sm btn-primary mb-3" data-toggle="modal" data-target="#scane_qr" onclick="tscan()">Scan Kunci</a></td>
-                            <!-- <td colspan="2"><a href="" class="btn btn-sm btn-primary mb-3" data-toggle="modal" data-target="#scane_qr">Scan Kunci</a></td> -->
-                            <td colspan=" 2"><input type="text" name="qr_code" id="qrcode" class="form-control" readonly></td>
+                            <td>No. NIK KTP anda</td>
+                            <td><input type="text" name="nik_pasien" id="nik_pasien" class="form-control" placeholder="NIK KTP"></td>
+                            <td><input type="hidden" name="nip_kapus" id="nip_kapus" class="form-control" value="<?= $data_surat['nip_kp']; ?>"></td>
                         </tr>
                         <tr>
-                            <td colspan="4"><button type="submit" class="btn btn-sm btn-success">Verifikasi Surat</button></td>
+                            <td>Tanggal Pembuatan Surat</td>
+                            <td><input type="date" name="tgl_dibuatsurat" id="tgl_dibuatsurat" class="form-control" placeholder="Tanggal Dibuat"></td>
+                        </tr>
+                        <!-- <tr>
+                            <td colspan="2"><a href="" class="btn btn-sm btn-primary mb-3" data-toggle="modal" data-target="#scane_qr" onclick="tscan()">Scan Kunci</a></td>
+                        </tr> -->
+                        <tr>
+                            <td>Masukkan Password Untuk Validasi></td>
+                            <td><input type="password" name="password_pas" class="form-control" placeholder="Password Validasi"></td>
+                            <!-- <td colspan="2"><input type="text" name="privete_key" id="qrcode" class="form-control" readonly></td> -->
+                        </tr>
+                        <tr>
+                            <td colspan="2"><button type="submit" class="btn btn-sm btn-success">Cek Data</button></td>
                         </tr>
                     </table>
                 </form>
@@ -35,13 +53,12 @@
     </div>
     <!-- /.container-fluid -->
     <!-- Modal Tambah Kapus -->
-    <div class="modal fade" id="scane_qr" tabindex="-1" role="dialog" aria-labelledby="userBaruLabel" aria-hidden="true">
+    <!-- <div class="modal fade" id="scane_qr" tabindex="-1" role="dialog" aria-labelledby="userBaruLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="userBaruLabel">Scane Qr Code</h5>
-                    <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
-                    <button type=" button" class="close" data-dismiss="modal" aria-label="Close" onclick="tscan()">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="tscan()">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -51,7 +68,8 @@
 
             </div>
         </div>
-    </div>
+
+    </div> -->
     <!-- /#page-wrapper -->
     <footer class="w-100 py-4 flex-shrink-0" style="position: fixed; background-color:#212529;">
         <div class="container py-4">
@@ -93,40 +111,5 @@
     </footer>
     <!-- /#wrapper -->
 
-    <!-- camera -->
-    <script type="text/javascript">
-        // var scan = false;
-        // document.getElementById('qr_scan').innerHTML = scan;
-
-        // function tscan() {
-        //     document.getElementById('qr_scan').innerHTML = scan;
-        //     if (scan == true) {
-        //         scan = false;
-        //     } else {
-        //         scan = true;
-        //     }
-        // };
-        // if (scan == true) {
-        let scanner = new Instascan.Scanner({
-            video: document.getElementById('preview')
-        });
-        scanner.addListener('scan', function(content) {
-            // menampilkan hasil dari scan qr code
-            $('#qrcode').val(content);
-            $('#scane_qr').modal('hide');
-            tscan();
-        });
-        // scanner.stop();
-        Instascan.Camera.getCameras().then(function(cameras) {
-            if (cameras.length > 0) {
-                scanner.start(cameras[0]);
-            } else {
-                console.error('camera tidak di temukan');
-            }
-        }).catch(function(e) {
-            console.error(e);
-        });
-        // }
-    </script>
 
     <?= $this->endSection(); ?>

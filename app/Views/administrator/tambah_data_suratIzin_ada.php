@@ -22,6 +22,7 @@
         <div class="row">
             <div class="col-lg">
                 <div class="white-box">
+                    <div class="error_flash" data-flashdata="<?= session()->getFlashdata('pesan_error'); ?>"></div>
                     <!-- <h3 class="box-title">Basic Information</h3> -->
                     <?php foreach ($data_surat as $ds) : ?>
                         <form class="form-material form-horizontal" action="<?php base_url(); ?>/Admin/surat_izin/simpan" method="post" enctype="">
@@ -30,7 +31,7 @@
                                 <label class="col-md-12" for="nomor_surat"><span>No. Suat</span>
                                 </label>
                                 <div class="col-md-12">
-                                    <input type="text" name="nomor_surat" class="form-control" placeholder="Masukkan Nomor SUrat" value="<?= old('nomor_surat'); ?>">
+                                    <input type="text" name="nomor_surat" class="form-control" placeholder="Masukkan Nomor Surat" value="<?= old('nomor_surat'); ?>">
                                 </div>
                             </div>
 
