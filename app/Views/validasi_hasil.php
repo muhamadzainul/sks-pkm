@@ -206,6 +206,11 @@
                         </div>
 
                     </div>
+                    <div class="row">
+                        <div class="col-lg">
+                            <a href="<?= base_url(); ?>/validasi" class="btn btn-primary">Validasi Lagi</a>
+                        </div>
+                    </div>
                 </div>
             <?php endif; ?>
         </div>

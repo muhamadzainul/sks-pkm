@@ -136,6 +136,12 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
           'required' => 'NIK petugas harus di isi',
           'is_unique' => 'Nomor Surat Sudah Terdaftar',
         ]
+      ],
+      'password' => [
+        'rules'  => 'required',
+        'errors' => [
+          'required' => 'Password Harus di Isi'
+        ]
       ]
     ])) {
       // $valid = \Config\Services::validation();

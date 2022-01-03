@@ -220,11 +220,15 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="" class="col-md-12" for="password_surat"><span>Password Untuk Validasi</span></label>
+                        <div class="form-group  <?= ($validation->hasError('password')) ? 'has-error has-danger' : ''; ?>">
+                            <label class="col-md-12" for="password_surat"><span>Password Untuk Validasi</span></label>
                             <div class="col-md-12">
                                 <input type="password" name="pass_pas" class="form-control" placeholder="Password Validasi">
-                                <input type="hidden" name="tgl_dibuat" value="<?= date("Y-m-d", time()); ?>">
+                            </div>
+                            <div class="help-block with-errors ml-3">
+                                <ul class="list-unstyled">
+                                    <li><?= $validation->getError('password'); ?></li>
+                                </ul>
                             </div>
                             <small style="color: red;">*Password digunakan saat melakukan validasi surat jadi harus mudah di ingat</small>
                         </div>
