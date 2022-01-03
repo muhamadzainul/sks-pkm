@@ -140,12 +140,12 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     ])) {
       // $valid = \Config\Services::validation();
       // return redirect()->to('/data_petugas/tambah_data_petugas')->withInput()->with('Validation', $valid);
-      if ($id != null) {
-        session()->setFLashdata('pesan_error', 'Nomor Surat Sudah Terdaftar Ada');
-        # code...
-        return redirect()->to('/admin/surat_sehat/tambah_data_surat_ada/' . $id);
-        // return redirect()->back()->withInput();
-      }
+      // if ($id != null) {
+      //   session()->setFLashdata('pesan_error', 'Nomor Surat Sudah Terdaftar Ada');
+      //   # code...
+      //   return redirect()->to('/admin/surat_sehat/tambah_data_surat_ada/' . $id);
+      // }
+      return redirect()->back()->withInput();
     }
 
     // dd($this->request->getVar('nip_kapus'));
