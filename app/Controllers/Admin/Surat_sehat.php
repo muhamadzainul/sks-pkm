@@ -346,6 +346,11 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
       ];
       $this->suratModel->save($data);
     } else {
+
+
+      $sk = $this->suratBuilder->select('nomor_surat')->get();
+
+
       $this->suratModel->insert([
         'nomor_surat'     => $this->request->getVar('nomor_surat'),
         'nik_pasien'      => $this->request->getVar('nik_pasien'),
@@ -364,8 +369,8 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
         'kepentingan'     => $this->request->getVar('kepentingan'),
         'hasil_periksa'   => $this->request->getVar('hasil_periksa'),
         'qr_code'         => $db_qrcode,
-        'tanggal_dibuat'  => date("Y-m-d", time()),
-        'tanggal_diubah'  => date("Y-m-d", time()),
+        'tanggal_dibuat'  => date("Y-m-d"),
+        'tanggal_diubah'  => date("Y-m-d"),
         'tanggal_exp'     => $tgl_exp
       ]);
 

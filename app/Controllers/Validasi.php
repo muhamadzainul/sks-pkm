@@ -161,6 +161,13 @@ class Validasi extends BaseController
 
     public function coba()
     {
+
+        $this->srBuilder = $this->db->table('surat_kesehatan');
+        $sk = $this->srBuilder->select('id_sks')->get();
+        $sr = $sk->getresultArray();
+        dd($sr);
+
+        // dd(date('d m Y'));
         // $text_qr = "TI9J3LEhv4fwaKzs9BfQveguWngHbBBOd4aQKeXn7cG2W2JNcncVpqC8mpAda3c3f/fDjVj6hgzSJVNsvCo+bEFrdpiWtfd5ZB8rmw8uTdiZFmdGF+e4zQh8CA==";
 
         // $this->gen_qr   = QrCode::create($text_qr);
