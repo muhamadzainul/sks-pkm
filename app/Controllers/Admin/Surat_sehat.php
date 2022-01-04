@@ -137,7 +137,7 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
           'is_unique' => 'Nomor Surat Sudah Terdaftar',
         ]
       ],
-      'password' => [
+      'pass_pas' => [
         'rules'  => 'required',
         'errors' => [
           'required' => 'Password Harus di Isi'
