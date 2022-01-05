@@ -82,9 +82,10 @@
       <div class="col-lg">
         <div class="white-box">
           <!-- <h3 class="box-title">Basic Information</h3> -->
+          <!-- <?= $validation->listErrors(); ?> -->
           <form class="form-material form-horizontal" action="<?php base_url(); ?>/Admin/surat_sehat/simpan" method="post" enctype="">
             <?= csrf_field(); ?>
-            <div class="form-group <?= ($validation->hasError('nomor_surat')) ? 'has-error has-danger' : ''; ?>">
+            <!-- <div class="form-group <?= ($validation->hasError('nomor_surat')) ? 'has-error has-danger' : ''; ?>">
               <label class="col-md-12" for="nomor_surat"><span>No. Suat</span>
               </label>
               <div class="col-md-12">
@@ -95,9 +96,9 @@
                   <li><?= $validation->getError('nomor_surat'); ?></li>
                 </ul>
               </div>
-            </div>
+            </div> -->
 
-            <div class="form-group">
+            <div class="form-group ">
               <label class="col-md-12 m-t-10 m-b-10" for="data_diri"><span>DATA DIRI PASIEN</span></label>
               <div class="row">
                 <div class="col-md">
@@ -107,11 +108,16 @@
               </div>
               <div class="row">
                 <div class="col-md">
-                  <div class="col-md-7">
+                  <div class="col-md-7  <?= ($validation->hasError('nik_pasien')) ? 'has-error has-danger' : ''; ?>">
                     <input type="text" name="nama_pasien" class="form-control" placeholder="Masukkan Nama Pasien" value="<?= old('nama_pasien'); ?>">
                   </div>
                   <div class="col-md-5">
-                    <input type="text" name="nik_pasien" class="form-control" placeholder="Masukkan Nik Pasien" value="<?= old('nik_pasien'); ?>">
+                    <input type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="16" name="nik_pasien" class="form-control" placeholder="Masukkan Nik Pasien" maxlength="16" value="<?= old('nik_pasien'); ?>">
+                  </div>
+                  <div class="help-block with-errors ml-3">
+                    <ul class="list-unstyled">
+                      <li><?= $validation->getError('nik_pasien'); ?></li>
+                    </ul>
                   </div>
                 </div>
               </div>

@@ -115,7 +115,7 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     //   }
     //
     $data = [
-      'title'       => 'Tambah Daa Surat',
+      'title'       => 'Tambah Data Surat',
       'validation'  => \Config\Services::validation(),
       'data_kapus'  => $kapus['nip_kapus'],
       'data_pasien' => $data_pasien,
@@ -127,20 +127,27 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
 
   public function simpan($id = null)
   {
-    // dd($this->request->getVar('tgl_dibuat'));
+    // dd($this->request->getVar('pass_pas'));
     // Form Validasi
     if (!$this->validate([
-      'nomor_surat' => [
-        'rules' => 'required|is_unique[surat_kesehatan.nomor_surat]',
-        'errors' => [
-          'required' => 'NIK petugas harus di isi',
-          'is_unique' => 'Nomor Surat Sudah Terdaftar',
-        ]
-      ],
+      // 'nomor_surat' => [
+      //   'rules' => 'required|is_unique[surat_kesehatan.nomor_surat]',
+      //   'errors' => [
+      //     'required' => 'NIK petugas harus di isi',
+      //     'is_unique' => 'Nomor Surat Sudah Terdaftar',
+      //   ]
+      // ],
       'pass_pas' => [
         'rules'  => 'required',
         'errors' => [
           'required' => 'Password Harus di Isi'
+        ]
+      ],
+      'nik_pasien' => [
+        'rules' => 'min_length[16]|is_unique[pasien.nik_pasien]',
+        'errors' => [
+          'min_length' => 'Nik Pasien Harus 16 angka',
+          'is_unique'  => 'Nik Pasien Sudah Terdahtar'
         ]
       ]
     ])) {
@@ -348,11 +355,30 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     } else {
 
 
-      $sk = $this->suratBuilder->select('nomor_surat')->get();
+      $this->srBuilder = $this->db->table('surat_kesehatan');
+      $sk = $this->srBuilder->select('id_sks, nomor_surat')->orderBy('id_sks', 'DESC')->get();
+      $sr = $sk->getresultArray();
+      // dd($sr[0]['nomor_surat']);
+      $ex = explode('-', $sr[0]['nomor_surat']);
+      // dd(count($ex) > 1);
+      if (count($ex) > 1) {
+        $thn = date('Y');
+        if ($thn == $ex[1]) {
+          $no = $ex[0] + 1;
+          $nomor_surat = $no . '-' . date('Y');
+        } else {
+          $no = 1;
+          $nomor_surat = $no . '-' . date('Y');
+        }
+      } else {
+        $nomor_surat = '1-' . date('Y');
+      }
+
+      // dd($nomor_surat);
 
 
       $this->suratModel->insert([
-        'nomor_surat'     => $this->request->getVar('nomor_surat'),
+        'nomor_surat'     => $nomor_surat,
         'nik_pasien'      => $this->request->getVar('nik_pasien'),
         'nip_kapus'       => $this->request->getVar('nip_kapus'),
         'pekerjaan'       => $this->request->getVar('pekerjaan'),
@@ -376,7 +402,7 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
 
       $pass_pas = base64_encode($this->enkripsi->encrypt($this->request->getVar('pass_pas')));
       $this->rsaBuilder->insert([
-        'nomor_surat'   => $this->request->getVar('nomor_surat'),
+        'nomor_surat'   => $nomor_surat,
         'nik_pasien'    => $this->request->getVar('nik_pasien'),
         'nip_kapus'     => $this->request->getVar('nip_kapus'),
         'teks_asli'     => $hash_teks,
@@ -440,10 +466,11 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     $ps = $this->rsaBuilder->where('nomor_surat', $surat[0]->nomor_surat)->get();
     $pas = $ps->getRowArray();
     // dd($query->getResult());
-    if (empty($pas['kunci_pasisen'])) {
+    // dd($pas['kunci_pasien']);
+    if (empty($pas['kunci_pasien'])) {
       $pp = "";
     } else {
-      $pp = $pas['kunci_pasisen'];
+      $pp = $pas['kunci_pasien'];
     }
 
     $data = [

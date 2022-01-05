@@ -25,18 +25,18 @@
                     <!-- <h3 class="box-title">Basic Information</h3> -->
                     <form class="form-material form-horizontal" action="<?php base_url(); ?>/Admin/surat_sehat/simpan" method="post" enctype="">
                         <?= csrf_field(); ?>
-                        <div class="form-group <?= ($validation->hasError('nomor_surat')) ? 'has-error has-danger' : ''; ?>">
+                        <!-- <div class="form-group <?= ($validation->hasError('nomor_surat')) ? 'has-error has-danger' : ''; ?>">
                             <label class="col-md-12" for="nomor_surat"><span>No. Suat</span>
                             </label>
                             <div class="col-md-12">
-                                <input type="text" name="nomor_surat" class="form-control" placeholder="Masukkan Nomor SUrat" value="<?= old('nomor_surat'); ?>">
+                                <input type="hidden" name="nomor_surat" class="form-control" placeholder="Masukkan Nomor SUrat" value="<?= old('nomor_surat'); ?>">
                             </div>
                             <div class="help-block with-errors ml-3">
                                 <ul class="list-unstyled">
                                     <li><?= $validation->getError('nomor_surat'); ?></li>
                                 </ul>
                             </div>
-                        </div>
+                        </div> -->
                         <?php foreach ($data_surat as $ds) : ?>
                             <div class="form-group">
                                 <label class="col-md-12 m-t-10 m-b-10" for="data_diri"><span>DATA DIRI PASIEN</span></label>

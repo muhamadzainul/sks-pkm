@@ -23,6 +23,7 @@
       <div class="col-lg">
         <div class="white-box">
           <?php foreach ($data_surat as $ds) : ?>
+            <?= $validation->listErrors(); ?>
             <!-- <h3 class="box-title">Basic Information</h3> -->
             <form class="form-material form-horizontal" action="<?php base_url(); ?>/Admin/surat_sehat/simpan/<?= $ds->nomor_surat; ?>" method="post" enctype="">
               <?= csrf_field(); ?>
