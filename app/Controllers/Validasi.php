@@ -24,9 +24,12 @@ class Validasi extends BaseController
     public function index()
     {
         if (!empty($this->request->uri->getSegment(2))) {
-            $data_ver1 = $this->request->uri->getSegment(2);
+            $rsa        = explode('+', $this->request->uri->getSegment(2));
+            $data_ver1  = $rsa[0];
+            $token      = $rsa[1];
         } else {
             $data_ver1 = null;
+            $token     = null;
         }
 
         // dd($data_ver1);
@@ -46,6 +49,7 @@ class Validasi extends BaseController
         $data = [
             'title'         => 'Validasi Surat',
             'data_scan'     => $data_ver1,
+            'token'         => $token,
             'data_surat'    => $data_cetak
         ];
 
@@ -63,8 +67,11 @@ class Validasi extends BaseController
 
         $pass       = $this->request->getVar('password_pas');
         // dd($data_scan['kunci_pasien']);
-        $srt_deck   = $this->dekripsi->decrypt(base64_decode($data_scan['kunci_pasien']));
-        // dd($srt_deck);
+        // echo $data_scan['kunci_pasien'];
+        $txt = '1nfR2svN+qUhVZofmDxbl1VGgTXz94PsGxg4L0Qx77VkYiLyOSlHyU+rO1bib+NagPvdHTCi3u64ZhK+aWvegyZBf/ev9BDsY5v6FJL87sQ=';
+        // $srt_deck   = $this->dekripsi->decrypt(base64_decode($data_scan['kunci_pasien']));
+        $srt_deck   = $this->dekripsi->decrypt(base64_decode($txt));
+        dd($srt_deck);
         // 
         if ($data_scan['nik_pasien'] == $this->request->getVar('nik_pasien') && $data_scan['tanggal_dibuat'] == $this->request->getVar('tgl_dibuatsurat')) {
             if ($srt_deck == $pass) {
@@ -135,7 +142,9 @@ class Validasi extends BaseController
         // } else {
         //     $data_ver1 = null;
         // }
-        $data_ver1 = $this->request->getVar('qr_code');
+        $code       = explode('+', $this->request->getVar('qr_code'));
+        $data_ver1  = $code[0];
+        $token      = $code[1];
 
         // dd($data_ver1);
 
@@ -154,6 +163,7 @@ class Validasi extends BaseController
         $data = [
             'title'         => 'Validasi Surat',
             'data_scan'     => $data_ver1,
+            'token'         => $token,
             'data_surat'    => $data_cetak
         ];
         return view('verif_validasi', $data);

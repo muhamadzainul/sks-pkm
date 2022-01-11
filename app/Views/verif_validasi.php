@@ -39,8 +39,10 @@
                             <td colspan="2"><a href="" class="btn btn-sm btn-primary mb-3" data-toggle="modal" data-target="#scane_qr" onclick="tscan()">Scan Kunci</a></td>
                         </tr> -->
                         <tr>
-                            <td>Masukkan Password Untuk Validasi></td>
-                            <td><input type="password" name="password_pas" class="form-control" placeholder="Password Validasi"></td>
+                            <td>
+                                <!-- Masukkan Password Untuk Validasi-->
+                            </td>
+                            <td><input type="hidden" name="password_pas" class="form-control" placeholder="Password Validasi" value="<?= $token; ?>"></td>
                             <!-- <td colspan="2"><input type="text" name="privete_key" id="qrcode" class="form-control" readonly></td> -->
                         </tr>
                         <tr>

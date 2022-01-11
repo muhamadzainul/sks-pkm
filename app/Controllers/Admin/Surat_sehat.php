@@ -257,9 +257,13 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     //   $pass_pas = base64_encode($this->enkripsi->encrypt($this->request->getVar('ubah_pass_pas')));
     //   // dd($pass_pas);
     // }
+    // dd(empty($srt['kunci_pasien']));
     if (empty($srt['kunci_pasien'])) {
       $token = getToken(8);
+      echo '<br><br><br>' . $token;
       $pass_pas = base64_encode($this->enkripsi->encrypt($token));
+      echo '<br><br><br>' . $pass_pas;
+      // dd($pass_pas);
     } else {
       $token = $this->enkripsi->decrypt(base64_decode($srt['kunci_pasien']));
       $pass_pas = $srt['kunci_pasien'];
@@ -315,6 +319,7 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
         'tanggal_diubah' => date("Y-m-d", time()),
       ];
       $this->rsaBuilder->replace($dataRSA);
+      dd($pass_pas);
 
       $data = [
         'id_sks'          => $tr['id_sks'],
@@ -345,9 +350,14 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
       $this->srBuilder = $this->db->table('surat_kesehatan');
       $sk = $this->srBuilder->select('id_sks, nomor_surat')->orderBy('id_sks', 'DESC')->get();
       $sr = $sk->getresultArray();
-      // dd($sr[0]['nomor_surat']);
-      $ex = explode('-', $sr[0]['nomor_surat']);
-      // dd(count($ex) > 1);
+      // dd($sr);
+      if (count($sr) > 0) {
+        $ex = explode('-', $sr[0]['nomor_surat']);
+        // dd(count($ex) > 1);
+      } else {
+        $ex = [];
+      }
+
       if (count($ex) > 1) {
         $thn = date('Y');
         if ($thn == $ex[1]) {
@@ -387,7 +397,10 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
         'tanggal_exp'     => $tgl_exp
       ]);
 
-      $pass_pas = base64_encode($this->enkripsi->encrypt($this->request->getVar('pass_pas')));
+      $pass_ver = $this->enkripsi->decrypt(base64_decode($pass_pas));
+      echo '<br><br>' . $pass_ver;
+      echo '<br><br>' . $pass_pas;
+      dd($pass_pas);
       $this->rsaBuilder->insert([
         'nomor_surat'   => $nomor_surat,
         'nik_pasien'    => $this->request->getVar('nik_pasien'),
