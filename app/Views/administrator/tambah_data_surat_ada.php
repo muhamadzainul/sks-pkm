@@ -23,6 +23,7 @@
             <div class="col-lg">
                 <div class="white-box">
                     <!-- <h3 class="box-title">Basic Information</h3> -->
+                    <?= $validation->listErrors(); ?>
                     <form class="form-material form-horizontal" action="<?php base_url(); ?>/Admin/surat_sehat/simpan" method="post" enctype="">
                         <?= csrf_field(); ?>
                         <!-- <div class="form-group <?= ($validation->hasError('nomor_surat')) ? 'has-error has-danger' : ''; ?>">
@@ -220,7 +221,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group  <?= ($validation->hasError('pass_pas')) ? 'has-error has-danger' : ''; ?>">
+                        <!-- <div class="form-group  <?= ($validation->hasError('pass_pas')) ? 'has-error has-danger' : ''; ?>">
                             <label class="col-md-12" for="password_surat"><span>Password Untuk Validasi</span></label>
                             <div class="col-md-12">
                                 <input type="password" name="pass_pas" class="form-control" placeholder="Password Validasi">
@@ -231,7 +232,7 @@
                                 </ul>
                             </div>
                             <small style="color: red;">*Password digunakan saat melakukan validasi surat jadi harus mudah di ingat</small>
-                        </div>
+                        </div> -->
                         <?php foreach ($data_kapus as $dk) : ?>
                             <?php if (($dk->active) == 1) : ?>
                                 <input type="hidden" name="nip_kapus" value="<?= $dk->nip_kapus; ?>">

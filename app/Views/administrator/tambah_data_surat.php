@@ -273,7 +273,7 @@
                 </select>
               </div>
             </div>
-            <div class="form-group  <?= ($validation->hasError('pass_pas')) ? 'has-error has-danger' : ''; ?>">
+            <!-- <div class="form-group  <?= ($validation->hasError('pass_pas')) ? 'has-error has-danger' : ''; ?>">
               <label class="col-md-12" for="password_surat"><span>Password Untuk Validasi</span></label>
               <div class="col-md-12">
                 <input type="password" name="pass_pas" class="form-control" placeholder="Password Validasi">
@@ -284,7 +284,7 @@
                 </ul>
               </div>
               <small style="color: red;">*Password digunakan saat melakukan validasi surat jadi harus mudah di ingat</small>
-            </div>
+            </div> -->
             <input type="hidden" name="nip_kapus" value="<?= $data_kapus; ?>">
             <input type="hidden" name="tgl_dibuat" value="<?= date("Y-m-d", time()); ?>">
             <button type="submit" class="btn btn-info waves-effect waves-light m-r-10">Submit</button>

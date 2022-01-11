@@ -162,6 +162,7 @@ class Validasi extends BaseController
     public function coba()
     {
 
+        // dd(getToken(8));
         // $this->srBuilder = $this->db->table('surat_kesehatan');
         // $sk = $this->srBuilder->select('id_sks, nomor_surat')->orderBy('id_sks', 'DESC')->get();
         // $sr = $sk->getresultArray();

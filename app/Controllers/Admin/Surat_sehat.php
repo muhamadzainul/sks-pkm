@@ -129,40 +129,7 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
   {
     // dd($this->request->getVar('pass_pas'));
     // Form Validasi
-    if (!$this->validate([
-      // 'nomor_surat' => [
-      //   'rules' => 'required|is_unique[surat_kesehatan.nomor_surat]',
-      //   'errors' => [
-      //     'required' => 'NIK petugas harus di isi',
-      //     'is_unique' => 'Nomor Surat Sudah Terdaftar',
-      //   ]
-      // ],
-      'pass_pas' => [
-        'rules'  => 'required',
-        'errors' => [
-          'required' => 'Password Harus di Isi'
-        ]
-      ],
-      'nik_pasien' => [
-        'rules' => 'min_length[16]|is_unique[pasien.nik_pasien]',
-        'errors' => [
-          'min_length' => 'Nik Pasien Harus 16 angka',
-          'is_unique'  => 'Nik Pasien Sudah Terdahtar'
-        ]
-      ]
-    ])) {
-      // $valid = \Config\Services::validation();
-      // return redirect()->to('/data_petugas/tambah_data_petugas')->withInput()->with('Validation', $valid);
-      // if ($id != null) {
-      //   session()->setFLashdata('pesan_error', 'Nomor Surat Sudah Terdaftar Ada');
-      //   # code...
-      //   return redirect()->to('/admin/surat_sehat/tambah_data_surat_ada/' . $id);
-      // }
-      return redirect()->back()->withInput();
-    }
 
-    // dd($this->request->getVar('nip_kapus'));
-    // dd($this->request->getVar('nik_pasien'));
 
     $slug       = url_title($this->request->getVar('nomor_surat') . '-' . $this->request->getVar('nama_pasien'), '-', true);
     $slugPasien = url_title($this->request->getVar('nik_pasien') . '-' . $this->request->getVar('nama_pasien'), '-', true);
@@ -219,6 +186,18 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
         // $test->saveToFile('./gambar/qr_code/pasien/' . $nama_file . '.png');
         // $db_qrcode_pasien = $nama_file . '.png';
 
+        if (!$this->validate([
+          'nik_pasien' => [
+            'rules' => 'min_length[16]|is_unique[pasien.nik_pasien]',
+            'errors' => [
+              'min_length' => 'Nik Pasien Harus 16 angka',
+              'is_unique'  => 'Nik Pasien Sudah Terdahtar'
+            ]
+          ]
+        ])) {
+          return redirect()->back()->withInput();
+        }
+
         $this->pasienModel->insert([
           'nik_pasien'          => $this->request->getVar('nik_pasien'),
           'slug'                => $slugPasien,
@@ -268,8 +247,26 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
 
     // dd($kapusQ[0]['nama_kapus']);
     //create QRcode
+    $this->rsaBuilder->select('kunci_pasien');
+    $sr = $this->rsaBuilder->where('nik_pasien', $this->request->getVar('nik_pasien'))->get();
+    $srt = $sr->getRowArray();
+    // dd(empty($this->request->getVar('ubah_pass_pas')));
+    // if (empty($this->request->getVar('ubah_pass_pas'))) {
+    //   $pass_pas = $srt['kunci_pasien'];
+    // } else {
+    //   $pass_pas = base64_encode($this->enkripsi->encrypt($this->request->getVar('ubah_pass_pas')));
+    //   // dd($pass_pas);
+    // }
+    if (empty($srt['kunci_pasien'])) {
+      $token = getToken(8);
+      $pass_pas = base64_encode($this->enkripsi->encrypt($token));
+    } else {
+      $token = $this->enkripsi->decrypt(base64_decode($srt['kunci_pasien']));
+      $pass_pas = $srt['kunci_pasien'];
+      // dd($pass_pas);
+    }
     // $text_qr = base_url() . '/validasi' . '/' . md5($enk_teks[0]);
-    $text_qr = md5($enk_teks[0]);
+    $text_qr = md5($enk_teks[0]) . '+' . $token;
 
     $this->gen_qr   = QrCode::create($text_qr);
     $writer         = new PngWriter();
@@ -283,7 +280,7 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
       ->setBackgroundColor(new Color(255, 255, 255));
 
     // Create generic logo
-    $logo = Logo::create('./gambar/Logo-Mojokerto.png')
+    $logo = Logo::create('./gambar/Logo_Puskesmas.png')
       ->setResizeToWidth(50);
 
     // Create generic label
@@ -305,16 +302,6 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
       $tr = $ka->getRowArray();
       // dd($tr['id_sks']);
 
-      $this->rsaBuilder->select('kunci_pasien');
-      $sr = $this->rsaBuilder->where('nik_pasien', $this->request->getVar('nik_pasien'))->get();
-      $srt = $sr->getRowArray();
-      // dd(empty($this->request->getVar('ubah_pass_pas')));
-      if (empty($this->request->getVar('ubah_pass_pas'))) {
-        $pass_pas = $srt['kunci_pasien'];
-      } else {
-        $pass_pas = base64_encode($this->enkripsi->encrypt($this->request->getVar('ubah_pass_pas')));
-        // dd($pass_pas);
-      }
 
       $dataRSA = [
         'nomor_surat'   => $this->request->getVar('nomor_surat'),
