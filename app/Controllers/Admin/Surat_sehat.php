@@ -160,6 +160,7 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
 
 
     if (empty($queryp)) {
+      $start_time = microtime(true);
       if ($id == null) {
         // dd(empty($queryp));
 
@@ -214,6 +215,8 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
           'tanggal_diubah'      => date("Y-m-d", time()),
         ]);
       }
+    } else {
+      $start_time = microtime(true);
     }
 
     $teks = $this->request->getVar('nomor_surat') . "-" . $this->request->getVar('nik_pasien') . "-" . $this->request->getVar('nip_kapus') . "-" . $this->request->getVar('nama_pasien') . "-" . $this->request->getVar('kepentingan') . "-" . $this->request->getVar('hasil_periksa') . "-" . $this->request->getVar('tgl_dibuat');
@@ -300,7 +303,8 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     $db_qrcode = $hash_teks . '.png';
     // dd($this->request->getVar('nip_kapus'));
     if ($id != null) {
-
+      $end_time = microtime(true);
+      $enkrip_time = $end_time - $start_time;
       $this->suratBuilder->select('id_sks, nomor_surat');
       $ka = $this->suratBuilder->where('nomor_surat', $id)->get();
       $tr = $ka->getRowArray();
@@ -308,13 +312,14 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
 
 
       $dataRSA = [
-        'nomor_surat'   => $this->request->getVar('nomor_surat'),
-        'nik_pasien'    => $this->request->getVar('nik_pasien'),
-        'nip_kapus'     => $this->request->getVar('nip_kapus'),
-        'teks_asli'     => $hash_teks,
-        'teks_enkripsi' => $enk_teks[1],
-        'hash_enkrip'   => md5($enk_teks[0]),
-        'kunci_pasien'  => $pass_pas,
+        'nomor_surat'    => $this->request->getVar('nomor_surat'),
+        'nik_pasien'     => $this->request->getVar('nik_pasien'),
+        'nip_kapus'      => $this->request->getVar('nip_kapus'),
+        'teks_asli'      => $hash_teks,
+        'teks_enkripsi'  => $enk_teks[1],
+        'hash_enkrip'    => md5($enk_teks[0]),
+        'kunci_pasien'   => $pass_pas,
+        'waktu_enkripsi' => $enkrip_time,
         'tanggal_dibuat' => $this->request->getVar('tgl_dibuat'),
         'tanggal_diubah' => date("Y-m-d", time()),
       ];
@@ -371,6 +376,8 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
         $nomor_surat = '1-' . date('Y');
       }
 
+      $end_time = microtime(true);
+      $enkrip_time = $end_time - $start_time;
       // dd($nomor_surat);
 
 
@@ -402,15 +409,16 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
       // echo '<br><br>' . $pass_pas;
       // dd($pass_pas);
       $this->rsaBuilder->insert([
-        'nomor_surat'   => $nomor_surat,
-        'nik_pasien'    => $this->request->getVar('nik_pasien'),
-        'nip_kapus'     => $this->request->getVar('nip_kapus'),
-        'teks_asli'     => $hash_teks,
-        'teks_enkripsi' => $enk_teks[1],
-        'hash_enkrip'   => md5($enk_teks[0]),
-        'kunci_pasien'  => $pass_pas,
-        'tanggal_dibuat' => date("Y-m-d", time()),
-        'tanggal_diubah' => date("Y-m-d", time()),
+        'nomor_surat'     => $nomor_surat,
+        'nik_pasien'      => $this->request->getVar('nik_pasien'),
+        'nip_kapus'       => $this->request->getVar('nip_kapus'),
+        'teks_asli'       => $hash_teks,
+        'teks_enkripsi'   => $enk_teks[1],
+        'hash_enkrip'     => md5($enk_teks[0]),
+        'kunci_pasien'    => $pass_pas,
+        'waktu_enkripsi'  => $enkrip_time,
+        'tanggal_dibuat'  => date("Y-m-d", time()),
+        'tanggal_diubah'  => date("Y-m-d", time()),
       ]);
     }
 
