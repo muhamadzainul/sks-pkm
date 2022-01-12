@@ -23,7 +23,6 @@
             <div class="col-lg">
                 <div class="white-box">
                     <!-- <h3 class="box-title">Basic Information</h3> -->
-                    <?= $validation->listErrors(); ?>
                     <form class="form-material form-horizontal" action="<?php base_url(); ?>/Admin/surat_sehat/simpan" method="post" enctype="">
                         <?= csrf_field(); ?>
                         <!-- <div class="form-group <?= ($validation->hasError('nomor_surat')) ? 'has-error has-danger' : ''; ?>">
