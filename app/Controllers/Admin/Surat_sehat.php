@@ -397,10 +397,10 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
         'tanggal_exp'     => $tgl_exp
       ]);
 
-      $pass_ver = $this->enkripsi->decrypt(base64_decode($pass_pas));
-      echo '<br><br>' . $pass_ver;
-      echo '<br><br>' . $pass_pas;
-      dd($pass_pas);
+      // $pass_ver = $this->enkripsi->decrypt(base64_decode($pass_pas));
+      // echo '<br><br>' . $pass_ver;
+      // echo '<br><br>' . $pass_pas;
+      // dd($pass_pas);
       $this->rsaBuilder->insert([
         'nomor_surat'   => $nomor_surat,
         'nik_pasien'    => $this->request->getVar('nik_pasien'),

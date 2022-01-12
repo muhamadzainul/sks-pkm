@@ -40,9 +40,9 @@
                         </tr> -->
                         <tr>
                             <td>
-                                <!-- Masukkan Password Untuk Validasi-->
+                                <!-- Masukkan Password Untuk Validasi-->Token
                             </td>
-                            <td><input type="hidden" name="password_pas" class="form-control" placeholder="Password Validasi" value="<?= $token; ?>"></td>
+                            <td><input type="text" name="password_pas" class="form-control" placeholder="Password Validasi" value="<?= $token; ?>" readonly></td>
                             <!-- <td colspan="2"><input type="text" name="privete_key" id="qrcode" class="form-control" readonly></td> -->
                         </tr>
                         <tr>

@@ -66,12 +66,14 @@ class Validasi extends BaseController
         $data_scan = $query->getRowArray();
 
         $pass       = $this->request->getVar('password_pas');
+        // dd($pass);
+        echo '<br>' . $pass;
         // dd($data_scan['kunci_pasien']);
         // echo $data_scan['kunci_pasien'];
-        $txt = '1nfR2svN+qUhVZofmDxbl1VGgTXz94PsGxg4L0Qx77VkYiLyOSlHyU+rO1bib+NagPvdHTCi3u64ZhK+aWvegyZBf/ev9BDsY5v6FJL87sQ=';
-        // $srt_deck   = $this->dekripsi->decrypt(base64_decode($data_scan['kunci_pasien']));
-        $srt_deck   = $this->dekripsi->decrypt(base64_decode($txt));
-        dd($srt_deck);
+        // $txt = '1nfR2svN+qUhVZofmDxbl1VGgTXz94PsGxg4L0Qx77VkYiLyOSlHyU+rO1bib+NagPvdHTCi3u64ZhK+aWvegyZBf/ev9BDsY5v6FJL87sQ=';
+        $srt_deck   = $this->dekripsi->decrypt(base64_decode($data_scan['kunci_pasien']));
+        // $srt_deck   = $this->dekripsi->decrypt(base64_decode($txt));
+        // dd($srt_deck == $pass);
         // 
         if ($data_scan['nik_pasien'] == $this->request->getVar('nik_pasien') && $data_scan['tanggal_dibuat'] == $this->request->getVar('tgl_dibuatsurat')) {
             if ($srt_deck == $pass) {
