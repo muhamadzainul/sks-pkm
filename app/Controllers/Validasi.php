@@ -185,21 +185,21 @@ class Validasi extends BaseController
     public function coba()
     {
 
-        $pasien = $this->db->table('pasien');
-        $ps = $pasien->select('id_pasien, nama_pasien, nik_pasien, publik_key, private_key')->get();
-        $pss = $ps->getResultArray();
+        // $pasien = $this->db->table('pasien');
+        // $ps = $pasien->select('id_pasien, nama_pasien, nik_pasien, publik_key, private_key')->get();
+        // $pss = $ps->getResultArray();
 
-        $kapus = $this->db->table('kapus');
-        $kp = $kapus->select('id_kapus, nama_kapus, nip_kapus, publik_key, private_key')->get();
-        $kpp = $kp->getResultArray();
+        // $kapus = $this->db->table('kapus');
+        // $kp = $kapus->select('id_kapus, nama_kapus, nip_kapus, publik_key, private_key')->get();
+        // $kpp = $kp->getResultArray();
 
-        $surat = $this->db->table('surat_rsa');
-        $surat->select('pasien.nama_pasien as nama_pasien, waktu_enkripsi, waktu_dekripsi');
-        $surat->join('surat_kesehatan', 'surat_kesehatan.nomor_surat = surat_rsa.nomor_surat');
-        $surat->join('pasien', 'pasien.nik_pasien = surat_rsa.nik_pasien');
-        $surat->join('kapus', 'kapus.nip_kapus = surat_rsa.nip_kapus');
-        $srr = $surat->get();
-        $srrt = $srr->getResultArray();
+        // $surat = $this->db->table('surat_rsa');
+        // $surat->select('pasien.nama_pasien as nama_pasien, waktu_enkripsi, waktu_dekripsi');
+        // $surat->join('surat_kesehatan', 'surat_kesehatan.nomor_surat = surat_rsa.nomor_surat');
+        // $surat->join('pasien', 'pasien.nik_pasien = surat_rsa.nik_pasien');
+        // $surat->join('kapus', 'kapus.nip_kapus = surat_rsa.nip_kapus');
+        // $srr = $surat->get();
+        // $srrt = $srr->getResultArray();
 
         // dd(count($pss));
         // for ($i = 0; $i < count($pss); $i++) {
@@ -210,14 +210,14 @@ class Validasi extends BaseController
         //     echo "<br>";
         //     # code...
         // }
-        for ($i = 0; $i < count($kpp); $i++) {
-            echo "<br>Nama Kapus : " . $kpp[$i]['nama_kapus'];
-            echo "<br>Nip Kapus : " . $kpp[$i]['nip_kapus'];
-            echo "<br>Publik Key : " . $kpp[$i]['publik_key'];
-            echo "<br>Private Key : " . $this->dekripsi->decrypt(base64_decode($kpp[$i]['private_key']));
-            echo "<br>";
-            # code...
-        }
+        // for ($i = 0; $i < count($kpp); $i++) {
+        //     echo "<br>Nama Kapus : " . $kpp[$i]['nama_kapus'];
+        //     echo "<br>Nip Kapus : " . $kpp[$i]['nip_kapus'];
+        //     echo "<br>Publik Key : " . $kpp[$i]['publik_key'];
+        //     echo "<br>Private Key : " . $this->dekripsi->decrypt(base64_decode($kpp[$i]['private_key']));
+        //     echo "<br>";
+        //     # code...
+        // }
         // for ($i = 0; $i < count($srrt); $i++) {
         //     echo "<br>Nama Pasien : " . $srrt[$i]['nama_pasien'];
         //     echo "<br>Waktu Enkripsi : " . $srrt[$i]['waktu_enkripsi'];
