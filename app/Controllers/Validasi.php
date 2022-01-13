@@ -69,7 +69,7 @@ class Validasi extends BaseController
 
         $pass       = $this->request->getVar('password_pas');
         // dd($pass);
-        echo '<br>' . $pass;
+        // echo '<br>' . $pass;
         // dd($data_scan['kunci_pasien']);
         // echo $data_scan['kunci_pasien'];
         // $txt = '1nfR2svN+qUhVZofmDxbl1VGgTXz94PsGxg4L0Qx77VkYiLyOSlHyU+rO1bib+NagPvdHTCi3u64ZhK+aWvegyZBf/ev9BDsY5v6FJL87sQ=';
