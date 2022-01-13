@@ -149,7 +149,6 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
 
 
     if (empty($queryp)) {
-      $start_time = microtime(true);
       if ($id == null) {
 
         $priv_key = base64_encode($this->enkripsi->encrypt($gen_key[1]));
@@ -184,9 +183,8 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
           'tanggal_diubah'      => date("Y-m-d", time()),
         ]);
       }
-    } else {
-      $start_time = microtime(true);
     }
+    $start_time = microtime(true);
 
     $teks = $this->request->getVar('nomor_surat') . "-" . $this->request->getVar('nik_pasien') . "-" . $this->request->getVar('nip_kapus') . "-" . $this->request->getVar('nama_pasien') . "-" . $this->request->getVar('kepentingan') . "-" . $this->request->getVar('hasil_periksa') . "-" . $this->request->getVar('tgl_dibuat');
     $hash_teks = md5($teks);
