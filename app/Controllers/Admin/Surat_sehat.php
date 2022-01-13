@@ -134,17 +134,6 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     $slug       = url_title($this->request->getVar('nomor_surat') . '-' . $this->request->getVar('nama_pasien'), '-', true);
     $slugPasien = url_title($this->request->getVar('nik_pasien') . '-' . $this->request->getVar('nama_pasien'), '-', true);
 
-    //
-    // $pasienBuilder = $this->db->table('pasien');
-    // $data=[
-    //   'nik_pasien'    => $this->request->getVar('nik_pasien'),
-    //   'slug'          => $slugPasien,
-    //   'nama_pasien'   => $this->request->getVar('nama_pasien'),
-    //   'tgl_lahir'     => $this->request->getVar('tgl_lahir'),
-    //   'jenis_kelamin' => $this->request->getVar('jenis_kelamin'),
-    //   'alamat'        => $this->request->getVar('alamat')
-    //
-    // ];
 
     $cek_date = date("Y-m-d", time());
     $te = explode("-", $cek_date);
@@ -162,30 +151,10 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     if (empty($queryp)) {
       $start_time = microtime(true);
       if ($id == null) {
-        // dd(empty($queryp));
 
         $priv_key = base64_encode($this->enkripsi->encrypt($gen_key[1]));
 
         $text_qr = $priv_key;
-
-        // $this->gen_qr   = QrCode::create($text_qr);
-        // $writer         = new PngWriter();
-
-        // $qrCode = $this->gen_qr->setEncoding(new Encoding('UTF-8'))
-        //   ->setErrorCorrectionLevel(new ErrorCorrectionLevelLow())
-        //   ->setSize(300)
-        //   ->setMargin(10)
-        //   ->setRoundBlockSizeMode(new RoundBlockSizeModeMargin())
-        //   ->setForegroundColor(new Color(0, 0, 0))
-        //   ->setBackgroundColor(new Color(255, 255, 255));
-
-        // // Create generic logo
-        // $logo = Logo::create('./gambar/Logo-Mojokerto.png')
-        //   ->setResizeToWidth(50);
-        // $test = $writer->write($qrCode, $logo);
-        // $nama_file = generateRandomString(32);
-        // $test->saveToFile('./gambar/qr_code/pasien/' . $nama_file . '.png');
-        // $db_qrcode_pasien = $nama_file . '.png';
 
         if (!$this->validate([
           'nik_pasien' => [
@@ -221,7 +190,6 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
 
     $teks = $this->request->getVar('nomor_surat') . "-" . $this->request->getVar('nik_pasien') . "-" . $this->request->getVar('nip_kapus') . "-" . $this->request->getVar('nama_pasien') . "-" . $this->request->getVar('kepentingan') . "-" . $this->request->getVar('hasil_periksa') . "-" . $this->request->getVar('tgl_dibuat');
     $hash_teks = md5($teks);
-    // dd($hash_teks);
 
     $this->kapusBuilder->select('id_kapus, nama_kapus, nip_kapus, publik_key, private_key');
     $queryKapus   = $this->kapusBuilder->get();
@@ -237,30 +205,11 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
       $ps_pr = $pp->getRow();
       $pasien_key = $ps_pr->publik_key;
     }
-    // dd($pasien_key);
-
-    // dd($kapus_private_key);
-    // dd();
-    // $kapus_private_key  = $kapusQ[0]['private_key'];
 
     $enk_teks = enkripsi_text($hash_teks, $priv_kap, $pasien_key);
-    // dd($enk_teks);
-    // dd(strlen($enk_teks[1]));
-    // dd($enk_teks);
-
-    // dd($kapusQ[0]['nama_kapus']);
-    //create QRcode
     $this->rsaBuilder->select('kunci_pasien');
     $sr = $this->rsaBuilder->where('nik_pasien', $this->request->getVar('nik_pasien'))->get();
     $srt = $sr->getRowArray();
-    // dd(empty($this->request->getVar('ubah_pass_pas')));
-    // if (empty($this->request->getVar('ubah_pass_pas'))) {
-    //   $pass_pas = $srt['kunci_pasien'];
-    // } else {
-    //   $pass_pas = base64_encode($this->enkripsi->encrypt($this->request->getVar('ubah_pass_pas')));
-    //   // dd($pass_pas);
-    // }
-    // dd(empty($srt['kunci_pasien']));
     if (empty($srt['kunci_pasien'])) {
       $token = getToken(8);
       echo '<br><br><br>' . $token;
@@ -290,18 +239,12 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     $logo = Logo::create('./gambar/Logo_Puskesmas.png')
       ->setResizeToWidth(50);
 
-    // Create generic label
-    // $label = Label::create('Zainul')
-    //     ->setTextColor(new Color(255, 0, 0));
 
     $test = $writer->write($qrCode, $logo);
 
-    // header('Content-Type: ' . $test->getMimeType());
-    // echo $test->getString();
-    // $qr_name = getRandomName();
     $test->saveToFile('./gambar/qr_code/' . $hash_teks . '.png');
     $db_qrcode = $hash_teks . '.png';
-    // dd($this->request->getVar('nip_kapus'));
+
     if ($id != null) {
       $end_time = microtime(true);
       $enkrip_time = $end_time - $start_time;
@@ -404,10 +347,6 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
         'tanggal_exp'     => $tgl_exp
       ]);
 
-      // $pass_ver = $this->enkripsi->decrypt(base64_decode($pass_pas));
-      // echo '<br><br>' . $pass_ver;
-      // echo '<br><br>' . $pass_pas;
-      // dd($pass_pas);
       $this->rsaBuilder->insert([
         'nomor_surat'     => $nomor_surat,
         'nik_pasien'      => $this->request->getVar('nik_pasien'),
@@ -422,10 +361,6 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
       ]);
     }
 
-
-    // if ($id == null) {
-    // } else {
-    // }
 
     session()->setFLashdata('pesan', 'Tambahkan');
 
