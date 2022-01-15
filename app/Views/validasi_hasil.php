@@ -17,6 +17,9 @@
         </div>
         <div class="row">
             <div class="col-lg-6">
+                <?php if (intval($exp_tgl) > 14) : ?>
+                    <div class="alert alert-danger">Surat Yang Dibuat Masa Berlaku Sudah Habis</div>
+                <?php endif; ?>
                 <h4>Data hasil scaning</h4><br>
                 <h3><strong> <?= $hasil_validasi; ?></strong></h3>
                 <br>

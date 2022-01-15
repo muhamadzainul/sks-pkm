@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use DateTime;
 use Endroid\QrCode\Color\Color;
 use \Endroid\QrCode\Encoding\Encoding;
 use \Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelLow;
@@ -139,7 +140,14 @@ class Validasi extends BaseController
         $this->suratBuilder->where('id_surat_rsa', $data_scan['id_surat_rsa']);
         $this->suratBuilder->update($upd);
 
+        $tdl_dbu = new DateTime($data_scan['tanggal_dibuat']);
+        $tgl_now = new DateTime();
+        $exp_tgl = $tgl_now->diff($tdl_dbu);
+
+
+
         $data = [
+            'exp_tgl'        => $exp_tgl->days,
             'title'          => 'Hasil Validasi',
             'hasil_validasi' => $has_dek,
             'data_surat'     => $data_cetak
