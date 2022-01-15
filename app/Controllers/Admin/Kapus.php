@@ -38,7 +38,7 @@ class Kapus extends BaseController
         $data = [
             // 'data_kapus' => $data_kapus
             'title'       => 'Data Kapus',
-            'data_kapus'  => $kapus->paginate(10),
+            'data_kapus'  => $kapus->orderBy('menjabat', 'DESC')->paginate(10),
             // 'data_kapus'  => $kapus,
             'pager'       => $this->kapusModel->pager,
             'currentPage' => $currentPage
