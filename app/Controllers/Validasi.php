@@ -185,6 +185,9 @@ class Validasi extends BaseController
     public function coba()
     {
 
+        $pr = $this->dekripsi->decrypt(base64_decode('u6b+Ia1LK7NID7SPoo5YUfOYGKA/2VvA7jVhZBVu8yJr6FTP8G7bj0p+dC6SLW/EWiPe31ZzXeuh62blGlKKo3XTSZL12GwjvQofLPCUCPo7wDnCBdNU8OmG6HA='));
+        dd($pr);
+
         // $pasien = $this->db->table('pasien');
         // $ps = $pasien->select('id_pasien, nama_pasien, nik_pasien, publik_key, private_key')->get();
         // $pss = $ps->getResultArray();

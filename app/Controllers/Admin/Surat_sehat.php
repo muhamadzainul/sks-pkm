@@ -140,7 +140,6 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     $tm = (intval($te[2]) + 2);
     $tgl_exp = ($te[0] . "-" . $te[1] . "-" . $tm) . "<br>";
 
-    $gen_key = get_key();
 
     $this->pasienBuilder->select('nik_pasien');
     $this->pasienBuilder->where('nik_pasien', $this->request->getVar('nik_pasien'));
@@ -151,9 +150,9 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     if (empty($queryp)) {
       if ($id == null) {
 
+        $gen_key = get_key();
         $priv_key = base64_encode($this->enkripsi->encrypt($gen_key[1]));
 
-        $text_qr = $priv_key;
 
         if (!$this->validate([
           'nik_pasien' => [
@@ -195,8 +194,9 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     $kapus_private_key   = $kapusQ[0]['private_key'];
     $priv_kap = $this->enkripsi->decrypt(base64_decode($kapus_private_key));
 
+
     if (empty($queryp)) {
-      $pasien_key = $gen_key[1];
+      $pasien_key = $gen_key[0];
     } else {
       $this->pasienBuilder->select('publik_key');
       $pp = $this->pasienBuilder->where('nik_pasien', $this->request->getVar('nik_pasien'))->get();

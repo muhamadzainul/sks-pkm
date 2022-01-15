@@ -120,7 +120,7 @@ class Data_pasien extends BaseController
     $private_key = base64_encode($this->enkripsi->encrypt($gen_key[1]));
 
 
-    $text_qr = $private_key;
+    // $text_qr = $private_key;
 
     // $this->gen_qr   = QrCode::create($text_qr);
     // $writer         = new PngWriter();
