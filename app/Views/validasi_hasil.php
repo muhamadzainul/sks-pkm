@@ -19,6 +19,10 @@
             <div class="col-lg-6">
                 <h4>Data hasil scaning</h4><br>
                 <h3><strong> <?= $hasil_validasi; ?></strong></h3>
+                <br>
+                <?php if (empty($data_surat)) : ?>
+                    <a href="<?= base_url(); ?>/validasi" class="btn btn-primary">Validasi Lagi</a>
+                <?php endif; ?>
             </div>
             <?php if (!empty($data_surat)) : ?>
                 <div class="col-lg-6">
