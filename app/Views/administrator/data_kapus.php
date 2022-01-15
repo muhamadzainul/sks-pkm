@@ -52,6 +52,7 @@
                   <th scope="col">No.</th>
                   <th scope="col">Nama Kapus</th>
                   <th scope="col">NIP</th>
+                  <th scope="col">Menjabat</th>
                   <th scope="col" colspan="2">Aksi</th>
                 </tr>
               </thead>
@@ -68,6 +69,13 @@
                         <td><?= $n++; ?></td>
                         <td><?= $dk['nama_kapus']; ?></td>
                         <td><?= $dk['nip_kapus']; ?></td>
+                        <td>
+                          <?php if ($dk['menjabat'] == 1) {
+                            echo "<span class=\"label label-success\">YA</span>";
+                          } else {
+                            echo "<span class=\"label label-danger\">TIDAK</span>";
+                          } ?>
+                        </td>
                         <!-- <td><a href="<?php base_url(); ?>/admin/data_kapus/edit_kapus/<?= $dk['slug']; ?>" class="btn btn-success btn-rounded">Edit</a></td> -->
                         <td><a href="" data-toggle="modal" data-target="#Edit_kapus<?= $dk['id_kapus']; ?>" class="btn btn-success btn-sm btn-rounded"><i class="fa fa-fw fa-edit"></i>Edit</a></td>
                         <td>
@@ -112,6 +120,18 @@
               <div class="form-group">
                 <label for="nip_kapus">Nip Kapus</label>
                 <input type="text" class="form-control" name="nip_kapus" id="nip_kapus" placeholder="Nip Kapus" value="<?= $dk['nip_kapus']; ?>" readonly>
+              </div>
+              <div class="form-group">
+                <label for="nip_kapus">Menjabat</label>
+                <select class="form-control" name="menjabat">
+                  <?php if ($dk['menjabat'] == 1) : ?>
+                    <option value="1" selected>Ya</option>
+                    <option value="0">Tidak</option>
+                  <?php else : ?>
+                    <option value="1">Ya</option>
+                    <option value="0" selected>Tidak</option>
+                  <?php endif; ?>
+                </select>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

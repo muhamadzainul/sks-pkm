@@ -11,7 +11,7 @@ class Model_kapus extends Model
     protected $useTimestamps = true;
     protected $createdField = 'tanggal_dibuat';
     protected $updatedField = 'tanggal_diubah';
-    protected $allowedFields = ['id_kapus', 'slug', 'nama_kapus', 'nip_kp', 'hash_kapus', 'publik_key', 'private_key', 'hash_publik_key', 'hash_private_key', 'active', 'tanggal_dibuat', 'tanggal_diubah'];
+    protected $allowedFields = ['id_kapus', 'slug', 'nama_kapus', 'nip_kp', 'hash_kapus', 'publik_key', 'private_key', 'hash_publik_key', 'hash_private_key', 'active', 'menjabat', 'tanggal_dibuat', 'tanggal_diubah'];
 
     public function getkapus($slug = false)
     {
