@@ -79,7 +79,7 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
   {
     $this->kapusBuilder = $this->db->table('kapus');
     $this->kapusBuilder->select('nip_kapus');
-    $this->kapusBuilder->where('active', 1);
+    $this->kapusBuilder->where('menjabat', 1);
     $querySurat = $this->kapusBuilder->get();
     $kapus = $querySurat->getRowArray();
     // dd($kapus['nip_kapus']);
