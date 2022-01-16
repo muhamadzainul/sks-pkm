@@ -6,8 +6,6 @@
 
 <body>
     <p></p>
-    <p></p>
-    <p></p>
     <div style="font-size: 14; text-align: center;"><strong><u>SURAT KETERANGAN SEHAT</u></strong></div>
     <!-- <span style="font-size: 12; text-align: center;">Nomor : 445/<?= $data_cetak['nomor_surat']; ?>/416-102.11/<?= date("Y", time()); ?></span> -->
     <!-- <p></p> -->
