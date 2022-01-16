@@ -292,84 +292,47 @@ function dekrip_text($hash_text, $enkripsi_t, $get_k, $get_k2)
     $public_key = explode(".", $get_k);
     $e = $public_key[0];
     $n = $public_key[1];
-    // $private_key = explode(".", $get_k[1]);
-    // $d = $private_key[0];
-    // $n2 = $private_key[1];
-    // if ($n != $n2) {
-    //     echo "Kunci Tidak Cocok";
-    // }
-    // $public_key2 = explode(".", $get_k2[0]);
-    // $e2 = $public_key2[0];
-    // $n3 = $public_key2[1];
+
     $private_key2 = explode(".", $get_k2);
     $d2 = $private_key2[0];
     $n4 = $private_key2[1];
-    // if ($n3 != $n4) {
-    //     echo "Kunci Tidak Cocok";
-    // }
+
     //enkripsi
     $ascii = "";
     for ($i = 0; $i < strlen($hash_text); $i++) {
         $ascii .= ord($hash_text[$i]);
     }
-    // echo "<br>" . $ascii;
 
     // dekripsi
     $hasil = $enkripsi_t;
 
-    // echo "<br>";
     $h_dekrip = "";
     $dekrip_sem = "";
 
     $text_d = explode(".", $hasil);
-    // echo "<br>".count($text_d);
 
     for ($i = 0; $i < count($text_d); $i++) {
         $tf = intval(substr($text_d[$i], 0, 1));
-        // echo "<br>".$text_d[$i];
-        // echo "<br>".$tf;
         if ($tf == 0) {
             $jk = explode("*", $text_d[$i]);
             for ($k = 0; $k < count($jk); $k++) {
                 $fr = intval(substr($jk[$k], 0, 1));
                 $tq = explode("_", $jk[$k]);
-                // echo "<br> count TQ".(count($tq));
-                // echo "<br>TQ[0] = ".$tq[0];
-                // echo "<br>TQ[1] = ".$tq[1];
                 if (count($tq) > 1) {
-                    // if ($tq[0] == "0") {
-                    // var_dump(count($tq));
                     $h_dekrip .= $tq[0];
-                    // if (empty($tq[1])) {
-                    // $dekrip_sem .= 0;
-                    // echo "<br>TQ =".$tq[1];
-                    // } else {
-                    // echo "<br>TQ =".$tq[1];
                     $dekrip_sem .= gmp_mod(gmp_pow(intval($tq[1]), $d2), $n4);
-                    // code...
-                    // } else {
-                    // $dekrip_sem .= gmp_mod(gmp_pow(intval($tq[0]), $d2), $n4);
-                    // }
-                    // code...
-                    // }
                 } else {
                     $dekrip_sem .= gmp_mod(gmp_pow(intval($jk[$k]), $d2), $n4);
                 }
             }
-            // echo "<br>$text_d[$i]";
-            // echo "<br>$dekrip_sem";
             $h_dekrip .= gmp_strval(gmp_mod(gmp_pow(intval($dekrip_sem), $e), $n));
             $dekrip_sem = "";
-            // echo "<br>0".$tq[1];
         } else {
-            // echo "<br>".$text_d[$i];
             $ik = explode("*", $text_d[$i]);
             for ($j = 0; $j < count($ik); $j++) {
                 $dekrip_sem .= gmp_mod(gmp_pow(intval($ik[$j]), $d2), $n4);
             }
             $h_dekrip .= gmp_strval(gmp_mod(gmp_pow(intval($dekrip_sem), $e), $n));
-            // echo "<br>$text_d[$i]";
-            // echo "<br>$dekrip_sem";
             $dekrip_sem = "";
         }
     }
@@ -400,8 +363,6 @@ function dekrip_text($hash_text, $enkripsi_t, $get_k, $get_k2)
                     $hasil_ascii .= ".";
                 }
             }
-            // echo "<br> i = " . $i;
-            // echo "<br> kap = " . $kap;
         }
     }
 
@@ -416,19 +377,6 @@ function dekrip_text($hash_text, $enkripsi_t, $get_k, $get_k2)
         }
         # code...
     }
-    // foreach ($tra as $val) {
-    // }
-
-    // echo "<br>Nil text ASCII = $ascii";
-    // echo "<br>Hasil Dekripsi = $h_dekrip";
-    // echo "<br>Hasil Dekripsi = $hasil_ascii";
-    // echo "<br>hash kata awal = $hash_text";
-    // echo "<br>Hasil Dekripsi = $hh<br>";
-    // echo "<br>";
-    // var_dump($hash_text);
-    // echo "<br>";
-    // var_dump($hh);
-    // $hasil_akhir = "Data Surat Keterangan Sehat Valid atau Asli";
 
     if ($hh == $hash_text) {
         $hasil_akhir = "Data Surat Keterangan Sehat Valid atau Asli";
@@ -528,9 +476,9 @@ function Dekripsi_biasa($hash_text, $enkripsi_t, $get_k)
     // dd($text_d[0]);
 
     for ($i = 0; $i < count($text_d); $i++) {
-        echo "<br> tf = " . $text_d[$i];
+        // echo "<br> tf = " . $text_d[$i];
         $tq = explode("_", $text_d[$i]);
-        echo "<br> tq =" . count($tq) . "<br>";
+        // echo "<br> tq =" . count($tq) . "<br>";
         if (count($tq) > 1) {
             $h_dekrip .= $tq[0];
             $h_dekrip .= gmp_strval(gmp_mod(gmp_pow(intval($tq[1]), $e), $n));
