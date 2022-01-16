@@ -84,7 +84,14 @@
                                             </select> -->
                                         </div>
                                         <div class="col-md-4">
-                                            <input type="text" name="pekerjaan" class="form-control" placeholder="Masukkan Pekerjaan" value="<?= old('pekerjaan'); ?>">
+                                            <select class="custom-select custom-select-sm col-sm" name="pekerjaan">
+                                                <option value="null" class="dropdown-item" selected>-- Pilih salah satu --</option>
+                                                <option value="Swasta" class="dropdown-item">Swasta</option>
+                                                <option value="Wiraswasta" class="dropdown-item">Wiraswasta</option>
+                                                <option value="PNS" class="dropdown-item">PNS</option>
+                                                <option value="TNI/POLRI" class="dropdown-item">TNI/POLRI</option>
+                                                <option value="Lainnya" class="dropdown-item">Lainnya</option>
+                                            </select>
                                         </div>
                                         <div class="col-md-4">
                                             <input type="date" name="tgl_lahir" class="form-control" placeholder="Masukkan Suhu Tubuh" value="<?= (old('tgl_lahir')) ? old('tgl_lahir') : $ds->tgl_lahir; ?>" readonly>
