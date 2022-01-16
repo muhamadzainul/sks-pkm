@@ -120,7 +120,7 @@ class Validasi extends BaseController
                 $data_cetak = $query->getRowArray();
                 # code...
             } else {
-                $has_dek = "Password Yang Dimasukkan Salah";
+                $has_dek = "Token Tidak Sesuai";
                 $data_cetak = "";
             }
             // echo "private Key Pasien = " . $ps_pr;
@@ -193,7 +193,7 @@ class Validasi extends BaseController
     public function coba()
     {
 
-        $pr = $this->dekripsi->decrypt(base64_decode('u6b+Ia1LK7NID7SPoo5YUfOYGKA/2VvA7jVhZBVu8yJr6FTP8G7bj0p+dC6SLW/EWiPe31ZzXeuh62blGlKKo3XTSZL12GwjvQofLPCUCPo7wDnCBdNU8OmG6HA='));
+        $pr = $this->dekripsi->decrypt(base64_decode('8WG96ceuzmHq7DMiA/U5DAkL3ETZh3URxEtZTRZSAkLKYYpYb5dl/suy+7J/lQO5lf1Gaeuuu6KvXzeea/1bLdVmNngn57xJQOXd3xwdbwCozN8r7k74oQ=='));
         dd($pr);
 
         // $pasien = $this->db->table('pasien');
