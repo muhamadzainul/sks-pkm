@@ -438,6 +438,159 @@ function dekrip_text($hash_text, $enkripsi_t, $get_k, $get_k2)
     return $hasil_akhir;
 }
 
+function Enkripsi_biasa($hash_text, $get_k)
+{
+    // private key kapus
+    $private_key = explode(".", $get_k);
+    $d = $private_key[0];
+    $n = $private_key[1];
+    echo "<br>" . $d;
+    echo "<br>" . $n;
+
+    $hasil = "";
+    $ascii = "";
+    $ht = "";
+
+    for ($i = 0; $i < strlen($hash_text); $i++) {
+        $ascii .= ord($hash_text[$i]);
+    }
+    // echo "<br>".strlen($ascii);
+    echo "<br>" . $ascii;
+    $rq = strlen($ascii) - 4;
+    $v_k = 0; // inisisalisasi angka 0 yang ada di depan pada nilai ascii yang telah dibagi menjadi blok-blok
+
+    for ($j = 0; $j < strlen($ascii); $j++) {
+        // echo "<br>",$j+1;
+        // echo "<br>";
+        // echo "<br>" . $ascii[$j];
+        echo "<br>";
+
+        if ((($j) % 4) == 0) {
+            echo "<br>Nilai text ASCII = $j";
+            // $ht = intval(substr($ascii, $j, 4));
+            $pl = intval(substr($ascii, $j, 1)); // inisisalisasi nilai 1 pada tiap blok
+            echo "<br> pl =" . $pl;
+            if ($pl == 0) {
+                $hasil .= "0";
+                $hasil .= "_";
+            }
+
+            $ht .= intval(substr($ascii, $j + $v_k, 4 - $v_k)); //inisisalisasi untuk mencari nilai yang sudah tidak ada nilai 0 di depannya pada tiap blok'
+            $ht .= ".";
+            $htt = explode(".", $ht);
+            $ht2 = intval($htt[(count($htt)) - 2]);
+            echo "<br> ht2 =" . $ht2;
+            $hasil .= gmp_mod(gmp_pow($ht2, $d), $n);
+            if (($j + 5) <= strlen($ascii)) {
+                $hasil .= ".";
+            }
+        }
+        $v_k = $v_k * 0;
+    }
+    echo "<br>Nilai text ASCII = $ascii";
+    echo "<br>Nilai Hasil Enkripsi = $hasil";
+    $hs = "";
+    $pecah_enkrip = explode(".", $hasil);
+    // dd($hasil);
+    // echo "<br>". (count($pecah_enkrip));
+    for ($ol = 0; $ol < count($pecah_enkrip); $ol++) {
+        $pecah_enkrip2 = explode("*", $pecah_enkrip[$ol]);
+        $pecah_0 = explode("_", $pecah_enkrip2[0]);
+        // echo "<br>".(count($pecah_0));
+        for ($io = 0; $io < count($pecah_enkrip2); $io++) {
+            if (count($pecah_0) == 2) {
+                $hs .= $pecah_0[0];
+                $hs .= $pecah_0[1];
+            } else {
+                $hs .= $pecah_enkrip2[$io];
+                // code...
+            }
+        }
+    }
+    echo "<br>Nilai Hasil Enkripsi asli = " . $hs;
+    echo "<br>Nilai hasil Enkripsi = $hasil";
+
+    return [$hs, $hasil];
+}
+
+function Dekripsi_biasa($hash_text, $enkripsi_t, $get_k)
+{
+    $public_key = explode(".", $get_k);
+    $e = $public_key[0];
+    $n = $public_key[1];
+
+    $h_dekrip = "";
+
+    $hasil = $enkripsi_t;
+
+    $text_d = explode(".", $hasil);
+    // echo "<br>".count($text_d);
+    // dd($text_d[0]);
+
+    for ($i = 0; $i < count($text_d); $i++) {
+        echo "<br> tf = " . $text_d[$i];
+        $tq = explode("_", $text_d[$i]);
+        echo "<br> tq =" . count($tq) . "<br>";
+        if (count($tq) > 1) {
+            $h_dekrip .= $tq[0];
+            $h_dekrip .= gmp_strval(gmp_mod(gmp_pow(intval($tq[1]), $e), $n));
+        } else {
+            $h_dekrip .= gmp_strval(gmp_mod(gmp_pow(intval($text_d[$i]), $e), $n));
+        }
+    }
+
+    $hasil_ascii = "";
+    $var = 0;
+    $kap = strlen($h_dekrip) - 2;
+    // echo "<br>" . $kap;
+    for ($i = 0; $i < strlen($h_dekrip); $i++) {
+        if (($i % 2 == $var)) {
+            $re = substr($h_dekrip, $i, 1);
+            if ($re == 1) {
+                $hasil_ascii .= substr($h_dekrip, $i, 3);
+                if ($i != $kap) {
+                    $hasil_ascii .= ".";
+                    // code...
+                }
+                if ($var == 0) {
+                    $i = $i + 1;
+                    $var = $var + 1;
+                } else {
+                    $i = $i + 1;
+                    $var = $var - 1;
+                }
+            } else {
+                $hasil_ascii .= substr($h_dekrip, $i, 2);
+                if ($i != $kap) {
+                    $hasil_ascii .= ".";
+                }
+            }
+            // echo "<br> i = " . $i;
+            // echo "<br> kap = " . $kap;
+        }
+    }
+
+    $hh = "";
+    $tra = explode(".", $hasil_ascii);
+    // echo "<br>";
+    // var_dump($tra);
+    for ($i = 0; $i < count($tra); $i++) {
+        if (strlen($tra[$i]) != 0) {
+            $hh .= chr(intval($tra[$i]));
+            # code...
+        }
+        # code...
+    }
+
+    if ($hh == $hash_text) {
+        $hasil_akhir = "Data Surat Keterangan Sehat Valid atau Asli";
+    } else {
+        $hasil_akhir = "Data Surat Keterangan Sehat Tidak Valid";;
+    }
+
+    return $hasil_akhir;
+}
+
   // function generate_key()
   // {
   //     // pencarian angka random dari 100-200
