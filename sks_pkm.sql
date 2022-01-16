@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 13, 2022 at 03:46 PM
+-- Generation Time: Jan 16, 2022 at 09:36 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.26
 
@@ -94,6 +94,7 @@ CREATE TABLE `auth_groups_users` (
 
 INSERT INTO `auth_groups_users` (`group_id`, `user_id`) VALUES
 (1, 4),
+(1, 9),
 (2, 5),
 (2, 8);
 
@@ -204,7 +205,11 @@ INSERT INTO `auth_logins` (`id`, `ip_address`, `email`, `user_id`, `date`, `succ
 (85, '::1', 'zainulmustofa943@gmail.com', 4, '2022-01-12 01:31:19', 1),
 (86, '::1', 'zainulmustofa943@gmail.com', 4, '2022-01-12 08:46:51', 1),
 (87, '::1', 'zainulmustofa943@gmail.com', 4, '2022-01-13 00:56:58', 1),
-(88, '::1', 'zainulmustofa943@gmail.com', 4, '2022-01-13 05:16:15', 1);
+(88, '::1', 'zainulmustofa943@gmail.com', 4, '2022-01-13 05:16:15', 1),
+(89, '::1', 'zainulmustofa943@gmail.com', 4, '2022-01-15 05:40:37', 1),
+(90, '::1', 'skspuskesmas@gmial.com', 9, '2022-01-15 06:00:51', 1),
+(91, '::1', 'skspuskesmas@gmial.com', 9, '2022-01-15 19:39:05', 1),
+(92, '::1', 'skspuskesmas@gmial.com', 9, '2022-01-16 10:00:30', 1);
 
 -- --------------------------------------------------------
 
@@ -281,7 +286,8 @@ CREATE TABLE `kapus` (
   `private_key` varchar(255) NOT NULL,
   `hash_publik_key` varchar(255) NOT NULL,
   `hash_private_key` varchar(255) NOT NULL,
-  `active` int(11) NOT NULL,
+  `active` int(2) NOT NULL,
+  `menjabat` int(2) DEFAULT NULL,
   `tanggal_dibuat` date DEFAULT NULL,
   `tanggal_diubah` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -290,8 +296,9 @@ CREATE TABLE `kapus` (
 -- Dumping data for table `kapus`
 --
 
-INSERT INTO `kapus` (`id_kapus`, `slug`, `nama_kapus`, `nip_kapus`, `publik_key`, `private_key`, `hash_publik_key`, `hash_private_key`, `active`, `tanggal_dibuat`, `tanggal_diubah`) VALUES
-(1, '198203102009011011-dr.-DENY-SETIYAWAN', 'dr. DENY SETIYAWAN', 198203102009011011, '109.89147', 'vO58GRpTpPiWdWNzhHclfJXM0o5Fe/ZeWkuNSExqWlQjFCXSB6p7x4a3Ydfd19+VRtYijXwYKQhD4TWgseY/SNeinLCwSHYjYh0Zn9ppaLYzfz4Fu0wKE3nA1A==', '28b98d7a02dd9d0fe69654443b44fc94', 'eb1e2b7691d31d176d6e5b40556e7a3a', 1, '2021-12-05', '2022-01-01');
+INSERT INTO `kapus` (`id_kapus`, `slug`, `nama_kapus`, `nip_kapus`, `publik_key`, `private_key`, `hash_publik_key`, `hash_private_key`, `active`, `menjabat`, `tanggal_dibuat`, `tanggal_diubah`) VALUES
+(1, '198203102009011011-dr.-DENY-SETIYAWAN', 'dr. DENY SETIYAWAN', 198203102009011011, '109.89147', 'vO58GRpTpPiWdWNzhHclfJXM0o5Fe/ZeWkuNSExqWlQjFCXSB6p7x4a3Ydfd19+VRtYijXwYKQhD4TWgseY/SNeinLCwSHYjYh0Zn9ppaLYzfz4Fu0wKE3nA1A==', '28b98d7a02dd9d0fe69654443b44fc94', 'eb1e2b7691d31d176d6e5b40556e7a3a', 1, 1, '2021-12-05', '2022-01-15'),
+(44, '198203102009008018-ninik-munawati-str-keb-mkes', 'NINIK MUNAWATI, S.Tr. Keb., M.Kes', 198203102009008018, '347.71189', 'DoapcfSUUtO4lR5UZgDYqB2Y8873ynKxF+TDb7zQDJTQ5Z6aAQLQ4YBsYQ3yX66LCsJGv4BZVnGfYb91xyI3QHc181bl+8+SRn1xEPJLgYkYXx5eDjKkdkVAHQ==', 'd1c3416b8467b8c864b7521a66bf99b1', 'cc936d39d38aa108153ffe97704e8784', 1, 0, '2022-01-15', '2022-01-15');
 
 -- --------------------------------------------------------
 
@@ -363,7 +370,25 @@ INSERT INTO `pasien` (`id_pasien`, `nama_pasien`, `slug`, `nik_pasien`, `nip_pas
 (86, 'kairun', '3215637812636512-kairun', 3215637812636512, NULL, '1999-08-09', 'Laki-laki', 'Lamongan', NULL, NULL, '397.67519', 'NMUPxbaQQotJ7375Z/B9ZdqUsqaWPlSoijslwclxnJ5EkcgQ4SmXRquVoSphGZe39M9U9iZWU0WkEXYWO7ooh/xJhzbe8F4dFWnVJpXNxco+x9EgyksOhgtOYg==', '', 'default-ktp.png', 'default-kk.png', '2022-01-05', '2022-01-05'),
 (87, 'kasji', '7851256381253712-kasji', 7851256381253712, NULL, '1987-08-17', 'Laki-laki', 'Dsn. Wotgaru, 03/05, Pucuk, Dawarblandong', NULL, NULL, '139.37127', 'A9KyDt9/g3qEyI6thCoFYwX/OvlNaVVbCT46ibruzgBoipJoYU5icCF4EPLz3B5sDwgKFw9l8GEMSnKurAu+Y6MEKVGrjXgEY0VfhaWRv2PDihdDRHWs+oFz5w==', '', 'default-ktp.png', 'default-kk.png', '2022-01-11', '2022-01-11'),
 (88, 'sapri', '7862781638135156-sapri', 7862781638135156, NULL, '1988-08-08', 'Laki-laki', 'Dsn. Wotgaru, 03/05, Pucuk, Dawarblandong', NULL, NULL, '239.124261', 'JPp1pRs9ZjS5t1TTWckp5F7lixAPhqOTvFzl20LiWF1ZARDwxRoFdZRRC6+RU612XNyVB0kIfw9ONiVX8o15Aho/e3wv1ucsUExtc7t4vKFmO56F3RMQ0uDGu8E=', '', 'default-ktp.png', 'default-kk.png', '2022-01-11', '2022-01-11'),
-(89, 'parman', '7612853817635712-parman', 7612853817635712, NULL, '1970-06-30', 'Laki-laki', 'Dsn. Wotgaru, 03/05, Pucuk, Dawarblandong', NULL, NULL, '193.128759', 'TD/Cf24fD3gdKugdT/MygkP7LzTkakKowejeMAOe2mjm55PsL8WFA/VxrHUPxLDoWND+R5/VpW2d+3SOMnjPFfy78n4brBmSO/dfoFrffKa/DMbWljglipGZWQ0=', '', 'default-ktp.png', 'default-kk.png', '2022-01-13', '2022-01-13');
+(89, 'parman', '7612853817635712-parman', 7612853817635712, NULL, '1970-06-30', 'Laki-laki', 'Dsn. Wotgaru, 03/05, Pucuk, Dawarblandong', NULL, NULL, '193.128759', 'TD/Cf24fD3gdKugdT/MygkP7LzTkakKowejeMAOe2mjm55PsL8WFA/VxrHUPxLDoWND+R5/VpW2d+3SOMnjPFfy78n4brBmSO/dfoFrffKa/DMbWljglipGZWQ0=', '', 'default-ktp.png', 'default-kk.png', '2022-01-13', '2022-01-13'),
+(91, 'Anya Geraldine', '3223432424241321-anya-geraldine', 3223432424241321, NULL, '1999-11-21', 'Perempuan', 'jakarta', NULL, NULL, '359.121411', 'CvGKqGP0rarxp2VfKgRROOV+IbB3QLNKAe4fOJG8V/qTE5l/9MoFnIILhFHXSW6kGTZbZ85baTPbnPXRDz8trOvvaR/8TyOAmwLJvyAZ0U/RytbuvZWpxgiILnw=', '', 'default-ktp.png', 'default-kk.png', '2022-01-15', '2022-01-15'),
+(92, 'faiq anugerah', '1276367812937897-faiq-anugerah', 1276367812937897, NULL, '1998-08-19', 'Laki-laki', 'dsn. kesek, desa labeng', NULL, NULL, '367.42869', 'RT56H+Ta4XFpJFwtYKSAxhqYiwOIpdA274Pc/mLVsBw5EahELBgR2oYEccMKti5y56Sq5Ggogs3Le5RUFMTkFd4GO5lzpnNt9aSKWDF8zNKLpAot7kLOidMxvA==', '', 'default-ktp.png', 'default-kk.png', '2022-01-15', '2022-01-15'),
+(93, 'fatimah', '7856237849186237-fatimah', 7856237849186237, NULL, '1997-08-19', 'Perempuan', 'Dsn. Wotgaru, 03/05, Pucuk, Dawarblandong', NULL, NULL, '269.136061', 'ncqt2iXhsI9GCnNM6Yw0S1y6pByR32OkXoLl8AwYupmkP8KPvT1RUOvTHsbRrkEwfkteMQnqnDRTBiYhVauYDI0T8Mu2N9ss10HuUjPCp+2rB0ezydE4t4YgZ+E=', '', 'default-ktp.png', 'default-kk.png', '2022-01-15', '2022-01-15'),
+(94, 'sarpiah', '1238681523123123-sarpiah', 1238681523123123, NULL, '1979-08-10', 'Perempuan', 'Dsn. Brayu wetan, 03/05, Brayublandong, Dawarblandong', NULL, NULL, '149.61823', 'CDoZvQ8QsJFSrM43fiUHRYYlH/2213dXOruDPvlJvY1iMZkQqLp4oArvGnE7XrkxEr6AWm4s0Mcd9mwaEac2bfSCTPNFOjhGBXVXazW+wKI0EVBeXQaIpU5j1A==', '', 'default-ktp.png', 'default-kk.png', '2022-01-15', '2022-01-15'),
+(95, 'farul amain', '76237840234-farul-amain', 76237840234, NULL, '1999-09-10', 'Laki-laki', 'Dsn. Wotgaru, 03/05, Pucuk, Dawarblandong', 89179263781, 'asa@gkl.com', '239.71273', 'BxKAvga2HIll3VsERmmYZflGbnIBolsozYNf2iFeiw2Hq+mI3Mm+zwBnJa35p9/+283jKfbBjUpQrrDhuFhJ0On5ka003MMXCSRYtj8b3BLLlXsv3jnVOUTb8A==', '', 'default-ktp.png', 'default-kk.png', '2022-01-15', '2022-01-15'),
+(96, 'sholeh', '1782685318293701-sholeh', 1782685318293701, NULL, '1987-07-10', 'Laki-laki', 'Dsn. Brayu wetan, 03/05, Brayublandong, Dawarblandong', NULL, NULL, '367.150463', '0diI+YYUEF/B2oryz+Q2UwaMg+3x0/GPjOFMVOKIzo5xo2XpEoR4uTLZ1iXvBIS9Pyez7/tmgPZQETfBkI5B/FkH4BixJkkOen02NkQQE8ocnhTA8I+S0ZhjiLE=', '', 'default-ktp.png', 'default-kk.png', '2022-01-15', '2022-01-15'),
+(97, 'kasiman', '1234567615243619-kasiman', 1234567615243619, NULL, '1987-10-28', 'Laki-laki', 'Dsn. Wotgaru, 03/05, Pucuk, Dawarblandong', NULL, NULL, '257.147431', 'u6b+Ia1LK7NID7SPoo5YUfOYGKA/2VvA7jVhZBVu8yJr6FTP8G7bj0p+dC6SLW/EWiPe31ZzXeuh62blGlKKo3XTSZL12GwjvQofLPCUCPo7wDnCBdNU8OmG6HA=', '', 'default-ktp.png', 'default-kk.png', '2022-01-15', '2022-01-15'),
+(98, 'sofian', '91872698712376548-sofian', 91872698712376548, NULL, '1988-07-19', 'Laki-laki', 'Dsn. Brayu wetan, 03/05, Brayublandong, Dawarblandong', 91871872633123, 'jkqhwej@askl.co', '269.102029', 'e+NDwTme2cX5H1AsFAJ5VdbusKlPVBciCUFmtTJje7iWjfEIzPUXCylJR8wWuDZrBJYE3TgYuTqD71wwXL54oXItgT3JJFaDoJWbCds0/wEneC1ctUm7qcyEpUg=', '', 'default-ktp.png', 'default-kk.png', '2022-01-15', '2022-01-15'),
+(99, 'nila', '0917827537812381-nila', 917827537812381, NULL, '1999-06-19', 'Perempuan', 'Dsn. Wotgaru, 03/05, Pucuk, Dawarblandong', NULL, NULL, '337.120983', '+J2xkMsnIvroUv4sO2yGXKCyrhruUN+v+gZm79esuSVVCIXmJVfBGllejWyndnm0j1eb+5d7xacDergRdmi5zJbpxUyI0nNZPyJ8gLWnQn+Kv/TXx2t7QyUt64yg', '', 'default-ktp.png', 'default-kk.png', '2022-01-15', '2022-01-15'),
+(100, 'fita', '1197256378162312-fita', 1197256378162312, NULL, '1998-04-25', 'Perempuan', 'Dsn. Wotgaru, 03/05, Pucuk, Dawarblandong', NULL, NULL, '137.131513', 'l99ZvGNnzQMTQzxBCrECK796j4zCCKFii+e+bKI+yvxjr6kgRcSqrKB+2W58ZtDYFvQ2LiTxitUuWgzg1S+82+9UB3XGYaTI9mBGEtvNpm4VPyQ3NttTrit7awY=', '', 'default-ktp.png', 'default-kk.png', '2022-01-15', '2022-01-15'),
+(101, 'jaseni', '0198263817231231-jaseni', 198263817231231, NULL, '1987-07-19', 'Perempuan', 'Dsn. Brayu wetan, 03/05, Brayublandong, Dawarblandong', NULL, NULL, '149.73147', 'ccVqSbi0eK7/B5jriCJYl3TCsC9mUmgPmUyYS+IZUHZYRDW/SFisR+H+XNkE+OqNdcsvPtzekC6EFbBSX8m/zPFSZEGajUi9sFBoctghT/i0fuH/fgeqJ3Z/qw==', '', 'default-ktp.png', 'default-kk.png', '2022-01-15', '2022-01-15'),
+(102, 'pernah', '3516718238900012-pernah', 3516718238900012, NULL, '1987-08-19', 'Perempuan', 'Dsn. Brayu wetan, 03/05, Brayublandong, Dawarblandong', NULL, NULL, '257.154433', 'ytPuH8ThjPUHvOUeb24GzeTTzE1M4qQsFfLT25SmlzGJhFiuqbPYoqW9GI9l+nsQ1Zzk6QTbCUCWkgFkrISO1vvULmCFyUrATd2wtBJ/RLq8CVwEYpk95qEftpI=', '', 'default-ktp.png', 'default-kk.png', '2022-01-15', '2022-01-15'),
+(103, 'hanafi', '5615243816826530-hanafi', 5615243816826530, NULL, '1998-10-28', 'Laki-laki', 'Madura', NULL, NULL, '317.148987', 'TAHz1jwC7cupOZKSWWekwVJpOeCtiUbw3m4O+zRT3pc43EIjHnL+vasbOW1EJ0AbSfg2KcKcSXZ1Nb+Yp9gwW59LIA3KTRzNWxXXniF1HARgwWPDtnfsIqW/p64=', '', 'default-ktp.png', 'default-kk.png', '2022-01-16', '2022-01-16'),
+(104, 'rozy', '9786378411826378-rozy', 9786378411826378, NULL, '1997-11-29', 'Laki-laki', 'pucuk indah', NULL, NULL, '151.62449', 'XFlougBF4XMiIhW0tlTeIFUQ8TlM4+FEVa9OIRJi7yYdWQTZNPFExZVPITQ8JJG5Chce23ABWsyk0Fb7boXTBO+eX4lPlEoB7MzHVwywvHtPDBLmgTUS7cB0XQ==', '', 'default-ktp.png', 'default-kk.png', '2022-01-16', '2022-01-16'),
+(105, 'pipin', '7528381628318231-pipin', 7528381628318231, NULL, '1994-08-12', 'Perempuan', 'Dsn. Wotgaru, 03/05, Pucuk, Dawarblandong', NULL, NULL, '239.37627', 'qZktlZXz0o5q4tDEy4ku4vpBmV7balJJ5VmXblBfjfu2l1+9Lp4+qqTk9/v2QimvmM/aGkgDkKBGxUyKXYCAFgrdkN9RwGEx6h/hWf/uzgjVTQvjqoWwOD8Rjg==', '', 'default-ktp.png', 'default-kk.png', '2022-01-16', '2022-01-16'),
+(106, 'tarman', '7281736185230175-tarman', 7281736185230175, NULL, '1997-12-12', 'Laki-laki', 'Dsn. Wotgaru, 03/05, Pucuk, Dawarblandong', NULL, NULL, '223.96571', 'ChOmPAI4zb/a7vE7rIi7aA3iVWyFOGmnyClnPSWEAbTKDk2ddGqseoq5phRDl8ZynFlFV/cNQUzZPsQ6CX1GZC8E44TbxVhJMcW/z8YehIIXd7211KY0Lcgoyg==', '', 'default-ktp.png', 'default-kk.png', '2022-01-16', '2022-01-16'),
+(107, 'sarip', '7125636817263416-sarip', 7125636817263416, NULL, '2000-08-17', 'Laki-laki', 'Dsn. Wotgaru, 03/05, Pucuk, Dawarblandong', NULL, NULL, '271.84109', 'BDSVzkYpOPUpNWyL/jt1DzwXz0/kaGRnv2PGeHf/yZu98VT74TzdKXU2ZrX1KxYVST5SngQpU8Dhl+D4HGTMtsoZjao6i6U1cnu3F1nAtXXe1IMNDV2f1PAueg==', '', 'default-ktp.png', 'default-kk.png', '2022-01-16', '2022-01-16'),
+(108, 'tasiman', '1213787612312312-tasiman', 1213787612312312, NULL, '1999-08-12', 'Laki-laki', 'Dsn. Brayu wetan, 03/05, Brayublandong, Dawarblandong', NULL, NULL, '227.131513', 'JOAimyTrEN6v0VxuEshAknniSvyxqXC5deTmWFaYiyWYD+d3GjPTtUbb4eOg89h8kXxba+gMKRO7GKMS8BfyGk2QEsz8c9OhmhX8FcAZbaJOghC1sISVJ6XLoxM=', '', 'default-ktp.png', 'default-kk.png', '2022-01-16', '2022-01-16');
 
 -- --------------------------------------------------------
 
@@ -460,16 +485,16 @@ CREATE TABLE `surat_kesehatan` (
 --
 
 INSERT INTO `surat_kesehatan` (`id_sks`, `nomor_surat`, `nik_pasien`, `nip_kapus`, `slug`, `pekerjaan`, `tinggi_badan`, `berat_badan`, `suhu_tubuh`, `tensi_darah`, `nadi`, `respirasi`, `mata_buta`, `tubuh_tato`, `tubuh_tindik`, `kepentingan`, `hasil_periksa`, `qr_code`, `tanggal_dibuat`, `tanggal_diubah`, `tanggal_exp`) VALUES
-(1, '1-2022', 3516170308990002, 198203102009011011, NULL, '1', 179, 65, '34', '110/70', 70, 20, 'TIDAK', 'TIDAK', 'TIDAK', 'Melamar pekerjaan', 'SEHAT', '2b5977a32382f4a02ad3117509052011.png', '2022-01-13', '2022-01-13', '2022-01-15'),
-(2, '2-2022', 1234123412341234, 198203102009011011, NULL, '1', 160, 53, '34', '110/70', 70, 20, 'TIDAK', 'TIDAK', 'TIDAK', 'Melamar pekerjaan', 'SEHAT', '0b52aa480ee6191aa0d75836eaa8ef04.png', '2022-01-13', '2022-01-13', '2022-01-15'),
-(3, '3-2022', 2344561234561234, 198203102009011011, NULL, '1', 179, 68, '34', '110/70', 70, 20, 'TIDAK', 'TIDAK', 'TIDAK', 'Melamar pekerjaan', 'SEHAT', '88e7c81aefae75e8e950a7c127504c86.png', '2022-01-13', '2022-01-13', '2022-01-15'),
-(4, '4-2022', 7653289429835482, 198203102009011011, NULL, '1', 179, 68, '34', '110/70', 70, 20, 'TIDAK', 'TIDAK', 'TIDAK', 'Melamar pekerjaan', 'SEHAT', '7c6f426b077aa0fe3df9d15dc6e03c5c.png', '2022-01-13', '2022-01-13', '2022-01-15'),
-(5, '5-2022', 3516170908990002, 198203102009011011, NULL, '1', 179, 68, '34', '110/70', 70, 20, 'TIDAK', 'TIDAK', 'TIDAK', 'Melamar pekerjaan', 'SEHAT', '152100ac2dcf3f46e2398afb9c3e2f2c.png', '2022-01-13', '2022-01-13', '2022-01-15'),
-(6, '6-2022', 761283012536123, 198203102009011011, NULL, '1', 170, 68, '34', '110/70', 70, 20, 'TIDAK', 'TIDAK', 'TIDAK', 'Melamar pekerjaan', 'SEHAT', '907f5b5f4cb38982077b2ecc0e640c0f.png', '2022-01-13', '2022-01-13', '2022-01-15'),
-(7, '7-2022', 7612853817635712, 198203102009011011, NULL, '1', 165, 68, '34', '110/70', 70, 20, 'TIDAK', 'TIDAK', 'TIDAK', 'Melamar pekerjaan', 'SEHAT', '3e9c8bb0f5fe2bfba9dde07f93c0d14f.png', '2022-01-13', '2022-01-13', '2022-01-15'),
-(8, '8-2022', 645367218613123, 198203102009011011, NULL, '1', 160, 53, '34', '110/70', 70, 20, 'TIDAK', 'TIDAK', 'TIDAK', 'Melamar pekerjaan', 'SEHAT', '9600a30932c96569f4fdf8b076874991.png', '2022-01-13', '2022-01-13', '2022-01-15'),
-(9, '9-2022', 7851256381253712, 198203102009011011, NULL, '1', 170, 68, '34', '110/70', 70, 20, 'TIDAK', 'TIDAK', 'TIDAK', 'Melamar pekerjaan', 'SEHAT', 'cc06f811bcaee10edfc458756323174e.png', '2022-01-13', '2022-01-13', '2022-01-15'),
-(10, '10-2022', 7862781638135156, 198203102009011011, NULL, '1', 158, 69, '34', '110/70', 70, 20, 'TIDAK', 'TIDAK', 'TIDAK', 'Melamar pekerjaan', 'SEHAT', '87fa09a596293e706e053a39893aa561.png', '2022-01-13', '2022-01-13', '2022-01-15');
+(1, '1-2022', 3516170980980981, 198203102009011011, NULL, 'Swasta', 160, 68, '36', '110/70', 70, 20, 'TIDAK', 'TIDAK', 'TIDAK', 'Melamar pekerjaan', 'SEHAT', '6fa92630d2f74354344e816ba29b7f24.png', '2022-01-16', '2022-01-16', '2022-01-18'),
+(2, '2-2022', 1234123412341234, 198203102009011011, NULL, 'Swasta', 165, 68, '34', '110/70', 14, 78, 'TIDAK', 'TIDAK', 'TIDAK', 'Melamar pekerjaan', 'SEHAT', '0b52aa480ee6191aa0d75836eaa8ef04.png', '2022-01-16', '2022-01-16', '2022-01-18'),
+(3, '3-2022', 7862781638135156, 198203102009011011, NULL, 'Swasta', 170, 68, '35', '110/70', 70, 20, 'TIDAK', 'TIDAK', 'TIDAK', 'Melamar pekerjaan', 'SEHAT', '87fa09a596293e706e053a39893aa561.png', '2022-01-16', '2022-01-16', '2022-01-18'),
+(4, '4-2022', 872634756421334, 198203102009011011, NULL, 'Swasta', 160, 68, '36', '110/70', 14, 78, 'TIDAK', 'TIDAK', 'TIDAK', 'Melamar pekerjaan', 'SEHAT', '93ce60b54272775e45e76a87fd1e74cd.png', '2022-01-16', '2022-01-16', '2022-01-18'),
+(5, '5-2022', 91872698712376548, 198203102009011011, NULL, 'Swasta', 170, 68, '35', '110/70', 70, 20, 'TIDAK', 'TIDAK', 'TIDAK', 'Melamar pekerjaan', 'SEHAT', 'd8576bb6fae7e7a7e46fec61ccbdd2c3.png', '2022-01-16', '2022-01-16', '2022-01-18'),
+(6, '6-2022', 9786378411826378, 198203102009011011, NULL, 'Swasta', 170, 68, '34', '76', 14, 78, 'TIDAK', 'TIDAK', 'TIDAK', 'Melamar pekerjaan', 'SEHAT', 'e6023e66e964bca8c1fbc715c19ecd56.png', '2022-01-16', '2022-01-16', '2022-01-18'),
+(7, '7-2022', 7528381628318231, 198203102009011011, NULL, 'Wiraswasta', 170, 68, '36', '110/70', 70, 20, 'TIDAK', 'TIDAK', 'TIDAK', 'Melamar pekerjaan', 'SEHAT', '7570ef2eeff2efa3c2c58a03a443ea14.png', '2022-01-16', '2022-01-16', '2022-01-18'),
+(8, '8-2022', 7281736185230175, 198203102009011011, NULL, 'Swasta', 170, 68, '34', '76', 14, 78, 'TIDAK', 'TIDAK', 'TIDAK', 'Melamar pekerjaan', 'SEHAT', 'c3217680811d9f218197c5f661c6bfff.png', '2022-01-16', '2022-01-16', '2022-01-18'),
+(9, '9-2022', 7125636817263416, 198203102009011011, NULL, 'Swasta', 170, 53, '36', '110/70', 76, 20, 'TIDAK', 'TIDAK', 'TIDAK', 'masuk sekolah', 'SEHAT', '270ea5a42dc074e05832198be891120b.png', '2022-01-16', '2022-01-16', '2022-01-18'),
+(10, '10-2022', 1213787612312312, 198203102009011011, NULL, 'PNS', 170, 68, '34', '76', 70, 78, 'TIDAK', 'TIDAK', 'TIDAK', 'menikah', 'SEHAT', 'd3e7b291331443a93e9f5f1eb73626cd.png', '2022-01-16', '2022-01-16', '2022-01-18');
 
 -- --------------------------------------------------------
 
@@ -488,6 +513,8 @@ CREATE TABLE `surat_rsa` (
   `kunci_pasien` varchar(500) NOT NULL,
   `waktu_enkripsi` varchar(50) DEFAULT NULL,
   `waktu_dekripsi` varchar(50) DEFAULT NULL,
+  `waktu_enkripsi_rsaBiasa` varchar(50) DEFAULT NULL,
+  `waktu_dekripsi_rsaBiasa` varchar(50) DEFAULT NULL,
   `tanggal_dibuat` date DEFAULT NULL,
   `tanggal_diubah` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -496,17 +523,17 @@ CREATE TABLE `surat_rsa` (
 -- Dumping data for table `surat_rsa`
 --
 
-INSERT INTO `surat_rsa` (`id_surat_rsa`, `nomor_surat`, `nik_pasien`, `nip_kapus`, `teks_asli`, `teks_enkripsi`, `hash_enkrip`, `kunci_pasien`, `waktu_enkripsi`, `waktu_dekripsi`, `tanggal_dibuat`, `tanggal_diubah`) VALUES
-(1, '1-2022', 3516170308990002, 198203102009011011, '2b5977a32382f4a02ad3117509052011', '34892*1.32144*0.66002*85578.14037*95236.93309*95236.88459*89924.47284*0.21636*89924.8958*85530.46914*92266.26591*89924.38235.45022*92266.65335*95236.75008.23585*85530.70425*0', '02d633ccb3c9b5c5b2ece5965b722df6', 'gpeyIaJGiQ/lOxWxxhrQiV6U+gSzkd8PeJFaLnG+qBdTEkVdVimflaS44Sw15NFeQ+BnXlGubvL7qo1ukmwosB5jzeGPhYiFZn9IJjaJ9OvqqIHPBre4uQ==', '0.53302788734436', '0.085752010345459', '2022-01-13', '2022-01-13'),
-(2, '2-2022', 1234123412341234, 198203102009011011, '0b52aa480ee6191aa0d75836eaa8ef04', '159*5809.43761.5894*58073.51522*25819.38183*56695.46359*58073.36504*57991.18768*58073.5894*58073.38183*56695.0_12139*58073.16398*57991.41206*58073.0_28964*57991.18491*21623.25106.0_53475*0.58221*5809', '9d65c734968664a7d89f10ebc881cab6', 'tvWXbp3vbRK68syu9jiGlMvZoA5667EgDaWa5enD8fIvpw4MTSEnFWNE+FeaNxbFCz6gA9E96AoQZUf4vrt0TetIOEljH/VsCtZ6Rgf91nAcI+hV6PSzsg==', '0.10596394538879', '0.11005902290344', '2022-01-13', '2022-01-13'),
-(3, '3-2022', 2344561234561234, 198203102009011011, '88e7c81aefae75e8e950a7c127504c86', '44555*39697.48427*9752.66844*9752.66308*44184.23681*74635.48476*1.23681*74635.47881*74635.48427*9752.38399*27112.54029*44184.68815*39697.54482*9752.18362*1.47881*74635.30679*74635.36712*39697.12987*0', '75f4cc4a8c58af2df85b805cbb73464d', '83M8ZFSOdyQ2XSZwope30DtGNet5Kn2a1EFhaM/0daiuEn6SxJjqfJ12RV8afhiRnPZ4DfWwFegSTvmDWuJWi32SqYZ1JP6OFiC8Vzj3MrSEu6VrRA8wwQ==', '0.11244702339172', '0.08137583732605', '2022-01-13', '2022-01-13'),
-(4, '4-2022', 7653289429835482, 198203102009011011, '7c6f426b077aa0fe3df9d15dc6e03c5c', '29049*5277.73679*80618.78806*80618.0_10999*5277.24940*5277.55313*0.44315*80618.44753*82720.44322*5277.46683*69181.30949*0.43212*82720.80122*0.18937*48801.17258*1.0_86363*80378.20591*1.82044*1', 'e7f6193cea2040a2b25600b40a82faa5', 'f449D7iYMsuNEee9grwzPwJRo+DTUTdEgOSstOkfc7+BbDtKloTi+I4W1LpQp769dUjQGNQ1y81aJu0tTAyNWMaqU/mzxdZF61zXVzVgxbUR/+YEQZX6lA==', '0.1108250617981', '0.15523600578308', '2022-01-13', '2022-01-13'),
-(5, '5-2022', 3516170908990002, 198203102009011011, '152100ac2dcf3f46e2398afb9c3e2f2c', '72430*0.3718*0.69712*46586.77762*0.85588.0_49503*85107.0_50147*22956.15183*0.64678*1.0_48794*0.50942*46586.89152*46886.1263*1.89900*6491.57327.0_48794*0.15183*0.0_70395', '69c5915605bd110ce79c349be228e24a', '8WG96ceuzmHq7DMiA/U5DAkL3ETZh3URxEtZTRZSAkLKYYpYb5dl/suy+7J/lQO5lf1Gaeuuu6KvXzeea/1bLdVmNngn57xJQOXd3xwdbwCozN8r7k74oQ==', '0.10707306861877', '0.053927898406982', '2022-01-13', '2022-01-13'),
-(6, '6-2022', 761283012536123, 198203102009011011, '907f5b5f4cb38982077b2ecc0e640c0f', '9541*4356.70571*69234.14150*1.76556*4356.0_27190*1.61265.25566*69234.42496.4628*4356.58661*82853.65240*69234.16869*82853.10382*1.52727*4356.68912.13514*44180.50255*4356.75633*74020', '48432ee91b8951af81e245a3d0512bb8', 'r2DtWebBbcim9WIT/FIlE7206Gj2YPfPCpxejHUtshg5Bj8T0ZvLtR8P0+JxZYf7pubuid1WO+6LH92rnwkD3LI8fv3Rm7aki9lQRMAaiodCqa6tkJ1H2A==', '0.10799193382263', '0.12196707725525', '2022-01-13', '2022-01-13'),
-(7, '7-2022', 7612853817635712, 198203102009011011, '3e9c8bb0f5fe2bfba9dde07f93c0d14f', '70567*89340.120594*22027.125772*122708.68633*95597.4629*25174.94310*1.89449*22027.117816*1.5858*1.25868*22756.12322*25174.125195*1.0_120217*22027.67830*89340.102909*25174.117668*45189.2568*45189.28620*45189.29621*0', '695817089bd55e2f111a2df0e3b0b682', 'G4aKp9chRNmMWBhbN3sMO5VmTfZX9Nj8DdTv3SGgi1idlqVUYju/2Z0Rf0FVCIJOJG3nZEZY3d2Hqm+XwPkDvvUAipkM1pDff/JiQoGO7NPWCy7CAZCUHw==', '0.11052393913269', '0.14482307434082', '2022-01-13', '2022-01-13'),
-(8, '8-2022', 645367218613123, 198203102009011011, '9600a30932c96569f4fdf8b076874991', '2627*54778.57079*23361.79542*10279.72588*77259.10723*1.53027.79712*54778.3885*23361.82673*0.64906*54778.35482*1.0_54599*23361.18775*0.69054*26062.54027*54778.76416*24666.12002*77259', '6567bfd89c3124fcd0796984368450fa', 'vzNF4l7RimBNML/LAJOpvKOb79PRYN0tYo/5vvpqYtwqHbheau3S8fcNJRUF8/YwYY3v572F9s/tCH93vef4J4VfpELkgdIOuFf+df4fal4mRfDpL0ooWQ==', '0.10813021659851', '0.08837890625', '2022-01-13', '2022-01-13'),
-(9, '9-2022', 7851256381253712, 198203102009011011, 'cc06f811bcaee10edfc458756323174e', '1737*27290.16655*0.19168*0.11297*25490.4273*25490.982.0_35858*2672.30867*33416.22308*17600.4093*1.0_8089*13607.21597.15676*13607.36400.8448*1.18704*10628.36555*2672.9412*18459', '7c2c800235d4311ea181609401cadc06', 'hPeCT8EKEMpRK9pK/YuwDBpJhGz7YN2yGY6s1P1+O6VguuRnDrBQ9xZyK13dsH/hvETgr6Z33U8pXDjmOUUKatxnQ/IPWv7WoYHuZD8qxTZogvEKkLYV7A==', '0.10938811302185', '0.065128087997437', '2022-01-13', '2022-01-13'),
-(10, '10-2022', 7862781638135156, 198203102009011011, '87fa09a596293e706e053a39893aa561', '38249*34948.84777*1.100734*40345.58145*40345.35097*9126.96835*73485.116435*49329.0_47983*0.18450*0.26889.13288*1.91627*40345.47811*73485.86588*86798.11251*86798.51414*40345.88946*0', '45e847932f70f9a37d02e9c684e70681', 'IEEvImkXAZpTQXyGdh7SYsuU6vdqC3wBAbd4sCSQt5plAxFvX/qEKEsCCW+GG2jymadZlC6ALVYwvz0nD9PQVWnxKTMVNtIbRUzUw2uz/tq9W6cWszbeGA==', '0.10946416854858', '0.1077139377594', '2022-01-13', '2022-01-13');
+INSERT INTO `surat_rsa` (`id_surat_rsa`, `nomor_surat`, `nik_pasien`, `nip_kapus`, `teks_asli`, `teks_enkripsi`, `hash_enkrip`, `kunci_pasien`, `waktu_enkripsi`, `waktu_dekripsi`, `waktu_enkripsi_rsaBiasa`, `waktu_dekripsi_rsaBiasa`, `tanggal_dibuat`, `tanggal_diubah`) VALUES
+(1, '1-2022', 3516170980980981, 198203102009011011, '6fa92630d2f74354344e816ba29b7f24', '16924.23621.66166.21886.51856.9212.18419.25510.47189.61409.38538.6169.82217.56625.15931.21263.17913.82006', 'c74d1967d6711714f2248566dfc63f52', 'UzXJWicL1xSUPJDz9xfwCVavzHCs1OlPIKQrW4Lc/hoCM52n9fDs8SKb3VbJOG2RlEO7ES6EENnivOSudYJ8nn0R6DeqCP2AV2at6kzPYux++Lc99PgeZQ==', '0.051201105117798', '0.10375809669495', '0.02581000328064', '0.000050783157348633', '2022-01-16', '2022-01-16'),
+(2, '2-2022', 1234123412341234, 198203102009011011, '0b52aa480ee6191aa0d75836eaa8ef04', '71406.8574.41318.49922.65334.20268.59059.77428.41318.65334.0_83978.85769.84088.0_82709.35453.3021.0_57230.59236', '59bcd3de267f4a0ff3af873d2af0b69a', 'Ii1S7Y0qxtjuR6DqEFvuY9OJhvjvy/NDR7N11AQhLhnWX5lMk0U/G3dzbKrZoFpeViuLq6ysHXQVl7c5/aerBEKefG58PcGlKO/P3/Xhu8lRb7QJRWTelQ==', '0.047285079956055', '0.051322937011719', '0.023836135864258', '0.000049829483032227', '2022-01-16', '2022-01-16'),
+(3, '3-2022', 7862781638135156, 198203102009011011, '87fa09a596293e706e053a39893aa561', '38309.29091.58982.35112.22366.27353.53205.0_23140.24840.6519.51821.71592.26963.61578.59278.72392.22200', 'bec07c0a2027abd4aa1d04858401d6c9', '+PBpZufGykWsKBqFRb7zOF8X+Bl9f0jR9Wp5JZDjnV1pgm0i5tAKgzgbeIkNlPiBzWZUyMJZBXbY3bjRMRdISe8OIO1akTmcp3LDuN4J2vd7mMxEmVmvwA==', '0.050570011138916', '0.0592360496521', '0.027085065841675', '0.000046968460083008', '2022-01-16', '2022-01-16'),
+(4, '4-2022', 872634756421334, 198203102009011011, '93ce60b54272775e45e76a87fd1e74cd', '85326.69864.79005.10681.47189.0_83978.0_83978.43634.0_44409.67601.38056.43474.80109.0_26024.0_17439.0_23140.49902.73574', 'c4481aeac3d923a311d4d8757d87a3b6', '037y98oWA+U/3BCx4+gfhHkzAHgvlpnZbRnc03akNYmjt3aq8eIxWqVBT4v8gwWqMvQdV8OVXKieslT8ZTqr9LG+p1Bftr3o/b8iges8wDa2tm551/azdw==', '0.045728921890259', '0.019893884658813', '0.022885084152222', '0.000050067901611328', '2022-01-16', '2022-01-16'),
+(5, '5-2022', 91872698712376548, 198203102009011011, 'd8576bb6fae7e7a7e46fec61ccbdd2c3', '85819.42794.37965.10681.52965.7231.38324.0_23140.67852.45029.35871.0_26024.76301.5034.57453.51856.85819.0_42449.1', 'd166950573d096180ff2d8db11f1ff52', 'sW3BLE7IDTwW/MpXvkSWjLYpl8BzjleXCX2e0CpLzcHu768p66hYzxbXwDUpzKl03Gdhl9KYONaKOOUchcBbT6Dt0IUQamK0z/PHziHXFeppkPLSW6mb3Q==', '0.051568031311035', '0.039151191711426', '0.026071071624756', '0.000069856643676758', '2022-01-16', '2022-01-16'),
+(6, '6-2022', 9786378411826378, 198203102009011011, 'e6023e66e964bca8c1fbc715c19ecd56', '45029.77835.0_1496.0_73325.16924.26963.4414.3525.35007.83369.0_6311.2091.67990.8426.1905.81147.0_76776.31160', 'ca36e9b96f3587c1ead842bf633c3f72', 'VKa+tGHBEOzSiGdYSoVQk5A5PV6KsTjrO+oWgcOl7DmX4v1PLk/7hkWqRhgPxo3dYejSp0wMi5xznyaIynM1IGQsN6SYSuoKbsuBpOant+RZiQZ6JKCE8g==', '0.050355911254883', '0.010128021240234', '0.02477502822876', '0.000047922134399414', '2022-01-16', '2022-01-16'),
+(7, '7-2022', 7528381628318231, 198203102009011011, '7570ef2eeff2efa3c2c58a03a443ea14', '20633.88979.3021.0_63898.3021.0_80917.60449.9212.56612.26794.51167.30305.47893.49182.16613.69129.76372.14859.82006', '82df9fe4a426cf429d84417cabc46c0d', 'Xt/EIKQaEtynOvmyBMnB8vkfYjJMwkSqidMpR9zjD/3zPw8FdEt5M+xY3vMwoqRNw6Tvf/y5AccQgleZnGO2BoX5EmheuG31KfapAR49wYPrboUvhsrjAA==', '0.051244020462036', '0.044874906539917', '0.025913953781128', '0.000053167343139648', '2022-01-16', '2022-01-16'),
+(8, '8-2022', 7281736185230175, 198203102009011011, 'c3217680811d9f218197c5f661c6bfff', '75001.71070.27413.81998.6169.2546.0_7201.0_63898.4888.76801.33129.67601.8322.5034.11148.58457.3953.0_82006', 'b633e4d396faeee0eb9c5ffea6a45a1a', 'HlyvkuOUEpU1d8wttFpXXpxMHGSIi3x0BJPYfsO7iz6xxExqKr/ZChLZBnMbETI1wh/O4hkMqafFsZfvJPsZmAyiDIDYOx1/kckCLF5JEPEXHNuKJt0DwQ==', '0.054057121276855', '0.068077087402344', '0.025051116943359', '0.000051021575927734', '2022-01-16', '2022-01-16'),
+(9, '9-2022', 7125636817263416, 198203102009011011, '270ea5a42dc074e05832198be891120b', '21642.65334.71592.37305.32102.0_661.85663.84154.6763.85769.50126.6456.19778.0_49891.77428.32701.71406', '5e94c91636f33087667dcc1f71e48070', '6Ekd7cVsd3ZFDxXlWvURsY3jNXoaWrb80+4OWafyCORsy6hmEYlp5SyPfk/PtbbTcx59mQO+uvVio+I/vnesxU7ME896WXafrpl8z8+OMO+WqzIUjwlY6w==', '0.059136867523193', '0.036942958831787', '0.023857116699219', '0.000046968460083008', '2022-01-16', '2022-01-16'),
+(10, '10-2022', 1213787612312312, 198203102009011011, 'd3e7b291331443a93e9f5f1eb73626cd', '85819.20268.31286.3336.63932.36006.11344.66346.85326.45029.71102.67601.81715.0_4590.2958.22827.61691.73574', '092cbbb277156112bc23fe2b01aa124f', 'F2qi07qV63ZvLzzciaeHRaLSYGIXap5J9rZgsWr0APR4Su/tJH4Zab0gcnYWRU08149gDFOGnE4kOP4W4wtmX6vjnA+1Lmf0CygcABMka61HZcN95ibrrA==', '0.050785064697266', '0.10556602478027', '0.025568962097168', '0.000051021575927734', '2022-01-16', '2022-01-16');
 
 -- --------------------------------------------------------
 
@@ -568,7 +595,8 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `email`, `username`, `fullname`, `user_profile`, `password_hash`, `reset_hash`, `reset_at`, `reset_expires`, `activate_hash`, `status`, `status_message`, `active`, `force_pass_reset`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (4, 'zainulmustofa943@gmail.com', 'mustofa', 'mustofa', 'default-profil.png', '$2y$10$nSN3AEvgPKIYL5g4iV1LKuY.sheeda5Wx5WnlpfWMSzAcOrLtxhGO', '23dade8439d21ce5bdc5485d72d7640e', NULL, '2021-12-23 05:28:08', NULL, NULL, NULL, 1, 0, '2021-11-30 22:43:16', '2021-12-23 04:28:08', NULL),
 (5, 'zainulmuhamad84@gmail.com', 'zainul', 'Muhamad zainul', 'default-profil.png', '$2y$10$tTyoMiawbVO.ul30maHfmuoQnHKe/hbPDCBxOtPUlT8Ski7g/fxGG', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2021-12-17 02:07:52', '2021-12-17 02:07:52', NULL),
-(8, 'karina87@gmail.com', 'karina', 'karina', 'default-profil.png', '$2y$10$l./ZKoE/Q5bqVGT5x6dw1.SczwFKvFbEctNU0/Ps2L0.0AHV5udse', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2021-12-30 09:51:23', '2021-12-30 09:51:23', NULL);
+(8, 'karina87@gmail.com', 'karina', 'karina', 'default-profil.png', '$2y$10$l./ZKoE/Q5bqVGT5x6dw1.SczwFKvFbEctNU0/Ps2L0.0AHV5udse', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2021-12-30 09:51:23', '2021-12-30 09:51:23', NULL),
+(9, 'skspuskesmas@gmial.com', 'admin', 'AdminisTrator', 'default-profil.png', '$2y$10$8IMjoZjNrbCzz8xLSd5ptuQNCEHZKRY71VFJ/BjQOhHjoaWYPiQZ2', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, '2022-01-15 05:57:00', '2022-01-15 05:57:00', NULL);
 
 -- --------------------------------------------------------
 
@@ -745,7 +773,7 @@ ALTER TABLE `auth_groups`
 -- AUTO_INCREMENT for table `auth_logins`
 --
 ALTER TABLE `auth_logins`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
 
 --
 -- AUTO_INCREMENT for table `auth_permissions`
@@ -769,7 +797,7 @@ ALTER TABLE `auth_tokens`
 -- AUTO_INCREMENT for table `kapus`
 --
 ALTER TABLE `kapus`
-  MODIFY `id_kapus` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `id_kapus` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT for table `migrations`
@@ -781,7 +809,7 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT for table `pasien`
 --
 ALTER TABLE `pasien`
-  MODIFY `id_pasien` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
+  MODIFY `id_pasien` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=109;
 
 --
 -- AUTO_INCREMENT for table `satgas`
@@ -817,7 +845,7 @@ ALTER TABLE `surat_rsaizin`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `user_level`
