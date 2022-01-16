@@ -60,7 +60,6 @@ class Validasi extends BaseController
     {
         // dd($data_scan);
         // dd($this->request->getVar('nik_pasien'));
-        $start_time = microtime(true);
 
         $this->suratBuilder = $this->db->table('surat_rsa');
         $this->suratBuilder->select('id_surat_rsa, nomor_surat, nik_pasien, nip_kapus, teks_asli, teks_enkripsi, hash_enkrip, tanggal_dibuat, kunci_pasien');
@@ -103,7 +102,16 @@ class Validasi extends BaseController
                 // $teks_asli = ;
                 // $teks_enkrip = ;
 
+                $start_time = microtime(true);
                 $has_dek = dekrip_text($data_scan['teks_asli'], $data_scan['teks_enkripsi'], $kp_pb, $ps_pr);
+                $end_time = microtime(true);
+                $dekrip_time = $end_time - $start_time;
+
+                $start_time_biasa = microtime(true);
+                $has_dek = Dekripsi_biasa($data_scan['teks_asli'], $data_scan['teks_enkripsi'], $kp_pb);
+                $end_time_biasa = microtime(true);
+                $dekrip_time_biasa = $end_time_biasa - $start_time_biasa;
+
                 // dd($has_dek);
 
                 // echo $has_dek;
@@ -131,11 +139,10 @@ class Validasi extends BaseController
             $has_dek    = "Surat Palsu Data Verifikasi Tidak Sama";
             $data_cetak = "";
         }
-        $end_time = microtime(true);
-        $dekrip_time = $end_time - $start_time;
 
         $upd = [
-            'waktu_dekripsi' => $dekrip_time
+            'waktu_dekripsi'          => $dekrip_time,
+            'waktu_dekripsi_rsaBiasa' => $dekrip_time_biasa
         ];
         $this->suratBuilder->where('id_surat_rsa', $data_scan['id_surat_rsa']);
         $this->suratBuilder->update($upd);
