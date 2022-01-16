@@ -108,7 +108,7 @@ class Validasi extends BaseController
                 $dekrip_time = $end_time - $start_time;
 
                 $start_time_biasa = microtime(true);
-                $has_dek = Dekripsi_biasa($data_scan['teks_asli'], $data_scan['teks_enkripsi'], $kp_pb);
+                Dekripsi_biasa($data_scan['teks_asli'], $data_scan['teks_enkripsi'], $kp_pb);
                 $end_time_biasa = microtime(true);
                 $dekrip_time_biasa = $end_time_biasa - $start_time_biasa;
 
