@@ -203,31 +203,31 @@ class Validasi extends BaseController
         // $pr = $this->dekripsi->decrypt(base64_decode('8WG96ceuzmHq7DMiA/U5DAkL3ETZh3URxEtZTRZSAkLKYYpYb5dl/suy+7J/lQO5lf1Gaeuuu6KvXzeea/1bLdVmNngn57xJQOXd3xwdbwCozN8r7k74oQ=='));
         // dd($pr);
 
-        // $pasien = $this->db->table('pasien');
-        // $ps = $pasien->select('id_pasien, nama_pasien, nik_pasien, publik_key, private_key')->get();
-        // $pss = $ps->getResultArray();
+        $pasien = $this->db->table('pasien');
+        $ps = $pasien->select('id_pasien, nama_pasien, nik_pasien, publik_key, private_key')->get();
+        $pss = $ps->getResultArray();
 
         // $kapus = $this->db->table('kapus');
         // $kp = $kapus->select('id_kapus, nama_kapus, nip_kapus, publik_key, private_key')->get();
         // $kpp = $kp->getResultArray();
 
-        $surat = $this->db->table('surat_rsa');
-        $surat->select('pasien.nama_pasien as nama_pasien, pasien.nik_pasien as nik_pasien, waktu_enkripsi, waktu_dekripsi, waktu_enkripsi_rsaBiasa, waktu_dekripsi_rsaBiasa');
-        $surat->join('surat_kesehatan', 'surat_kesehatan.nomor_surat = surat_rsa.nomor_surat');
-        $surat->join('pasien', 'pasien.nik_pasien = surat_rsa.nik_pasien');
-        $surat->join('kapus', 'kapus.nip_kapus = surat_rsa.nip_kapus');
-        $srr = $surat->get();
-        $srrt = $srr->getResultArray();
+        // $surat = $this->db->table('surat_rsa');
+        // $surat->select('pasien.nama_pasien as nama_pasien, pasien.nik_pasien as nik_pasien, waktu_enkripsi, waktu_dekripsi, waktu_enkripsi_rsaBiasa, waktu_dekripsi_rsaBiasa');
+        // $surat->join('surat_kesehatan', 'surat_kesehatan.nomor_surat = surat_rsa.nomor_surat');
+        // $surat->join('pasien', 'pasien.nik_pasien = surat_rsa.nik_pasien');
+        // $surat->join('kapus', 'kapus.nip_kapus = surat_rsa.nip_kapus');
+        // $srr = $surat->get();
+        // $srrt = $srr->getResultArray();
 
         // dd(count($pss));
-        // for ($i = 0; $i < count($pss); $i++) {
-        //     echo "<br>Nama Pasien : " . $pss[$i]['nama_pasien'];
-        //     echo "<br>Nik Pasien : " . $pss[$i]['nik_pasien'];
-        //     echo "<br>Publik Key : " . $pss[$i]['publik_key'];
-        //     echo "<br>Private Key : " . $this->dekripsi->decrypt(base64_decode($pss[$i]['private_key']));
-        //     echo "<br>";
-        //     # code...
-        // }
+        for ($i = 0; $i < count($pss); $i++) {
+            echo "<br>Nama Pasien : " . $pss[$i]['nama_pasien'];
+            echo "<br>Nik Pasien : " . $pss[$i]['nik_pasien'];
+            echo "<br>Publik Key : " . $pss[$i]['publik_key'];
+            echo "<br>Private Key : " . $this->dekripsi->decrypt(base64_decode($pss[$i]['private_key']));
+            echo "<br>";
+            # code...
+        }
         // for ($i = 0; $i < count($kpp); $i++) {
         //     echo "<br>Nama Kapus : " . $kpp[$i]['nama_kapus'];
         //     echo "<br>Nip Kapus : " . $kpp[$i]['nip_kapus'];
@@ -236,17 +236,17 @@ class Validasi extends BaseController
         //     echo "<br>";
         //     # code...
         // }
-        for ($i = 0; $i < count($srrt); $i++) {
-            echo "<br>Nama Pasien : " . $srrt[$i]['nama_pasien'];
-            echo "<br>NIK Pasien : " . $srrt[$i]['nik_pasien'];
-            echo "<br>Waktu Enkripsi : " . $srrt[$i]['waktu_enkripsi'];
-            echo "<br>Waktu Enkripsi Rsa Biasa : " . $srrt[$i]['waktu_enkripsi_rsaBiasa'];
-            echo "<br>Waktu Dekripsi : " . $srrt[$i]['waktu_dekripsi'];
-            echo "<br>Waktu Dekripsi Rsa Biasa : " . $srrt[$i]['waktu_dekripsi_rsaBiasa'];
-            // echo "<br>Private Key kapus : " . $this->dekripsi->decrypt(base64_decode($srrt[$i]['private_key']));
-            echo "<br>";
-            # code...
-        }
+        // for ($i = 0; $i < count($srrt); $i++) {
+        //     echo "<br>Nama Pasien : " . $srrt[$i]['nama_pasien'];
+        //     echo "<br>NIK Pasien : " . $srrt[$i]['nik_pasien'];
+        //     echo "<br>Waktu Enkripsi : " . $srrt[$i]['waktu_enkripsi'];
+        //     echo "<br>Waktu Enkripsi Rsa Biasa : " . $srrt[$i]['waktu_enkripsi_rsaBiasa'];
+        //     echo "<br>Waktu Dekripsi : " . $srrt[$i]['waktu_dekripsi'];
+        //     echo "<br>Waktu Dekripsi Rsa Biasa : " . $srrt[$i]['waktu_dekripsi_rsaBiasa'];
+        //     // echo "<br>Private Key kapus : " . $this->dekripsi->decrypt(base64_decode($srrt[$i]['private_key']));
+        //     echo "<br>";
+        //     # code...
+        // }
 
 
         // dd(getToken(8));
