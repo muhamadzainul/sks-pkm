@@ -404,7 +404,7 @@ function Enkripsi_biasa($hash_text, $get_k)
     }
     // echo "<br>".strlen($ascii);
     echo "<br>" . $ascii;
-    $rq = strlen($ascii) - 4;
+    // $rq = strlen($ascii) - 4;
     $v_k = 0; // inisisalisasi angka 0 yang ada di depan pada nilai ascii yang telah dibagi menjadi blok-blok
 
     for ($j = 0; $j < strlen($ascii); $j++) {
@@ -529,6 +529,8 @@ function Dekripsi_biasa($hash_text, $enkripsi_t, $get_k)
         }
         # code...
     }
+
+    echo "<br>";
 
     if ($hh == $hash_text) {
         $hasil_akhir = "Data Surat Keterangan Sehat Valid atau Asli";

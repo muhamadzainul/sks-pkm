@@ -73,88 +73,99 @@ class Validasi extends BaseController
         // dd($data_scan['kunci_pasien']);
         // echo $data_scan['kunci_pasien'];
         // $txt = '1nfR2svN+qUhVZofmDxbl1VGgTXz94PsGxg4L0Qx77VkYiLyOSlHyU+rO1bib+NagPvdHTCi3u64ZhK+aWvegyZBf/ev9BDsY5v6FJL87sQ=';
-        $srt_deck   = $this->dekripsi->decrypt(base64_decode($data_scan['kunci_pasien']));
-        // $srt_deck   = $this->dekripsi->decrypt(base64_decode($txt));
-        // dd($srt_deck == $pass);
-        // 
-        if ($data_scan['nik_pasien'] == $this->request->getVar('nik_pasien') && $data_scan['tanggal_dibuat'] == $this->request->getVar('tgl_dibuatsurat')) {
-            if ($srt_deck == $pass) {
-                // dd($data_scan['nik_pasien']);
+        // dd(empty($srt_deck));
+        if (!empty($data_scan)) {
+            // $srt_deck   = $this->dekripsi->decrypt(base64_decode($txt));
+            // dd($srt_deck == $pass);
+            // 
+            $srt_deck   = $this->dekripsi->decrypt(base64_decode($data_scan['kunci_pasien']));
+            if ($data_scan['nik_pasien'] == $this->request->getVar('nik_pasien') && $data_scan['tanggal_dibuat'] == $this->request->getVar('tgl_dibuatsurat')) {
+                if ($srt_deck == $pass) {
+                    // dd($data_scan['nik_pasien']);
+                    // private key pasien
+                    $this->pasienBuilder = $this->db->table('pasien');
+                    $this->pasienBuilder->select('private_key');
+                    $pr = $this->pasienBuilder->where('nik_pasien', $this->request->getVar('nik_pasien'))->get();
+                    $pasien_key = $pr->getRow();
+                    $priv_pas = $pasien_key->private_key;
+                    $ps_pr    = $this->dekripsi->decrypt(base64_decode($priv_pas));
+
+                    // $in_priv = $this->request->getVar('privete_key');
+                    // dd($in_priv);
+                    $this->kapusBuilder = $this->db->table('kapus');
+                    $this->kapusBuilder->select('publik_key');
+                    $pr = $this->kapusBuilder->where('nip_kapus', $this->request->getVar('nip_kapus'))->get();
+                    $kapus_key = $pr->getRow();
+                    $kp_pb = $kapus_key->publik_key;
+                    // echo "<br>Publik Key Kapus = " . $kp_pb;
+
+                    // echo "<br>Teks MD5 Asli = " . $data_scan['teks_asli'];
+                    // echo "<br>Teks Enkripsi = " . $data_scan['teks_enkripsi'];
+                    // $teks_asli = ;
+                    // $teks_enkrip = ;
+
+                    $start_time = microtime(true);
+                    $has_dek = dekrip_text($data_scan['teks_asli'], $data_scan['teks_enkripsi'], $kp_pb, $ps_pr);
+                    $end_time = microtime(true);
+                    $dekrip_time = $end_time - $start_time;
+
+                    $start_time_biasa = microtime(true);
+                    $has_dek = Dekripsi_biasa($data_scan['teks_asli'], $data_scan['teks_enkripsi'], $kp_pb);
+                    $end_time_biasa = microtime(true);
+                    $dekrip_time_biasa = $end_time_biasa - $start_time_biasa;
+
+                    // dd($has_dek);
+
+                    // echo $has_dek;
+                    $this->skBuilder = $this->db->table('surat_rsa');
+                    $this->skBuilder->select('id_sks, surat_rsa.nomor_surat as nmr_surat, surat_rsa.nik_pasien as nik_p, nama_pasien, nama_kapus, kapus.nip_kapus as nip_kp, jenis_kelamin, tgl_lahir, alamat,
+            pekerjaan, kepentingan, tinggi_badan, berat_badan, tensi_darah, suhu_tubuh, nadi, respirasi, mata_buta, tubuh_tato, tubuh_tindik,
+            hasil_periksa, surat_kesehatan.qr_code as surat_qr, pasien.qr_code as qr_key, nama_kapus, kapus.nip_kapus as nip_kp, nama_kapus, pasien.tgl_lahir as tgl_lahir, surat_kesehatan.tanggal_dibuat as tgl_dibuat, 
+            TIMESTAMPDIFF(MONTH , pasien.tgl_lahir, NOW() ) AS umur');
+                    $this->skBuilder->join('surat_kesehatan', 'surat_kesehatan.nomor_surat = surat_rsa.nomor_surat');
+                    $this->skBuilder->join('pasien', 'pasien.nik_pasien = surat_rsa.nik_pasien');
+                    $this->skBuilder->join('kapus', 'kapus.nip_kapus = surat_rsa.nip_kapus');
+                    $this->skBuilder->where('surat_rsa.nik_pasien', $data_scan['nik_pasien']);
+                    $query = $this->skBuilder->get();
+                    $data_cetak = $query->getRowArray();
+                    # code...
+                } else {
+                    $has_dek = "Token Tidak Sesuai";
+                    $data_cetak = "";
+                }
+                // echo "private Key Pasien = " . $ps_pr;
+
                 // private key pasien
-                $this->pasienBuilder = $this->db->table('pasien');
-                $this->pasienBuilder->select('private_key');
-                $pr = $this->pasienBuilder->where('nik_pasien', $this->request->getVar('nik_pasien'))->get();
-                $pasien_key = $pr->getRow();
-                $priv_pas = $pasien_key->private_key;
-                $ps_pr    = $this->dekripsi->decrypt(base64_decode($priv_pas));
-
-                // $in_priv = $this->request->getVar('privete_key');
-                // dd($in_priv);
-                $this->kapusBuilder = $this->db->table('kapus');
-                $this->kapusBuilder->select('publik_key');
-                $pr = $this->kapusBuilder->where('nip_kapus', $this->request->getVar('nip_kapus'))->get();
-                $kapus_key = $pr->getRow();
-                $kp_pb = $kapus_key->publik_key;
-                // echo "<br>Publik Key Kapus = " . $kp_pb;
-
-                // echo "<br>Teks MD5 Asli = " . $data_scan['teks_asli'];
-                // echo "<br>Teks Enkripsi = " . $data_scan['teks_enkripsi'];
-                // $teks_asli = ;
-                // $teks_enkrip = ;
-
-                $start_time = microtime(true);
-                $has_dek = dekrip_text($data_scan['teks_asli'], $data_scan['teks_enkripsi'], $kp_pb, $ps_pr);
-                $end_time = microtime(true);
-                $dekrip_time = $end_time - $start_time;
-
-                $start_time_biasa = microtime(true);
-                $has_dek = Dekripsi_biasa($data_scan['teks_asli'], $data_scan['teks_enkripsi'], $kp_pb);
-                $end_time_biasa = microtime(true);
-                $dekrip_time_biasa = $end_time_biasa - $start_time_biasa;
-
-                // dd($has_dek);
-
-                // echo $has_dek;
-                $this->skBuilder = $this->db->table('surat_rsa');
-                $this->skBuilder->select('id_sks, surat_rsa.nomor_surat as nmr_surat, surat_rsa.nik_pasien as nik_p, nama_pasien, nama_kapus, kapus.nip_kapus as nip_kp, jenis_kelamin, tgl_lahir, alamat,
-        pekerjaan, kepentingan, tinggi_badan, berat_badan, tensi_darah, suhu_tubuh, nadi, respirasi, mata_buta, tubuh_tato, tubuh_tindik,
-        hasil_periksa, surat_kesehatan.qr_code as surat_qr, pasien.qr_code as qr_key, nama_kapus, kapus.nip_kapus as nip_kp, nama_kapus, pasien.tgl_lahir as tgl_lahir, surat_kesehatan.tanggal_dibuat as tgl_dibuat, 
-        TIMESTAMPDIFF(MONTH , pasien.tgl_lahir, NOW() ) AS umur');
-                $this->skBuilder->join('surat_kesehatan', 'surat_kesehatan.nomor_surat = surat_rsa.nomor_surat');
-                $this->skBuilder->join('pasien', 'pasien.nik_pasien = surat_rsa.nik_pasien');
-                $this->skBuilder->join('kapus', 'kapus.nip_kapus = surat_rsa.nip_kapus');
-                $this->skBuilder->where('surat_rsa.nik_pasien', $data_scan['nik_pasien']);
-                $query = $this->skBuilder->get();
-                $data_cetak = $query->getRowArray();
-                # code...
+                // dd($data_cetak['nama_pasien']);
             } else {
-                $has_dek = "Token Tidak Sesuai";
+                $has_dek    = "Surat Palsu Data Verifikasi Tidak Sama";
                 $data_cetak = "";
             }
-            // echo "private Key Pasien = " . $ps_pr;
+            if (!empty($dekrip_time)) {
+                # code...
+                $upd = [
+                    'waktu_dekripsi'          => $dekrip_time,
+                    'waktu_dekripsi_rsaBiasa' => $dekrip_time_biasa
+                ];
+                $this->suratBuilder->where('id_surat_rsa', $data_scan['id_surat_rsa']);
+                $this->suratBuilder->update($upd);
+            }
 
-            // private key pasien
-            // dd($data_cetak['nama_pasien']);
+            $tdl_dbu = new DateTime($data_scan['tanggal_dibuat']);
+            $tgl_now = new DateTime();
+            $exp_tgl = $tgl_now->diff($tdl_dbu);
+            $tgl_exp = $exp_tgl->days;
+            # code...
         } else {
-            $has_dek    = "Surat Palsu Data Verifikasi Tidak Sama";
+            $has_dek    = "Surat Palsu Data Scan Tidak Sama";
             $data_cetak = "";
+            $tgl_exp = null;
         }
-
-        $upd = [
-            'waktu_dekripsi'          => $dekrip_time,
-            'waktu_dekripsi_rsaBiasa' => $dekrip_time_biasa
-        ];
-        $this->suratBuilder->where('id_surat_rsa', $data_scan['id_surat_rsa']);
-        $this->suratBuilder->update($upd);
-
-        $tdl_dbu = new DateTime($data_scan['tanggal_dibuat']);
-        $tgl_now = new DateTime();
-        $exp_tgl = $tgl_now->diff($tdl_dbu);
 
 
 
         $data = [
-            'exp_tgl'        => $exp_tgl->days,
+            'exp_tgl'        => $tgl_exp,
             'title'          => 'Hasil Validasi',
             'hasil_validasi' => $has_dek,
             'data_surat'     => $data_cetak
@@ -200,12 +211,25 @@ class Validasi extends BaseController
     public function coba()
     {
 
+        $text = "muhamad zainul mustofa";
+        $hash_text = md5($text);
+
+        $kunci_rsa = get_key();
+
+        // $kp = explode('$kunci_rsa);
+        $publik_key = $kunci_rsa[0];
+        $private_key = $kunci_rsa[1];
+
+        $enk = Enkripsi_biasa($hash_text, $private_key);
+        Dekripsi_biasa($hash_text, $enk[1], $publik_key);
+        dd();
+
         // $pr = $this->dekripsi->decrypt(base64_decode('8WG96ceuzmHq7DMiA/U5DAkL3ETZh3URxEtZTRZSAkLKYYpYb5dl/suy+7J/lQO5lf1Gaeuuu6KvXzeea/1bLdVmNngn57xJQOXd3xwdbwCozN8r7k74oQ=='));
         // dd($pr);
 
-        $pasien = $this->db->table('pasien');
-        $ps = $pasien->select('id_pasien, nama_pasien, nik_pasien, publik_key, private_key')->get();
-        $pss = $ps->getResultArray();
+        // $pasien = $this->db->table('pasien');
+        // $ps = $pasien->select('id_pasien, nama_pasien, nik_pasien, publik_key, private_key')->get();
+        // $pss = $ps->getResultArray();
 
         // $kapus = $this->db->table('kapus');
         // $kp = $kapus->select('id_kapus, nama_kapus, nip_kapus, publik_key, private_key')->get();
@@ -220,14 +244,14 @@ class Validasi extends BaseController
         // $srrt = $srr->getResultArray();
 
         // dd(count($pss));
-        for ($i = 0; $i < count($pss); $i++) {
-            echo "<br>Nama Pasien : " . $pss[$i]['nama_pasien'];
-            echo "<br>Nik Pasien : " . $pss[$i]['nik_pasien'];
-            echo "<br>Publik Key : " . $pss[$i]['publik_key'];
-            echo "<br>Private Key : " . $this->dekripsi->decrypt(base64_decode($pss[$i]['private_key']));
-            echo "<br>";
-            # code...
-        }
+        // for ($i = 0; $i < count($pss); $i++) {
+        //     echo "<br>Nama Pasien : " . $pss[$i]['nama_pasien'];
+        //     echo "<br>Nik Pasien : " . $pss[$i]['nik_pasien'];
+        //     echo "<br>Publik Key : " . $pss[$i]['publik_key'];
+        //     echo "<br>Private Key : " . $this->dekripsi->decrypt(base64_decode($pss[$i]['private_key']));
+        //     echo "<br>";
+        //     # code...
+        // }
         // for ($i = 0; $i < count($kpp); $i++) {
         //     echo "<br>Nama Kapus : " . $kpp[$i]['nama_kapus'];
         //     echo "<br>Nip Kapus : " . $kpp[$i]['nip_kapus'];
