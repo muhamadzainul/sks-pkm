@@ -209,7 +209,7 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
     $enkrip_time = $end_time - $start_time;
 
     $start_time_biasa = microtime(true);
-    Enkripsi_biasa($hash_teks, $priv_kap);
+    $enk_teks = Enkripsi_biasa($hash_teks, $priv_kap);
     $end_time_biasa = microtime(true);
     $enkrip_time_biasa = $end_time_biasa - $start_time_biasa;
 
