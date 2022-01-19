@@ -442,21 +442,22 @@ function Enkripsi_biasa($hash_text, $get_k)
     // dd($hasil);
     // echo "<br>". (count($pecah_enkrip));
     for ($ol = 0; $ol < count($pecah_enkrip); $ol++) {
-        $pecah_enkrip2 = explode("*", $pecah_enkrip[$ol]);
-        $pecah_0 = explode("_", $pecah_enkrip2[0]);
+        // $pecah_enkrip2 = explode("*", $pecah_enkrip[$ol]);
+        $pecah_0 = explode("_", $pecah_enkrip[$ol]);
         // echo "<br>".(count($pecah_0));
-        for ($io = 0; $io < count($pecah_enkrip2); $io++) {
-            if (count($pecah_0) == 2) {
-                $hs .= $pecah_0[0];
-                $hs .= $pecah_0[1];
-            } else {
-                $hs .= $pecah_enkrip2[$io];
-                // code...
-            }
+        // for ($io = 0; $io < count($pecah_enkrip2); $io++) {
+        if (count($pecah_0) == 2) {
+            $hs .= $pecah_0[0];
+            $hs .= $pecah_0[1];
+        } else {
+            $hs .= $pecah_enkrip[$ol];
+            // code...
         }
+        // }
     }
     echo "<br>Nilai Hasil Enkripsi asli = " . $hs;
     echo "<br>Nilai hasil Enkripsi = $hasil";
+    // dd(strlen($hs));
 
     return [$hs, $hasil];
 }

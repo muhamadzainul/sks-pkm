@@ -203,14 +203,14 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
       $pasien_key = $ps_pr->publik_key;
     }
 
-    $start_time = microtime(true);
+    $start_time = microtime(true) * 1000;
     $enk_teks = enkripsi_text($hash_teks, $priv_kap, $pasien_key);
-    $end_time = microtime(true);
+    $end_time = microtime(true) * 1000;
     $enkrip_time = $end_time - $start_time;
 
-    $start_time_biasa = microtime(true);
-    $enk_teks = Enkripsi_biasa($hash_teks, $priv_kap);
-    $end_time_biasa = microtime(true);
+    $start_time_biasa = microtime(true) * 1000;
+    $enk_teks2 = Enkripsi_biasa($hash_teks, $priv_kap);
+    $end_time_biasa = microtime(true) * 1000;
     $enkrip_time_biasa = $end_time_biasa - $start_time_biasa;
 
     $this->rsaBuilder->select('kunci_pasien');
@@ -267,6 +267,8 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
         'teks_asli'               => $hash_teks,
         'teks_enkripsi'           => $enk_teks[1],
         'hash_enkrip'             => md5($enk_teks[0]),
+        'panjang_rsaGanda'        => strlen($enk_teks[0]),
+        'panjang_rsa'             => strlen($enk_teks2[0]),
         'kunci_pasien'            => $pass_pas,
         'waktu_enkripsi'          => $enkrip_time,
         'waktu_enkripsi_rsaBiasa' => $enkrip_time_biasa,
@@ -359,6 +361,8 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
         'teks_asli'               => $hash_teks,
         'teks_enkripsi'           => $enk_teks[1],
         'hash_enkrip'             => md5($enk_teks[0]),
+        'panjang_rsaGanda'        => strlen($enk_teks[0]),
+        'panjang_rsa'             => strlen($enk_teks2[0]),
         'kunci_pasien'            => $pass_pas,
         'waktu_enkripsi'          => $enkrip_time,
         'waktu_enkripsi_rsaBiasa' => $enkrip_time_biasa,

@@ -104,14 +104,14 @@ class Validasi extends BaseController
                     // $teks_asli = ;
                     // $teks_enkrip = ;
 
-                    $start_time = microtime(true);
+                    $start_time = microtime(true) * 1000;
                     $has_dek = dekrip_text($data_scan['teks_asli'], $data_scan['teks_enkripsi'], $kp_pb, $ps_pr);
-                    $end_time = microtime(true);
+                    $end_time = microtime(true) * 1000;
                     $dekrip_time = $end_time - $start_time;
 
-                    $start_time_biasa = microtime(true);
+                    $start_time_biasa = microtime(true) * 1000;
                     $has_dek = Dekripsi_biasa($data_scan['teks_asli'], $data_scan['teks_enkripsi'], $kp_pb);
-                    $end_time_biasa = microtime(true);
+                    $end_time_biasa = microtime(true) * 1000;
                     $dekrip_time_biasa = $end_time_biasa - $start_time_biasa;
 
                     // dd($has_dek);
@@ -211,18 +211,18 @@ class Validasi extends BaseController
     public function coba()
     {
 
-        $text = "muhamad zainul mustofa";
-        $hash_text = md5($text);
+        // $text = "muhamad zainul mustofa";
+        // $hash_text = md5($text);
 
-        $kunci_rsa = get_key();
+        // $kunci_rsa = get_key();
 
-        // $kp = explode('$kunci_rsa);
-        $publik_key = $kunci_rsa[0];
-        $private_key = $kunci_rsa[1];
+        // // $kp = explode('$kunci_rsa);
+        // $publik_key = $kunci_rsa[0];
+        // $private_key = $kunci_rsa[1];
 
-        $enk = Enkripsi_biasa($hash_text, $private_key);
-        Dekripsi_biasa($hash_text, $enk[1], $publik_key);
-        dd();
+        // $enk = Enkripsi_biasa($hash_text, $private_key);
+        // Dekripsi_biasa($hash_text, $enk[1], $publik_key);
+        // dd();
 
         // $pr = $this->dekripsi->decrypt(base64_decode('8WG96ceuzmHq7DMiA/U5DAkL3ETZh3URxEtZTRZSAkLKYYpYb5dl/suy+7J/lQO5lf1Gaeuuu6KvXzeea/1bLdVmNngn57xJQOXd3xwdbwCozN8r7k74oQ=='));
         // dd($pr);
