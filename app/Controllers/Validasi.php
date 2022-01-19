@@ -236,7 +236,7 @@ class Validasi extends BaseController
         // $kpp = $kp->getResultArray();
 
         $surat = $this->db->table('surat_rsa');
-        $surat->select('pasien.nama_pasien as nama_pasien, pasien.nik_pasien as nik_pasien, waktu_enkripsi, waktu_dekripsi, waktu_enkripsi_rsaBiasa, waktu_dekripsi_rsaBiasa');
+        $surat->select('pasien.nama_pasien as nama_pasien, panjang_rsaGanda, panjang_rsa, pasien.nik_pasien as nik_pasien, waktu_enkripsi, waktu_dekripsi, waktu_enkripsi_rsaBiasa, waktu_dekripsi_rsaBiasa');
         $surat->join('surat_kesehatan', 'surat_kesehatan.nomor_surat = surat_rsa.nomor_surat');
         $surat->join('pasien', 'pasien.nik_pasien = surat_rsa.nik_pasien');
         $surat->join('kapus', 'kapus.nip_kapus = surat_rsa.nip_kapus');
@@ -263,6 +263,8 @@ class Validasi extends BaseController
         for ($i = 0; $i < count($srrt); $i++) {
             echo "<br>Nama Pasien : " . $srrt[$i]['nama_pasien'];
             echo "<br>NIK Pasien : " . $srrt[$i]['nik_pasien'];
+            echo "<br>Panjang RSA Ganda : " . $srrt[$i]['panjang_rsaGanda'];
+            echo "<br>Panjang RSA Biasa : " . $srrt[$i]['panjang_rsa'];
             echo "<br>Waktu Enkripsi : " . $srrt[$i]['waktu_enkripsi'];
             echo "<br>Waktu Enkripsi Rsa Biasa : " . $srrt[$i]['waktu_enkripsi_rsaBiasa'];
             echo "<br>Waktu Dekripsi : " . $srrt[$i]['waktu_dekripsi'];
