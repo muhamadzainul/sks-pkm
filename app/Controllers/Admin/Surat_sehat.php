@@ -276,7 +276,7 @@ MONTH , pasien.tgl_lahir, NOW() ) AS umur');
         'tanggal_diubah'          => date("Y-m-d", time()),
       ];
       $this->rsaBuilder->replace($dataRSA);
-      dd($pass_pas);
+      // dd($pass_pas);
 
       $data = [
         'id_sks'          => $tr['id_sks'],

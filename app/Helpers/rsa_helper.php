@@ -132,22 +132,21 @@ function enkripsi_text($hash_text, $get_k, $get_k2)
     for ($i = 0; $i < strlen($hash_text); $i++) {
         $ascii .= ord($hash_text[$i]);
     }
-    // echo "<br>".strlen($ascii);
-    echo "<br>" . $ascii;
+    echo "<br>Nilai Ascii = " . $ascii;
+    echo "<br>";
     $rq = strlen($ascii) - 4;
     $v_k = 0; // inisisalisasi angka 0 yang ada di depan pada nilai ascii yang telah dibagi menjadi blok-blok
 
     for ($j = 0; $j < strlen($ascii); $j++) {
         // echo "<br>",$j+1;
-        // echo "<br>";
+        // // echo "<br>";
         // echo "<br>" . $ascii[$j];
-        echo "<br>";
-
         if ((($j) % 4) == 0) {
-            echo "<br>Nilai text ASCII = $j";
-            // $ht = intval(substr($ascii, $j, 4));
+            // echo "<br>Nilai text ASCII = $j";
+            // $ph = intval(substr($ascii, $j, 4));
+            // echo "<br>.$ph";
+            // echo "<br>";
             $pl = intval(substr($ascii, $j, 1)); // inisisalisasi nilai 1 pada tiap blok
-            echo "<br>" . $pl;
             if ($pl == 0) {
                 for ($k = 0; $k < 4; $k++) {
                     $rf = intval(substr($ascii, $j + $k, 1)); //inisisalisasi angka 0 yang berada di depan pada tiap blok
@@ -163,26 +162,22 @@ function enkripsi_text($hash_text, $get_k, $get_k2)
             }
 
             $ht = intval(substr($ascii, $j + $v_k, 4 - $v_k)); //inisisalisasi untuk mencari nilai yang sudah tidak ada nilai 0 di depannya pada tiap blok
-            echo "<br> ht =" . $ht;
-            // echo "<br>" . $ht * 2;
-            echo "<br>Nilai text ASCII = " . $j;
+            echo "<br>Nilai Ascii Yang di Ambil Untuk menggunakan Private Key pengirim = " . $ht;
+            // echo $ht*2;
+            // echo "<br>Nilai text ASCII = " . $j;
             // echo "<br>";
-            $pangkat = gmp_pow($ht, $d);
             $hasil_sem .= gmp_mod(gmp_pow($ht, $d), $n);
             $dfd = explode(".", $hasil_sem);
             $fdf = $dfd[count($dfd) - 1];
+            echo "<br>enkripsi menggunakan private key pengirim = (Pn ** d) mod n";
             echo "<br> hasil sementara = " . $hasil_sem;
-            // echo "<br> hasil sementara2 = " . $pangkat;
             echo "<br>";
-            // var_dump($pangkat);
-            echo "<br> hasil sementara2 = " . intval($pangkat) % intval($n);
-            echo "<br>";
-            var_dump($fdf);
+            echo "<br>hasil sementara akan di split jika lebih dari 4 digit nomor";
+            // echo "<br>" . $fdf;
+            // var_dump($fdf);
             $ex1 = explode("_", $fdf);
-            echo "<br>";
-            var_dump($ex1);
-            // echo "<br>";
-            // echo "<br>" . empty($ex1[1]);
+            // var_dump($ex1);
+            // echo "<br> if ex1[1] = ".(!empty($ex1[1])) ? "ada" : "tidak";
             if (!empty($ex1[1])) {
                 $ks2 = explode(".", $hasil);
                 // echo "<br> iterasi = ".count($ks2);
@@ -196,17 +191,25 @@ function enkripsi_text($hash_text, $get_k, $get_k2)
                 $zr = intval(substr($ex1[0], 0, 4));
                 // echo "<br> e2 = $e2";
                 // echo "<br> n2 = $n3";
-                // echo "<br> zr = $zr";
                 $hasil .= gmp_mod(gmp_pow($zr, $e2), $n3);
                 // echo "<br>Hasil Coba = ".gmp_mod(gmp_pow($zr, $e2), $n3);
                 $zr2 = intval(substr($ex1[0], 4, strlen($ex1[0]) - 4));
+                if (strlen($fdf) > 4) {
+                    $zx = "." . $zr2;
+                } else {
+                    $zx = "";
+                }
+                echo "<br>hasil split = $zr$zx";
+                echo "<br>";
+                echo "<br>Kemudian hasil split dipisah dan akan di enkripsi lagi menggunakan publik key penerima = (Pn ** e2) mod n2";
+                echo "<br>";
                 if (strlen($ex1[0]) > 4) {
                     if ($zr2 == 0) {
                         $hasil .= "*";
                         for ($k = 0; $k < (strlen($ex1[0]) - 4); $k++) {
                             $rj = intval(substr($ex1[0], 4 + $k, 1)); //inisisalisasi angka 0 yang berada di depan pada tiap blok
-                            // echo "<br> panjang ex1[0]".(strlen($ex1[0])-4);
-                            // echo "<br> rj = ".$rj;
+                            // echo "<br> panjang ex1[0]" . (strlen($ex1[0]) - 4);
+                            // echo "<br> rj = " . $rj;
                             if ($rj == 0) {
                                 $hasil .= "0";
                                 $rd = $rd + 1;
@@ -245,12 +248,12 @@ function enkripsi_text($hash_text, $get_k, $get_k2)
 
                 $ks2 = explode(".", $hasil);
                 $ks4 = $ks2[(count($ks2) - 1)];
-                // $ks = explode("*", $zr);
-                // echo "<br>". $ks4;
-                // echo "<br>Jumlah angka = ".strlen($ex1[0]);
-                // echo "<br> iterasi = ".count($ks2);
+                $ks = explode("*", $zr);
+                echo "<br>haiil akan di appand pada string kosong pada hasil enkripsi : " . $ks4;
+                // echo "<br>Jumlah angka = " . strlen($ex1[0]);
+                echo "<br> iterasi = " . count($ks2);
 
-                // echo "<hr>";
+                echo "<hr>";
             }
 
 
@@ -281,7 +284,7 @@ function enkripsi_text($hash_text, $get_k, $get_k2)
             }
         }
     }
-    echo "<br>Nilai Hasil Enkripsi asli = " . $hs;
+    // echo "<br>Nilai Hasil Enkripsi asli = " . $hs;
     echo "<br>Nilai hasil Enkripsi = $hasil";
     return [$hs, $hasil];
 }
@@ -304,43 +307,72 @@ function dekrip_text($hash_text, $enkripsi_t, $get_k, $get_k2)
     }
 
     // dekripsi
+
     $hasil = $enkripsi_t;
 
+    // echo "<br>";
     $h_dekrip = "";
     $dekrip_sem = "";
 
     $text_d = explode(".", $hasil);
+    // echo "<br>" . count($text_d);
 
     for ($i = 0; $i < count($text_d); $i++) {
         $tf = intval(substr($text_d[$i], 0, 1));
+        // echo "<br>" . $text_d[$i];
+        // echo "<br>" . $tf;
         if ($tf == 0) {
             $jk = explode("*", $text_d[$i]);
+            // echo count($jk) . "<br>";
             for ($k = 0; $k < count($jk); $k++) {
+                // echo $jk[$k] . "<br>";
                 $fr = intval(substr($jk[$k], 0, 1));
                 $tq = explode("_", $jk[$k]);
+                // echo "<br> count TQ" . (count($tq));
+                // echo "<br>TQ[0] = " . $tq[0];
+                // echo "<br>TQ[1] = " . $tq[1];
                 if (count($tq) > 1) {
+                    // if ($tq[0] == "0") {
                     $h_dekrip .= $tq[0];
+                    // if (empty($tq[1])) {
+                    // $dekrip_sem .= 0;
+                    // echo "<br>TQ =".$tq[1];
+                    // } else {
+                    // echo "<br>TQ =".$tq[1];
                     $dekrip_sem .= gmp_mod(gmp_pow(intval($tq[1]), $d2), $n4);
+                    // code...
+                    // } else {
+                    // $dekrip_sem .= gmp_mod(gmp_pow(intval($tq[0]), $d2), $n4);
+                    // }
+                    // code...
+                    // }
                 } else {
                     $dekrip_sem .= gmp_mod(gmp_pow(intval($jk[$k]), $d2), $n4);
                 }
             }
+            // echo "<br>$text_d[$i]";
+            // echo "<br>" . $dekrip_sem;
             $h_dekrip .= gmp_strval(gmp_mod(gmp_pow(intval($dekrip_sem), $e), $n));
+            // echo $h_dekrip . "<br>";
             $dekrip_sem = "";
+            // echo "<br>0".$tq[1];
         } else {
+            // echo "<br>".$text_d[$i];
             $ik = explode("*", $text_d[$i]);
             for ($j = 0; $j < count($ik); $j++) {
                 $dekrip_sem .= gmp_mod(gmp_pow(intval($ik[$j]), $d2), $n4);
             }
             $h_dekrip .= gmp_strval(gmp_mod(gmp_pow(intval($dekrip_sem), $e), $n));
+            // echo "<br>$text_d[$i]";
             $dekrip_sem = "";
+            // echo "<br>Dekrip sem = $dekrip_sem";
+            // echo $h_dekrip . "<br>";
         }
     }
 
     $hasil_ascii = "";
     $var = 0;
     $kap = strlen($h_dekrip) - 2;
-    // echo "<br>" . $kap;
     for ($i = 0; $i < strlen($h_dekrip); $i++) {
         if (($i % 2 == $var)) {
             $re = substr($h_dekrip, $i, 1);
@@ -361,13 +393,20 @@ function dekrip_text($hash_text, $enkripsi_t, $get_k, $get_k2)
                 $hasil_ascii .= substr($h_dekrip, $i, 2);
                 if ($i != $kap) {
                     $hasil_ascii .= ".";
+                    // code...
                 }
+                // code...
             }
         }
     }
 
     $hh = "";
     $tra = explode(".", $hasil_ascii);
+    // echo "<br>Hasil Dekripsi = $h_dekrip";
+    // echo "<br>" . count($tra);
+
+
+    // echo "<br>Nil text ASCII = $ascii";
     // echo "<br>";
     // var_dump($tra);
     for ($i = 0; $i < count($tra); $i++) {
@@ -377,6 +416,16 @@ function dekrip_text($hash_text, $enkripsi_t, $get_k, $get_k2)
         }
         # code...
     }
+    // echo "<br>Hasil Dekripsi = $h_dekrip";
+    // echo "<br>Hasil Dekripsi = $hasil_ascii";
+    // echo "<br>";
+    // echo "<br>hash kata awal = $hash_text";
+    // echo "<br>Hasil Dekripsi = $hh";
+    // echo "<br>";
+    // echo "<br>";
+    // // var_dump($hash_text);
+    // echo "<br>";
+    // var_dump($hh);
 
     if ($hh == $hash_text) {
         $hasil_akhir = "Data Surat Keterangan Sehat Valid atau Asli";
@@ -403,7 +452,7 @@ function Enkripsi_biasa($hash_text, $get_k)
         $ascii .= ord($hash_text[$i]);
     }
     // echo "<br>".strlen($ascii);
-    echo "<br>" . $ascii;
+    // echo "<br>" . $ascii;
     // $rq = strlen($ascii) - 4;
     $v_k = 0; // inisisalisasi angka 0 yang ada di depan pada nilai ascii yang telah dibagi menjadi blok-blok
 
@@ -411,13 +460,13 @@ function Enkripsi_biasa($hash_text, $get_k)
         // echo "<br>",$j+1;
         // echo "<br>";
         // echo "<br>" . $ascii[$j];
-        echo "<br>";
+        // echo "<br>";
 
         if ((($j) % 4) == 0) {
-            echo "<br>Nilai text ASCII = $j";
+            // echo "<br>Nilai text ASCII = $j";
             // $ht = intval(substr($ascii, $j, 4));
             $pl = intval(substr($ascii, $j, 1)); // inisisalisasi nilai 1 pada tiap blok
-            echo "<br> pl =" . $pl;
+            // echo "<br> pl =" . $pl;
             if ($pl == 0) {
                 $hasil .= "0";
                 $hasil .= "_";
@@ -427,7 +476,7 @@ function Enkripsi_biasa($hash_text, $get_k)
             $ht .= ".";
             $htt = explode(".", $ht);
             $ht2 = intval($htt[(count($htt)) - 2]);
-            echo "<br> ht2 =" . $ht2;
+            // echo "<br> ht2 =" . $ht2;
             $hasil .= gmp_mod(gmp_pow($ht2, $d), $n);
             if (($j + 5) <= strlen($ascii)) {
                 $hasil .= ".";
@@ -435,8 +484,8 @@ function Enkripsi_biasa($hash_text, $get_k)
         }
         $v_k = $v_k * 0;
     }
-    echo "<br>Nilai text ASCII = $ascii";
-    echo "<br>Nilai Hasil Enkripsi = $hasil";
+    // echo "<br>Nilai text ASCII = $ascii";
+    // echo "<br>Nilai Hasil Enkripsi = $hasil";
     $hs = "";
     $pecah_enkrip = explode(".", $hasil);
     // dd($hasil);
@@ -455,8 +504,8 @@ function Enkripsi_biasa($hash_text, $get_k)
         }
         // }
     }
-    echo "<br>Nilai Hasil Enkripsi asli = " . $hs;
-    echo "<br>Nilai hasil Enkripsi = $hasil";
+    // echo "<br>Nilai Hasil Enkripsi asli = " . $hs;
+    // echo "<br>Nilai hasil Enkripsi = $hasil";
     // dd(strlen($hs));
 
     return [$hs, $hasil];

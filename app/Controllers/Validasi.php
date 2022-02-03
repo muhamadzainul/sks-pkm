@@ -105,12 +105,13 @@ class Validasi extends BaseController
                     // $teks_enkrip = ;
 
                     $start_time = microtime(true) * 1000;
-                    $has_dek = dekrip_text($data_scan['teks_asli'], $data_scan['teks_enkripsi'], $ps_pr, $kp_pb);
+                    $has_dek = dekrip_text($data_scan['teks_asli'], $data_scan['teks_enkripsi'],  $kp_pb, $ps_pr);
+                    // dekrip_text($hash_text, $enk[1], $publik_key, $private_key2);
                     $end_time = microtime(true) * 1000;
                     $dekrip_time = $end_time - $start_time;
 
                     $start_time_biasa = microtime(true) * 1000;
-                    $has_dek = Dekripsi_biasa($data_scan['teks_asli'], $data_scan['teks_enkripsi'], $kp_pb);
+                    Dekripsi_biasa($data_scan['teks_asli'], $data_scan['teks_enkripsi'], $kp_pb);
                     $end_time_biasa = microtime(true) * 1000;
                     $dekrip_time_biasa = $end_time_biasa - $start_time_biasa;
 
@@ -155,6 +156,7 @@ class Validasi extends BaseController
             $tgl_now = new DateTime();
             $exp_tgl = $tgl_now->diff($tdl_dbu);
             $tgl_exp = $exp_tgl->days;
+            // dd($tdl_dbu);
             # code...
         } else {
             $has_dek    = "Surat Palsu Data Scan Tidak Sama";
@@ -211,18 +213,26 @@ class Validasi extends BaseController
     public function coba()
     {
 
-        // $text = "muhamad zainul mustofa";
-        // $hash_text = md5($text);
+        $text = "Muhamad-Zainul-Mustofa-17041110011";
+        $hash_text = md5($text);
 
-        // $kunci_rsa = get_key();
+        $kunci_rsa = get_key();
 
         // // $kp = explode('$kunci_rsa);
-        // $publik_key = $kunci_rsa[0];
-        // $private_key = $kunci_rsa[1];
+        $publik_key = "109.12317";
+        $private_key = "8101.12317";
 
-        // $enk = Enkripsi_biasa($hash_text, $private_key);
-        // Dekripsi_biasa($hash_text, $enk[1], $publik_key);
-        // dd();
+        $kunci_rsa2 = get_key();
+
+        // // $kp = explode('$kunci_rsa);
+        $publik_key2 = "151.87391";
+        $private_key2 = "83351.87391";
+
+        $enk = enkripsi_text($hash_text, $private_key, $publik_key2);
+
+        // dd($enk[1]);
+        dekrip_text($hash_text, $enk[1], $publik_key, $private_key2);
+        dd();
 
         // $pr = $this->dekripsi->decrypt(base64_decode('8WG96ceuzmHq7DMiA/U5DAkL3ETZh3URxEtZTRZSAkLKYYpYb5dl/suy+7J/lQO5lf1Gaeuuu6KvXzeea/1bLdVmNngn57xJQOXd3xwdbwCozN8r7k74oQ=='));
         // dd($pr);
@@ -235,13 +245,13 @@ class Validasi extends BaseController
         // $kp = $kapus->select('id_kapus, nama_kapus, nip_kapus, publik_key, private_key')->get();
         // $kpp = $kp->getResultArray();
 
-        $surat = $this->db->table('surat_rsa');
-        $surat->select('pasien.nama_pasien as nama_pasien, panjang_rsaGanda, panjang_rsa, pasien.nik_pasien as nik_pasien, waktu_enkripsi, waktu_dekripsi, waktu_enkripsi_rsaBiasa, waktu_dekripsi_rsaBiasa');
-        $surat->join('surat_kesehatan', 'surat_kesehatan.nomor_surat = surat_rsa.nomor_surat');
-        $surat->join('pasien', 'pasien.nik_pasien = surat_rsa.nik_pasien');
-        $surat->join('kapus', 'kapus.nip_kapus = surat_rsa.nip_kapus');
-        $srr = $surat->get();
-        $srrt = $srr->getResultArray();
+        // $surat = $this->db->table('surat_rsa');
+        // $surat->select('pasien.nama_pasien as nama_pasien, panjang_rsaGanda, panjang_rsa, pasien.nik_pasien as nik_pasien, waktu_enkripsi, waktu_dekripsi, waktu_enkripsi_rsaBiasa, waktu_dekripsi_rsaBiasa');
+        // $surat->join('surat_kesehatan', 'surat_kesehatan.nomor_surat = surat_rsa.nomor_surat');
+        // $surat->join('pasien', 'pasien.nik_pasien = surat_rsa.nik_pasien');
+        // $surat->join('kapus', 'kapus.nip_kapus = surat_rsa.nip_kapus');
+        // $srr = $surat->get();
+        // $srrt = $srr->getResultArray();
 
         // dd(count($pss));
         // for ($i = 0; $i < count($pss); $i++) {
@@ -260,19 +270,19 @@ class Validasi extends BaseController
         //     echo "<br>";
         //     # code...
         // }
-        for ($i = 0; $i < count($srrt); $i++) {
-            echo "<br>Nama Pasien : " . $srrt[$i]['nama_pasien'];
-            echo "<br>NIK Pasien : " . $srrt[$i]['nik_pasien'];
-            echo "<br>Panjang RSA Ganda : " . $srrt[$i]['panjang_rsaGanda'];
-            echo "<br>Panjang RSA Biasa : " . $srrt[$i]['panjang_rsa'];
-            echo "<br>Waktu Enkripsi : " . $srrt[$i]['waktu_enkripsi'];
-            echo "<br>Waktu Enkripsi Rsa Biasa : " . $srrt[$i]['waktu_enkripsi_rsaBiasa'];
-            echo "<br>Waktu Dekripsi : " . $srrt[$i]['waktu_dekripsi'];
-            echo "<br>Waktu Dekripsi Rsa Biasa : " . $srrt[$i]['waktu_dekripsi_rsaBiasa'];
-            // echo "<br>Private Key kapus : " . $this->dekripsi->decrypt(base64_decode($srrt[$i]['private_key']));
-            echo "<br>";
-            # code...
-        }
+        // for ($i = 0; $i < count($srrt); $i++) {
+        //     echo "<br>Nama Pasien : " . $srrt[$i]['nama_pasien'];
+        //     echo "<br>NIK Pasien : " . $srrt[$i]['nik_pasien'];
+        //     echo "<br>Panjang RSA Ganda : " . $srrt[$i]['panjang_rsaGanda'];
+        //     echo "<br>Panjang RSA Biasa : " . $srrt[$i]['panjang_rsa'];
+        //     echo "<br>Waktu Enkripsi : " . $srrt[$i]['waktu_enkripsi'];
+        //     echo "<br>Waktu Enkripsi Rsa Biasa : " . $srrt[$i]['waktu_enkripsi_rsaBiasa'];
+        //     echo "<br>Waktu Dekripsi : " . $srrt[$i]['waktu_dekripsi'];
+        //     echo "<br>Waktu Dekripsi Rsa Biasa : " . $srrt[$i]['waktu_dekripsi_rsaBiasa'];
+        //     // echo "<br>Private Key kapus : " . $this->dekripsi->decrypt(base64_decode($srrt[$i]['private_key']));
+        //     echo "<br>";
+        //     # code...
+        // }
 
 
         // dd(getToken(8));
