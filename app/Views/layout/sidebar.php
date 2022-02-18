@@ -37,12 +37,12 @@
                     <li> <a href="<?= base_url(); ?>/admin/surat_sehat/tambah_data_surat">Tambah Data Surat</a> </li>
                 </ul>
             </li>
-            <!-- <li> <a href="javascript:void(0);" class="waves-effect"><i class="icon-docs p-r-10"></i> <span class="hide-menu"> Surat Izin <span class="fa arrow"></span></span></a>
+            <li> <a href="javascript:void(0);" class="waves-effect"><i class="icon-docs p-r-10"></i> <span class="hide-menu"> Surat Izin <span class="fa arrow"></span></span></a>
                 <ul class="nav nav-second-level">
                     <li> <a href="<?= base_url(); ?>/admin/surat_izin/">Data Surat</a> </li>
                     <li> <a href="<?= base_url(); ?>/admin/surat_izin/tambah_data_suratIzin">Tambah Data Surat</a> </li>
                 </ul>
-            </li> -->
+            </li>
         </ul>
     </div>
 </div>
